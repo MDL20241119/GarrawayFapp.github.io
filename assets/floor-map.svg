@@ -1,16 +1,16 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1500 800" role="img" aria-labelledby="title desc">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1500 850" role="img" aria-labelledby="title desc">
 <title id="title">GarrawayF 天神CLASS 3階 フロアマップ</title>
 <desc id="desc">リビングラボ80席以上、会議室、受付、モノづくりラボ32席、スタジオ、集中スペース30席、ダイニング、キッチン、Serendipity Street、エントランス、エレベーターの配置</desc>
 <defs>
   <style>
     .wall{stroke:#111;stroke-width:2;vector-effect:non-scaling-stroke}
     .hair{stroke:#777;stroke-width:1.4;fill:none;vector-effect:non-scaling-stroke}
-    .meta{font:700 12px Arial,'Noto Sans JP',sans-serif;letter-spacing:1.4px;fill:#086bdd}
-    .name{font:900 27px 'Noto Sans JP',Arial,sans-serif;fill:#111}
-    .smallname{font:800 18px 'Noto Sans JP',Arial,sans-serif;fill:#111}
-    .sub{font:500 13px 'Noto Sans JP',Arial,sans-serif;fill:#333}
-    .count{font:900 15px Arial,'Noto Sans JP',sans-serif;fill:#fff}
-    .legend{font:700 12px Arial,'Noto Sans JP',sans-serif;letter-spacing:.7px;fill:#222}
+    .meta{font:700 12px Arial,'Noto Sans CJK JP','Noto Sans JP',sans-serif;letter-spacing:1.4px;fill:#086bdd}
+    .name{font:900 25px 'Noto Sans CJK JP','Noto Sans JP',Arial,sans-serif;fill:#111}
+    .smallname{font:800 17px 'Noto Sans CJK JP','Noto Sans JP',Arial,sans-serif;fill:#111}
+    .sub{font:500 13px 'Noto Sans CJK JP','Noto Sans JP',Arial,sans-serif;fill:#333}
+    .count{font:900 15px Arial,'Noto Sans CJK JP','Noto Sans JP',sans-serif;fill:#fff}
+    .legend{font:700 12px Arial,'Noto Sans CJK JP','Noto Sans JP',sans-serif;letter-spacing:.7px;fill:#222}
     .chair{fill:#fff;stroke:#777;stroke-width:1.2}
   </style>
   <g id="chairH"><rect class="chair" x="0" y="0" width="18" height="12" rx="2"/></g>
@@ -25,34 +25,30 @@
   </g>
 </defs>
 
-<rect width="1500" height="800" fill="#fff"/>
+<rect width="1500" height="850" fill="#fff"/>
 <text x="65" y="58" font-family="Arial Black,Arial,sans-serif" font-size="50" font-weight="900" fill="#111">GARRAWAYF / SPACE MAP</text>
 <text x="68" y="88" class="meta">TENJIN CLASS 3F · PEOPLE / CONVERSATION / BUILD / FOCUS</text>
 
 <g transform="translate(65 115)">
-  <!-- Living Lab -->
   <rect class="wall" x="0" y="0" width="400" height="395" fill="#fff1bd"/>
   <text class="meta" x="22" y="30">01 / LIVING LAB</text>
   <rect x="276" y="16" width="102" height="30" rx="15" fill="#086bdd"/><text class="count" x="327" y="37" text-anchor="middle">80席以上</text>
   <g transform="translate(44 82)"><use href="#longTable" x="0"/><use href="#longTable" x="86"/><use href="#longTable" x="172"/><use href="#longTable" x="258"/></g>
-  <text class="name" x="22" y="345">リビングラボ</text><text class="sub" x="22" y="372">対話・共創・ワークショップ</text>
+  <text class="name" x="22" y="343">リビングラボ</text><text class="sub" x="22" y="370">対話・共創・ワークショップ</text>
 
-  <!-- Meeting rooms / reception -->
   <rect class="wall" x="400" y="0" width="190" height="115" fill="#dcecff"/>
   <text class="meta" x="418" y="27">MEETING 01</text><rect class="hair" x="449" y="49" width="92" height="34" rx="8"/><use href="#chairH" x="455" y="32"/><use href="#chairH" x="492" y="32"/><use href="#chairH" x="455" y="86"/><use href="#chairH" x="492" y="86"/><text class="smallname" x="448" y="108">会議室①</text>
   <rect class="wall" x="400" y="115" width="190" height="115" fill="#e8f2dc"/>
   <text class="meta" x="418" y="142">MEETING 02</text><rect class="hair" x="449" y="164" width="92" height="34" rx="8"/><use href="#chairH" x="455" y="147"/><use href="#chairH" x="492" y="147"/><use href="#chairH" x="455" y="201"/><use href="#chairH" x="492" y="201"/><text class="smallname" x="448" y="223">会議室②</text>
   <rect class="wall" x="400" y="230" width="190" height="165" fill="#ffd7e5"/>
-  <text class="meta" x="418" y="258">RECEPTION</text><circle class="hair" cx="495" cy="298" r="14"/><path class="hair" d="M437 356h116v-43H437z"/><path class="hair" d="M455 313v43M535 313v43"/><text class="smallname" x="433" y="384">受付スペース</text>
+  <text class="meta" x="418" y="258">RECEPTION</text><circle class="hair" cx="495" cy="298" r="14"/><path class="hair" d="M437 354h116v-41H437z"/><path class="hair" d="M455 313v41M535 313v41"/><text class="smallname" x="433" y="383">受付スペース</text>
 
-  <!-- Monozukuri lab -->
   <rect class="wall" x="590" y="0" width="380" height="395" fill="#dcecff"/>
   <text class="meta" x="612" y="30">04 / BUILD LAB</text>
   <rect x="842" y="16" width="106" height="30" rx="15" fill="#086bdd"/><text class="count" x="895" y="37" text-anchor="middle">32席</text>
   <g transform="translate(640 80)"><use href="#labTable" x="0"/><use href="#labTable" x="110"/><use href="#labTable" x="220"/><use href="#chairH" x="238" y="180"/><use href="#chairH" x="275" y="180"/></g>
-  <text class="name" x="612" y="345">モノづくりラボ</text><text class="sub" x="612" y="372">試作・開発・アイデアの可視化</text>
+  <text class="name" x="612" y="343">モノづくりラボ</text><text class="sub" x="612" y="370">試作・開発・アイデアの可視化</text>
 
-  <!-- Studio and focus -->
   <rect class="wall" x="970" y="0" width="330" height="395" fill="#ead9ef"/>
   <text class="meta" x="992" y="30">05 / STUDIO &amp; FOCUS</text>
   <rect class="wall" x="1000" y="56" width="238" height="126" fill="#f5edf7"/>
@@ -68,25 +64,22 @@
     <use href="#chairH" x="0" y="120"/><use href="#chairH" x="44" y="120"/><use href="#chairH" x="88" y="120"/><use href="#chairH" x="132" y="120"/><use href="#chairH" x="176" y="120"/>
     <use href="#chairH" x="0" y="150"/><use href="#chairH" x="44" y="150"/><use href="#chairH" x="88" y="150"/><use href="#chairH" x="132" y="150"/><use href="#chairH" x="176" y="150"/>
   </g>
-  <text class="smallname" x="1000" y="382">集中スペース</text>
+  <text class="smallname" x="1000" y="376">集中スペース</text>
 
-  <!-- Dining and Kitchen -->
   <rect class="wall" x="0" y="395" width="245" height="145" fill="#e8f2dc"/>
   <text class="meta" x="18" y="423">DINING</text><ellipse class="hair" cx="115" cy="480" rx="62" ry="25"/><use href="#chairH" x="38" y="470"/><use href="#chairH" x="174" y="470"/><use href="#chairH" x="88" y="444"/><use href="#chairH" x="88" y="503"/><text class="name" x="18" y="526">ダイニング</text>
   <rect class="wall" x="245" y="395" width="155" height="145" fill="#ffe2bd"/>
   <text class="meta" x="261" y="423">KITCHEN</text><path class="hair" d="M270 455h102v40H270zM286 455v40M356 455v40"/><circle class="hair" cx="322" cy="475" r="8"/><text class="smallname" x="267" y="526">キッチン</text>
 
-  <!-- Serendipity Street -->
   <rect class="wall" x="400" y="395" width="900" height="100" fill="#f1eeea"/>
   <text class="meta" x="420" y="423">SERENDIPITY STREET</text>
   <line x1="420" y1="466" x2="1280" y2="466" stroke="#fff" stroke-width="7" stroke-dasharray="25 18"/>
-  <text class="smallname" x="790" y="453" text-anchor="middle">偶然の出会いが生まれる通り</text>
+  <text class="smallname" x="1080" y="452" text-anchor="middle">偶然の出会いが生まれる通り</text>
 
-  <!-- Entrance above elevator -->
-  <g transform="translate(540 407)"><rect x="0" y="0" width="300" height="70" fill="#070707"/><text x="150" y="28" text-anchor="middle" fill="#fff" font-family="Arial,'Noto Sans JP',sans-serif" font-size="12" font-weight="700" letter-spacing="2">ENTRANCE</text><text x="150" y="53" text-anchor="middle" fill="#fff" font-family="'Noto Sans JP',Arial,sans-serif" font-size="18" font-weight="900">エントランス</text><path d="M150 70v32" stroke="#070707" stroke-width="5"/><path d="M139 91l11 12 11-12" fill="none" stroke="#070707" stroke-width="5"/></g>
-  <rect class="wall" x="555" y="540" width="270" height="74" fill="#fff3c8"/>
-  <rect class="hair" x="641" y="557" width="52" height="38"/><path class="hair" d="M667 557v38M646 571l9-9 9 9M690 581l-9 9-9-9"/><text class="smallname" x="710" y="585">エレベーター</text>
+  <g transform="translate(600 507)"><rect x="0" y="0" width="280" height="52" fill="#070707"/><text x="140" y="21" text-anchor="middle" fill="#fff" font-family="Arial,'Noto Sans CJK JP','Noto Sans JP',sans-serif" font-size="11" font-weight="700" letter-spacing="2">ENTRANCE</text><text x="140" y="43" text-anchor="middle" fill="#fff" font-family="'Noto Sans CJK JP','Noto Sans JP',Arial,sans-serif" font-size="16" font-weight="900">エントランス</text><path d="M140 52v25" stroke="#070707" stroke-width="5"/><path d="M129 66l11 12 11-12" fill="none" stroke="#070707" stroke-width="5"/></g>
+  <rect class="wall" x="605" y="585" width="270" height="74" fill="#fff3c8"/>
+  <rect class="hair" x="691" y="602" width="52" height="38"/><path class="hair" d="M717 602v38M696 616l9-9 9 9M740 626l-9 9-9-9"/><text class="smallname" x="760" y="630">エレベーター</text>
 </g>
 
-<g transform="translate(65 752)"><rect x="0" y="-11" width="12" height="12" fill="#fff1bd" stroke="#111"/><text x="20" y="0" class="legend">LIVING LAB</text><rect x="150" y="-11" width="12" height="12" fill="#dcecff" stroke="#111"/><text x="170" y="0" class="legend">MEETING / BUILD</text><rect x="370" y="-11" width="12" height="12" fill="#ffd7e5" stroke="#111"/><text x="390" y="0" class="legend">RECEPTION</text><rect x="530" y="-11" width="12" height="12" fill="#ead9ef" stroke="#111"/><text x="550" y="0" class="legend">STUDIO / FOCUS</text><rect x="735" y="-11" width="12" height="12" fill="#e8f2dc" stroke="#111"/><text x="755" y="0" class="legend">DINING</text><rect x="860" y="-11" width="12" height="12" fill="#ffe2bd" stroke="#111"/><text x="880" y="0" class="legend">KITCHEN</text></g>
+<g transform="translate(65 820)"><rect x="0" y="-11" width="12" height="12" fill="#fff1bd" stroke="#111"/><text x="20" y="0" class="legend">LIVING LAB</text><rect x="150" y="-11" width="12" height="12" fill="#dcecff" stroke="#111"/><text x="170" y="0" class="legend">MEETING / BUILD</text><rect x="370" y="-11" width="12" height="12" fill="#ffd7e5" stroke="#111"/><text x="390" y="0" class="legend">RECEPTION</text><rect x="530" y="-11" width="12" height="12" fill="#ead9ef" stroke="#111"/><text x="550" y="0" class="legend">STUDIO / FOCUS</text><rect x="735" y="-11" width="12" height="12" fill="#e8f2dc" stroke="#111"/><text x="755" y="0" class="legend">DINING</text><rect x="860" y="-11" width="12" height="12" fill="#ffe2bd" stroke="#111"/><text x="880" y="0" class="legend">KITCHEN</text></g>
 </svg>
