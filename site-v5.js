@@ -58,56 +58,33 @@
     }
   };
 
-  const renderFacebookEvent = () => {
-    const frame = $('.facebook-frame');
-    if (!frame) return;
-
-    if (!$('#facebook-native-style')) {
-      const style = document.createElement('style');
-      style.id = 'facebook-native-style';
-      style.textContent = `
-        .facebook-frame{padding:0!important;min-height:700px!important;background:#fff!important;display:block!important;overflow:hidden!important}
-        .facebook-native{min-height:700px;display:grid;grid-template-rows:minmax(330px,1.05fr) minmax(310px,.95fr);background:#fff}
-        .facebook-native-media{position:relative;overflow:hidden;border-bottom:1px solid #070707;background:#dcecff}
-        .facebook-native-media img{width:100%;height:100%;object-fit:cover;object-position:50% 46%;display:block}
-        .facebook-native-badge{position:absolute;left:18px;top:18px;padding:8px 11px;background:#086bdd;color:#fff;border:1px solid #070707;font:700 9px 'Archivo','Noto Sans JP',sans-serif;letter-spacing:.1em}
-        .facebook-native-copy{padding:clamp(28px,3.4vw,48px);display:flex;flex-direction:column;justify-content:center;background:#f49bc0}
-        .facebook-native-copy .facebook-meta{margin:0 0 18px;color:#086bdd;font:700 9px 'Archivo','Noto Sans JP',sans-serif;letter-spacing:.12em}
-        .facebook-native-copy h4{margin:0;font:900 clamp(36px,3.8vw,58px)/.92 'Archivo Black','Noto Sans JP',sans-serif;letter-spacing:-.06em}
-        .facebook-native-copy>p:not(.facebook-meta){max-width:430px;margin:22px 0 0;font-size:12px;font-weight:700;line-height:1.85}
-        .facebook-native-actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:28px}
-        .facebook-native-actions a{min-height:48px;padding:0 16px;display:inline-flex;align-items:center;border:1px solid #070707;background:#fff;font:700 9px 'Archivo','Noto Sans JP',sans-serif;letter-spacing:.05em}
-        .facebook-native-actions a:first-child{background:#086bdd;color:#fff}
-        .facebook-native-actions a:hover,.facebook-native-actions a:focus-visible{background:#070707;color:#fff}
-        @media(max-width:820px){
-          .facebook-frame,.facebook-native{min-height:0!important}
-          .facebook-native{grid-template-rows:290px auto}
-          .facebook-native-copy{padding:28px 18px 32px}
-          .facebook-native-copy h4{font-size:40px}
-          .facebook-native-copy>p:not(.facebook-meta){font-size:11px}
-          .facebook-native-actions{display:grid;grid-template-columns:1fr;margin-top:22px}
-          .facebook-native-actions a{justify-content:center}
-        }
-      `;
-      document.head.appendChild(style);
-    }
-
-    frame.innerHTML = `<article class="facebook-native" aria-label="GarrawayF Facebook EVENT">
-      <div class="facebook-native-media">
-        <img src="https://drive.google.com/thumbnail?id=1N0iRILiombzt5W6BO8uz6jOG7yfnB8x9&sz=w1600" alt="GarrawayFで開催されるイベントの様子" loading="lazy" decoding="async">
-        <span class="facebook-native-badge">FACEBOOK / EVENT</span>
-      </div>
-      <div class="facebook-native-copy">
-        <p class="facebook-meta">UPCOMING / REGISTRATION / EVENT REPORT</p>
-        <h4>次の出会いに、<br>参加する。</h4>
-        <p>開催予定、参加募集、当日の変更、イベントレポートは、GarrawayF公式Facebookで随時更新しています。</p>
-        <div class="facebook-native-actions">
-          <a href="https://www.facebook.com/garrawayf/events" target="_blank" rel="noopener">最新EVENTを見る ↗</a>
-          <a href="https://www.facebook.com/garrawayf/" target="_blank" rel="noopener">Facebookページへ ↗</a>
-        </div>
-      </div>
-    </article>`;
-    installImageFallbacks(frame);
+  const applyFinalStyles = () => {
+    if (document.getElementById('floor-events-final-style')) return;
+    const style = document.createElement('style');
+    style.id = 'floor-events-final-style';
+    style.textContent = `
+      .facebook-events-frame{min-height:700px;padding:0!important;display:grid!important;grid-template-rows:minmax(500px,1fr) auto;align-items:stretch;background:#fff}
+      .facebook-events-frame iframe{display:block;width:100%;max-width:500px;height:520px;margin:0 auto;border:0;background:#fff}
+      .facebook-event-fallback{padding:24px 26px;border-top:1px solid #070707;background:#ffd7e5}
+      .facebook-event-fallback>span{color:#086bdd;font-family:'Archivo','Noto Sans JP',sans-serif;font-size:9px;font-weight:700;letter-spacing:.1em}
+      .facebook-event-fallback h4{margin:14px 0 12px;font-family:'Archivo Black','Noto Sans JP',sans-serif;font-size:clamp(31px,3.1vw,48px);line-height:.92;letter-spacing:-.055em}
+      .facebook-event-fallback p{margin:0;font-size:11px;line-height:1.75}
+      .facebook-event-fallback a{display:inline-flex;margin-top:18px;padding:12px 15px;background:#086bdd;color:#fff;font-family:'Archivo','Noto Sans JP',sans-serif;font-size:9px;font-weight:700}
+      .space-media{height:260px;overflow:hidden;background:#eee}
+      .space-wide .space-media{height:620px}
+      .space-media>img{display:block;width:100%;height:100%;object-fit:cover;object-position:50% 50%}
+      .space-media-duo{display:grid;grid-template-columns:1fr 1fr}
+      .space-media-duo>img+img{border-left:1px solid #070707}
+      @media(max-width:820px){
+        .facebook-events-frame{min-height:650px;grid-template-rows:470px auto}
+        .facebook-events-frame iframe{height:470px}
+        .facebook-event-fallback{padding:20px 16px}
+        .facebook-event-fallback h4{font-size:36px}
+        .space-wide .space-media{height:320px}
+        .space-media{height:190px}
+      }
+    `;
+    document.head.appendChild(style);
   };
 
   const fallbackSvg = `data:image/svg+xml;charset=UTF-8,${encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 1000"><rect width="800" height="1000" fill="#dcecff"/><text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" font-family="Arial" font-size="44" font-weight="700" fill="#086bdd">GARRAWAYF</text></svg>')}`;
@@ -138,8 +115,8 @@
     nodes.forEach((node) => observer.observe(node));
   };
 
+  applyFinalStyles();
   installImageFallbacks();
   reveal();
-  renderFacebookEvent();
   renderInstagram();
 })();
