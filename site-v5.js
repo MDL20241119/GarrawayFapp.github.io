@@ -63,9 +63,9 @@
     const style = document.createElement('style');
     style.id = 'floor-events-final-style';
     style.textContent = `
-      .facebook-events-frame{min-height:700px;padding:0!important;display:grid!important;grid-template-rows:minmax(500px,1fr) auto;align-items:stretch;background:#fff}
-      .facebook-events-frame iframe{display:block;width:100%;max-width:500px;height:520px;margin:0 auto;border:0;background:#fff}
-      .facebook-event-fallback{padding:24px 26px;border-top:1px solid #070707;background:#ffd7e5}
+      .facebook-events-frame{min-height:700px;padding:0!important;display:grid!important;grid-template-rows:auto minmax(480px,1fr);align-items:stretch;background:#fff}
+      .facebook-events-frame iframe{grid-row:2;display:block;width:100%;max-width:500px;height:520px;margin:0 auto;border:0;background:#fff}
+      .facebook-event-fallback{grid-row:1;padding:24px 26px;border-bottom:1px solid #070707;background:#ffd7e5}
       .facebook-event-fallback>span{color:#086bdd;font-family:'Archivo','Noto Sans JP',sans-serif;font-size:9px;font-weight:700;letter-spacing:.1em}
       .facebook-event-fallback h4{margin:14px 0 12px;font-family:'Archivo Black','Noto Sans JP',sans-serif;font-size:clamp(31px,3.1vw,48px);line-height:.92;letter-spacing:-.055em}
       .facebook-event-fallback p{margin:0;font-size:11px;line-height:1.75}
@@ -76,8 +76,8 @@
       .space-media-duo{display:grid;grid-template-columns:1fr 1fr}
       .space-media-duo>img+img{border-left:1px solid #070707}
       @media(max-width:820px){
-        .facebook-events-frame{min-height:650px;grid-template-rows:470px auto}
-        .facebook-events-frame iframe{height:470px}
+        .facebook-events-frame{min-height:650px;grid-template-rows:auto 430px}
+        .facebook-events-frame iframe{height:430px}
         .facebook-event-fallback{padding:20px 16px}
         .facebook-event-fallback h4{font-size:36px}
         .space-wide .space-media{height:320px}
