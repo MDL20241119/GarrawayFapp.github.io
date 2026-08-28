@@ -41,6 +41,8 @@ jobs:
           with open('data/instagram.json','w',encoding='utf-8') as f:
               json.dump({'account':'garrawayf_lounge','posts':posts},f,ensure_ascii=False,indent=2)
           PY
+      - name: Validate persistent website features
+        run: python scripts/validate_site.py
       - name: Commit feed
         run: |
           git config user.name 'garrawayf-feed-bot'
