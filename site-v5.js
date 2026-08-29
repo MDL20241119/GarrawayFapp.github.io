@@ -8,12 +8,20 @@
   }[char]));
 
   const loadVisualUpgrade = () => {
-    if (document.querySelector('link[data-gf-v6]')) return;
-    const link = document.createElement('link');
-    link.rel = 'stylesheet';
-    link.href = 'site-v6-overrides.css?v=20260829-hero-events-floor-join-01';
-    link.dataset.gfV6 = 'true';
-    document.head.appendChild(link);
+    if (!document.querySelector('link[data-gf-v6]')) {
+      const link = document.createElement('link');
+      link.rel = 'stylesheet';
+      link.href = 'site-v6-overrides.css?v=20260829-hero-events-floor-join-01';
+      link.dataset.gfV6 = 'true';
+      document.head.appendChild(link);
+    }
+    if (!document.querySelector('link[data-floor-poster-v7]')) {
+      const floorLink = document.createElement('link');
+      floorLink.rel = 'stylesheet';
+      floorLink.href = 'floor-poster-v7.css?v=20260829-photo-poster-01';
+      floorLink.dataset.floorPosterV7 = 'true';
+      document.head.appendChild(floorLink);
+    }
   };
 
   const setupMenu = () => {
@@ -127,6 +135,44 @@
     icons[2].innerHTML = `<svg viewBox="0 0 128 104" aria-hidden="true"><circle cx="32" cy="70" r="14" fill="none" stroke="currentColor" stroke-width="3"/><circle cx="96" cy="70" r="14" fill="none" stroke="currentColor" stroke-width="3"/><path d="M12 101c1-17 8-26 20-26s19 9 20 26M76 101c1-17 8-26 20-26s19 9 20 26" fill="none" stroke="currentColor" stroke-width="3"/><path d="M39 12h50c10 0 17 7 17 16v15c0 9-7 16-17 16H67L54 70l3-11H39c-10 0-17-7-17-16V28c0-9 7-16 17-16z" fill="#fff" stroke="currentColor" stroke-width="3"/><circle cx="53" cy="35" r="3" fill="currentColor"/><circle cx="65" cy="35" r="3" fill="currentColor"/><circle cx="77" cy="35" r="3" fill="currentColor"/></svg>`;
   };
 
+  const enhanceFloorPoster = async () => {
+    const floor = $('#floor');
+    const wrap = floor ? $('.floor-map-wrap', floor) : null;
+    if (!floor || !wrap || wrap.dataset.posterReady === 'true') return;
+    wrap.dataset.posterReady = 'true';
+    wrap.classList.add('floor-poster-wrap');
+    const oldGrid = $('.space-grid', floor);
+    if (oldGrid) oldGrid.hidden = true;
+
+    const kitchenPlaceholder = `data:image/svg+xml;charset=UTF-8,${encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 180"><rect width="320" height="180" fill="#ffe2bd"/><text x="160" y="90" text-anchor="middle" font-family="Arial" font-size="20" font-weight="700" fill="#111">KITCHEN & DINING</text></svg>')}`;
+    wrap.innerHTML = `<section class="floor-poster" aria-label="GarrawayF スペース紹介フロアマップ">
+      <header class="floor-poster-header"><div><p>FLOOR MAP / TENJIN CLASS 3F</p><h3>GarrawayF</h3><strong>［ スペース紹介 ］</strong></div></header>
+      <div class="floor-poster-callouts floor-poster-callouts-top">
+        <figure class="floor-photo-card floor-photo-living"><div class="floor-photo-media"><img src="https://drive.google.com/thumbnail?id=1J6Ne_puDhM-7GLyJ1b7n2AMLfLs8ai1u&sz=w1400" alt="リビングラボで対話する人々" loading="lazy"></div><figcaption><b>リビングラボ（80席以上）</b><span>人が集まり、問いを立て、対話と共創を始める中心空間。</span></figcaption></figure>
+        <figure class="floor-photo-card floor-photo-studio"><div class="floor-photo-media"><img src="https://garrawayf.com/wp-content/themes/garrawayf/assets/img_renew/img_studio.webp" alt="撮影・配信スタジオ" loading="lazy"></div><figcaption><b>スタジオ</b><span>撮影・配信・収録に対応した発信のための空間。</span></figcaption></figure>
+      </div>
+      <div class="floor-plan-frame"><img src="assets/floor-map.svg?v=20260829-photo-poster-01" alt="GarrawayF 天神CLASS 3階 フロアマップ"></div>
+      <div class="floor-poster-callouts floor-poster-callouts-bottom">
+        <figure class="floor-photo-card floor-photo-kitchen"><div class="floor-photo-media"><img data-kitchen-photo src="${kitchenPlaceholder}" alt="キッチン・ダイニング" loading="lazy"></div><figcaption><b>ダイニング／キッチン</b><span>食事や休憩をきっかけに、自然な会話と交流が生まれる。</span></figcaption></figure>
+        <figure class="floor-photo-card floor-photo-build"><div class="floor-photo-media"><img src="https://drive.google.com/thumbnail?id=1I1AH-oFoy_R9UFkeXY9aQed7FqXLrqv2&sz=w1200" alt="モノづくりラボでアイデアを可視化する様子" loading="lazy"></div><figcaption><b>モノづくりラボ（32席）</b><span>アイデアを可視化し、試作・開発を進める共創空間。</span></figcaption></figure>
+        <figure class="floor-photo-card floor-photo-street"><div class="floor-photo-media"><img src="https://drive.google.com/thumbnail?id=16bZEROOxM7CvTH3uOLZGiA8TSjNw8Bp3&sz=w1200" alt="Serendipity Streetで生まれる交流" loading="lazy"></div><figcaption><b>Serendipity Street</b><span>移動の途中にも、偶然の出会いと会話が生まれる通り。</span></figcaption></figure>
+        <figure class="floor-photo-card floor-photo-focus"><div class="floor-photo-media"><img src="https://garrawayf.com/wp-content/themes/garrawayf/assets/img_renew/img_coworking.webp" alt="集中スペース" loading="lazy"></div><figcaption><b>集中スペース（30席）</b><span>個人で深く考え、作業や学習に集中できる静かな空間。</span></figcaption></figure>
+      </div>
+      <p class="floor-poster-note">エントランスはエレベーターの上部。Serendipity Streetを通って、各スペースへつながります。※レイアウトは変更になる場合があります。</p>
+    </section>`;
+
+    try {
+      const response = await fetch(`assets/kitchen-thumb.b64?ts=${Date.now()}`, { cache: 'no-store' });
+      if (!response.ok) throw new Error(`Kitchen image HTTP ${response.status}`);
+      const b64 = (await response.text()).trim();
+      const kitchen = $('[data-kitchen-photo]', wrap);
+      if (kitchen && b64) kitchen.src = `data:image/jpeg;base64,${b64}`;
+    } catch (error) {
+      console.warn('Kitchen photo fallback:', error);
+    }
+    installImageFallbacks(wrap);
+  };
+
   const fallbackSvg = `data:image/svg+xml;charset=UTF-8,${encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 1000"><rect width="800" height="1000" fill="#dcecff"/><text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" font-family="Arial" font-size="44" font-weight="700" fill="#086bdd">GARRAWAYF</text></svg>')}`;
   function installImageFallbacks(root = document) {
     $$('img', root).forEach((img) => {
@@ -158,6 +204,7 @@
   loadVisualUpgrade();
   setupMenu();
   enhanceJoin();
+  enhanceFloorPoster();
   installImageFallbacks();
   reveal();
   renderInstagram();
