@@ -1,0 +1,36 @@
+name: One-time floor poster cache bust
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/cache-bust-floor-poster.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  update-index:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Update asset version in index
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          path = Path('index.html')
+          text = path.read_text(encoding='utf-8')
+          old = 'site-v5.js?v=20260829-floor-events-03'
+          new = 'site-v5.js?v=20260829-floor-poster-v7-01'
+          if old in text:
+              path.write_text(text.replace(old, new), encoding='utf-8')
+          elif new not in text:
+              raise SystemExit('Expected site-v5.js version marker not found')
+          PY
+      - name: Commit cache-busted index
+        run: |
+          git config user.name 'garrawayf-site-bot'
+          git config user.email 'actions@users.noreply.github.com'
+          git add index.html
+          git diff --cached --quiet || git commit -m 'Cache bust floor poster assets'
+          git push
