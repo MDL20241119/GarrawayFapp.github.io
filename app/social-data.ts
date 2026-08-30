@@ -1,7 +1,7 @@
-const INSTAGRAM_FEED =
-  "https://mdl20241119.github.io/GarrawayFapp.github.io/data/instagram.json";
-const FACEBOOK_FEED =
-  "https://mdl20241119.github.io/GarrawayFapp.github.io/data/facebook-events.json";
+import { withBasePath } from "./base-path";
+
+const INSTAGRAM_FEED = withBasePath("/data/instagram.json");
+const FACEBOOK_FEED = withBasePath("/data/facebook-events.json");
 
 const VERIFIED_EVENT_LINKS: Record<string, string> = {
   "2026-09-05": "https://fb.me/e/7m9jmHash",
@@ -13,6 +13,19 @@ async function fetchJson(url: string, signal?: AbortSignal) {
   const response = await fetch(url, { signal, cache: "no-store" });
   if (!response.ok) throw new Error(`Social feed responded ${response.status}`);
   return response.json();
+}
+
+function resolveMediaUrl(...candidates: unknown[]) {
+  const value = candidates.find(
+    (candidate): candidate is string =>
+      typeof candidate === "string" && candidate.trim().length > 0,
+  );
+
+  if (!value || /^(?:https?:)?\/\//i.test(value) || value.startsWith("data:")) {
+    return value || "";
+  }
+
+  return withBasePath(`/${value.replace(/^\.?\/+/, "")}`);
 }
 
 export async function loadSocialData(signal?: AbortSignal) {
@@ -32,7 +45,11 @@ export async function loadSocialData(signal?: AbortSignal) {
       posts: Array.isArray(instagram?.posts)
         ? instagram.posts.map((post: Record<string, unknown>) => ({
             ...post,
-            media_url: post.media_url || post.image || post.thumbnail_url,
+            media_url: resolveMediaUrl(
+              post.media_url,
+              post.image,
+              post.thumbnail_url,
+            ),
           }))
         : [],
     },

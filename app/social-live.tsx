@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import { SITE_LINKS } from "./site-links";
 import { withBasePath } from "./base-path";
@@ -53,30 +53,34 @@ const formatDate = (value?: string) => {
   }).format(date);
 };
 
+function InstagramImage({ src, alt }: { src: string; alt: string }) {
+  const [imageFailed, setImageFailed] = useState(false);
+
+  if (imageFailed) {
+    return (
+      <span className="instagramImageFallback">
+        <b>GARRAWAY F</b>
+        <small>VIEW POST ↗</small>
+      </span>
+    );
+  }
+
+  return (
+    <img
+      src={src}
+      alt={alt}
+      loading="lazy"
+      referrerPolicy="no-referrer"
+      onError={() => setImageFailed(true)}
+    />
+  );
+}
+
 export default function SocialLive() {
-  const sectionRef = useRef<HTMLElement>(null);
-  const [shouldLoad, setShouldLoad] = useState(false);
   const [data, setData] = useState<SocialData | null>(null);
   const [failed, setFailed] = useState(false);
 
   useEffect(() => {
-    const section = sectionRef.current;
-    if (!section) return;
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setShouldLoad(true);
-          observer.disconnect();
-        }
-      },
-      { rootMargin: "700px 0px" },
-    );
-    observer.observe(section);
-    return () => observer.disconnect();
-  }, []);
-
-  useEffect(() => {
-    if (!shouldLoad) return;
     const controller = new AbortController();
     loadSocialData(controller.signal)
       .then(setData)
@@ -84,13 +88,13 @@ export default function SocialLive() {
         if (error?.name !== "AbortError") setFailed(true);
       });
     return () => controller.abort();
-  }, [shouldLoad]);
+  }, []);
 
   const posts = (data?.instagram?.posts ?? []).slice(0, 4);
   const events = (data?.facebook?.events ?? []).slice(0, 4);
 
   return (
-    <section className="socialLiveSection" id="news" ref={sectionRef}>
+    <section className="socialLiveSection" id="news">
       <header className="socialLiveHead">
         <p className="sectionTag">06 / SOCIAL LIVE</p>
         <h2>ここで生まれる、<br />挑戦の熱量。</h2>
@@ -116,7 +120,7 @@ export default function SocialLive() {
             ) : posts.length > 0 ? (
               <div className="instagramLiveGrid" role="region" aria-label="Instagramの投稿。横にスワイプして確認できます" tabIndex={0}>
                 {posts.map((post, index) => {
-                  const image = post.image || post.media_url || post.thumbnail_url;
+                  const image = post.media_url || post.image || post.thumbnail_url;
                   const isReel = post.media_type === "VIDEO" || post.permalink?.includes("/reel/");
                   return (
                     <a
@@ -128,11 +132,9 @@ export default function SocialLive() {
                     >
                       <div className="instagramMedia">
                         {image ? (
-                          <img
+                          <InstagramImage
                             src={image}
                             alt={post.caption || "Garraway F Instagram投稿"}
-                            loading="lazy"
-                            referrerPolicy="no-referrer"
                           />
                         ) : <span>GARRAWAY F</span>}
                         <i>{String(index + 1).padStart(2, "0")}</i>
