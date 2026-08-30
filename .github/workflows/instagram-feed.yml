@@ -1,10 +1,22 @@
 name: Update Instagram Feed
+
 on:
   workflow_dispatch:
   schedule:
     - cron: '17 * * * *'
+  push:
+    branches:
+      - main
+    paths:
+      - '.github/workflows/instagram-feed.yml'
+
 permissions:
   contents: write
+
+concurrency:
+  group: instagram-feed-main
+  cancel-in-progress: false
+
 jobs:
   update:
     runs-on: ubuntu-latest
@@ -13,33 +25,100 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
-      - name: Fetch latest Instagram posts
+      - name: Fetch latest Instagram posts and mirror images
         env:
           INSTAGRAM_ACCESS_TOKEN: ${{ secrets.INSTAGRAM_ACCESS_TOKEN }}
           INSTAGRAM_USER_ID: ${{ secrets.INSTAGRAM_USER_ID }}
         run: |
           python - <<'PY'
-          import json, os, urllib.parse, urllib.request
-          token=os.environ.get('INSTAGRAM_ACCESS_TOKEN','')
-          uid=os.environ.get('INSTAGRAM_USER_ID','')
+          from __future__ import annotations
+
+          import json
+          import os
+          import re
+          import urllib.parse
+          import urllib.request
+          from pathlib import Path
+
+          token = os.environ.get('INSTAGRAM_ACCESS_TOKEN', '')
+          uid = os.environ.get('INSTAGRAM_USER_ID', '')
           if not token or not uid:
               raise SystemExit('Set INSTAGRAM_ACCESS_TOKEN and INSTAGRAM_USER_ID in GitHub Actions secrets.')
-          fields='id,caption,media_type,media_url,thumbnail_url,permalink,timestamp'
-          q=urllib.parse.urlencode({'fields':fields,'limit':'6','access_token':token})
-          url=f'https://graph.instagram.com/{uid}/media?{q}'
-          with urllib.request.urlopen(url, timeout=30) as r:
-              data=json.load(r)
-          posts=[]
-          for p in data.get('data',[])[:6]:
+
+          fields = 'id,caption,media_type,media_url,thumbnail_url,permalink,timestamp'
+          query = urllib.parse.urlencode({
+              'fields': fields,
+              'limit': '6',
+              'access_token': token,
+          })
+          url = f'https://graph.instagram.com/{uid}/media?{query}'
+          request = urllib.request.Request(url, headers={'User-Agent': 'GarrawayF-feed/1.0'})
+          with urllib.request.urlopen(request, timeout=30) as response:
+              data = json.load(response)
+
+          image_root = Path('images/instagram')
+          image_root.mkdir(parents=True, exist_ok=True)
+          kept_images: set[str] = set()
+          posts = []
+
+          for post in data.get('data', [])[:6]:
+              post_id = re.sub(r'[^0-9A-Za-z_-]', '', str(post.get('id', ''))) or 'post'
+              source_image = post.get('thumbnail_url') or post.get('media_url') or ''
+              mirrored_image = ''
+
+              if source_image:
+                  try:
+                      image_request = urllib.request.Request(
+                          source_image,
+                          headers={'User-Agent': 'Mozilla/5.0'},
+                      )
+                      with urllib.request.urlopen(image_request, timeout=45) as response:
+                          content = response.read(20_000_001)
+                          content_type = response.headers.get_content_type()
+                      if len(content) > 20_000_000:
+                          raise ValueError('Instagram image exceeded 20 MB')
+                      extensions = {
+                          'image/jpeg': 'jpg',
+                          'image/png': 'png',
+                          'image/webp': 'webp',
+                          'image/gif': 'gif',
+                      }
+                      extension = extensions.get(content_type, 'jpg')
+                      image_path = image_root / f'{post_id}.{extension}'
+                      image_path.write_bytes(content)
+                      mirrored_image = image_path.as_posix()
+                      kept_images.add(image_path.name)
+                  except Exception as error:
+                      existing = sorted(image_root.glob(f'{post_id}.*'))
+                      if existing:
+                          mirrored_image = existing[0].as_posix()
+                          kept_images.add(existing[0].name)
+                      else:
+                          print(f'Image mirror fallback for {post_id}: {error}')
+                          mirrored_image = source_image
+
               posts.append({
-                'id':p.get('id'), 'caption':p.get('caption',''),
-                'media_type':p.get('media_type',''),
-                'image':p.get('thumbnail_url') or p.get('media_url',''),
-                'permalink':p.get('permalink',''), 'timestamp':p.get('timestamp','')
+                  'id': post.get('id'),
+                  'caption': post.get('caption', ''),
+                  'media_type': post.get('media_type', ''),
+                  'image': mirrored_image,
+                  'permalink': post.get('permalink', ''),
+                  'timestamp': post.get('timestamp', ''),
               })
-          os.makedirs('data',exist_ok=True)
-          with open('data/instagram.json','w',encoding='utf-8') as f:
-              json.dump({'account':'garrawayf_lounge','posts':posts},f,ensure_ascii=False,indent=2)
+
+          for image_path in image_root.iterdir():
+              if image_path.is_file() and image_path.name not in kept_images:
+                  image_path.unlink()
+
+          Path('data').mkdir(exist_ok=True)
+          with Path('data/instagram.json').open('w', encoding='utf-8') as output:
+              json.dump(
+                  {'account': 'garrawayf_lounge', 'posts': posts},
+                  output,
+                  ensure_ascii=False,
+                  indent=2,
+              )
+              output.write('\n')
           PY
       - name: Validate persistent website features
         run: python scripts/validate_site.py
@@ -47,6 +126,6 @@ jobs:
         run: |
           git config user.name 'garrawayf-feed-bot'
           git config user.email 'actions@users.noreply.github.com'
-          git add data/instagram.json
-          git diff --cached --quiet || git commit -m 'Update Instagram feed'
+          git add --all data/instagram.json images/instagram
+          git diff --cached --quiet || git commit -m 'Update Instagram feed and local images'
           git push

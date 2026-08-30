@@ -45,6 +45,14 @@ if not errors:
     posts = instagram.get("posts", []) if isinstance(instagram, dict) else []
     if len(posts) < 4:
         errors.append(f"Instagram JSON must contain at least 4 posts, found {len(posts)}")
+    for index, post in enumerate(posts[:4], start=1):
+        image = post.get("image", "") if isinstance(post, dict) else ""
+        if not image:
+            errors.append(f"Instagram post {index} has no image")
+        elif not image.startswith(("http://", "https://")):
+            image_path = ROOT / image.lstrip("/")
+            if not image_path.exists() or image_path.stat().st_size == 0:
+                errors.append(f"Instagram post {index} local image is missing: {image}")
 
     facebook = json.loads((ROOT / "data" / "facebook-events.json").read_text(encoding="utf-8"))
     events = facebook.get("events", []) if isinstance(facebook, dict) else []
