@@ -2,6 +2,7 @@
   "account": "garrawayf_lounge",
   "sort": "newest_first",
   "includes_collaborative_posts": false,
+  "includes_tagged_posts": true,
   "updated_at": "2026-08-31T21:35:35.313622Z",
   "posts": [
     {
