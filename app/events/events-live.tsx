@@ -158,8 +158,8 @@ export default function EventsLive() {
               key={post.id || index}
             >
               <div>
-                {(post.image || post.media_url || post.thumbnail_url) ? (
-                  <img src={post.image || post.media_url || post.thumbnail_url} alt={post.caption || "Garraway F Instagram投稿"} loading="lazy" referrerPolicy="no-referrer" />
+                {(post.media_url || post.image || post.thumbnail_url) ? (
+                  <img src={post.media_url || post.image || post.thumbnail_url} alt={post.caption || "Garraway F Instagram投稿"} loading={index < 2 ? "eager" : "lazy"} referrerPolicy="no-referrer" />
                 ) : <span>GARRAWAY F</span>}
                 <b>{String(index + 1).padStart(2, "0")}</b>
               </div>
