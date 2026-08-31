@@ -106,8 +106,7 @@ export default function EventsLive() {
           <p className="sectionTag">EVENT INFORMATION</p>
           <h2 id="event-index-title">次の出会いを、<br />見つける。</h2>
           <p>
-            開催予定とこれまでのイベントを、日付・タイトル付きで一覧表示。
-            気になるイベントから公式ページへ進めます。
+            まず日付とタイトルを確認。気になる企画は「DETAIL」から公式情報へ進めます。
           </p>
         </header>
 
@@ -134,7 +133,7 @@ export default function EventsLive() {
               title="Garraway F Facebook Events"
               src="https://www.facebook.com/plugins/page.php?href=https%3A%2F%2Fwww.facebook.com%2Fgarrawayf%2F&tabs=events&width=500&height=500&small_header=false&adapt_container_width=true&hide_cover=false&show_facepile=true"
               width="500"
-              height="500"
+              height="360"
               loading="lazy"
               allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share"
             />

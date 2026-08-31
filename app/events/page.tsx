@@ -17,10 +17,11 @@ export default function EventsPage() {
         <div>
           <p><span /> EVENTS / NEWS</p>
           <h1>ここから、<br /><em>次の挑戦が始まる。</em></h1>
+          <a className="eventHeroJump" href="#event-index-title">開催情報を見る <b>↓</b></a>
         </div>
         <aside>
           <strong>EVENTS</strong>
-          <p>開催予定とこれまでのイベントを、日付・タイトル付きで一覧表示します。</p>
+          <p>開催予定とアーカイブを、ひと目で。気になる企画から詳細へ進めます。</p>
           <a href={SITE_LINKS.facebookEvents} target="_blank" rel="noreferrer">FACEBOOK EVENTS ↗</a>
         </aside>
       </section>
