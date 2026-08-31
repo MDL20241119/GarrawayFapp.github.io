@@ -81,13 +81,34 @@ export default function EventsLive() {
   const [failed, setFailed] = useState(false);
 
   useEffect(() => {
-    const controller = new AbortController();
-    loadSocialData(controller.signal)
-      .then(setData)
-      .catch((error) => {
-        if (error?.name !== "AbortError") setFailed(true);
-      });
-    return () => controller.abort();
+    let controller = new AbortController();
+
+    const refresh = () => {
+      controller.abort();
+      controller = new AbortController();
+      loadSocialData(controller.signal)
+        .then((nextData) => {
+          setData(nextData);
+          setFailed(false);
+        })
+        .catch((error) => {
+          if (error?.name !== "AbortError") setFailed(true);
+        });
+    };
+
+    const refreshWhenVisible = () => {
+      if (document.visibilityState === "visible") refresh();
+    };
+
+    refresh();
+    const interval = window.setInterval(refresh, 10 * 60 * 1000);
+    document.addEventListener("visibilitychange", refreshWhenVisible);
+
+    return () => {
+      controller.abort();
+      window.clearInterval(interval);
+      document.removeEventListener("visibilitychange", refreshWhenVisible);
+    };
   }, []);
 
   const events = [...(data?.facebook?.events ?? [])].sort((a, b) => {
