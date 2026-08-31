@@ -50,9 +50,9 @@ jobs:
 
           fields = 'id,caption,media_type,media_url,thumbnail_url,permalink,timestamp'
 
-          def fetch_edge(edge: str) -> list[dict]:
+          def fetch_edge(edge: str, edge_fields: str = fields) -> list[dict]:
               query = urllib.parse.urlencode({
-                  'fields': fields,
+                  'fields': edge_fields,
                   'limit': '25',
                   'access_token': token,
               })
@@ -86,6 +86,20 @@ jobs:
                   tagged_posts_available = True
               except Exception as error:
                   print(f'Tagged-post fallback unavailable: {error}')
+
+          # Stories are often the account's newest activity even when no new
+          # feed post exists. Include currently active stories in the same
+          # newest-first stream and mark them so the UI can label them.
+          stories_available = False
+          try:
+              story_fields = 'id,media_type,media_url,thumbnail_url,permalink,timestamp'
+              stories = fetch_edge('stories', story_fields)
+              for story in stories:
+                  story['_is_story'] = True
+              candidates.extend(stories)
+              stories_available = True
+          except Exception as error:
+              print(f'Instagram stories unavailable: {error}')
 
           unique_posts: dict[str, dict] = {}
           for post in candidates:
@@ -144,6 +158,7 @@ jobs:
                   'id': post.get('id'),
                   'caption': post.get('caption', ''),
                   'media_type': post.get('media_type', ''),
+                  'is_story': bool(post.get('_is_story', False)),
                   'image': mirrored_image,
                   'permalink': post.get('permalink', ''),
                   'timestamp': post.get('timestamp', ''),
@@ -183,6 +198,7 @@ jobs:
                       'sort': 'newest_first',
                       'includes_collaborative_posts': collaborative_posts_available,
                       'includes_tagged_posts': tagged_posts_available,
+                      'includes_stories': stories_available,
                       'updated_at': updated_at,
                       'posts': posts,
                   },
