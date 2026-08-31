@@ -3,7 +3,9 @@ name: Update Instagram Feed
 on:
   workflow_dispatch:
   schedule:
-    - cron: '17 * * * *'
+    # Multiple off-peak opportunities reduce long delays in GitHub's
+    # best-effort scheduled runner without changing the site runtime cost.
+    - cron: '7,37 * * * *'
   push:
     branches:
       - main
@@ -38,6 +40,7 @@ jobs:
           import re
           import urllib.parse
           import urllib.request
+          from datetime import datetime, timezone
           from pathlib import Path
 
           token = os.environ.get('INSTAGRAM_ACCESS_TOKEN', '')
@@ -46,22 +49,51 @@ jobs:
               raise SystemExit('Set INSTAGRAM_ACCESS_TOKEN and INSTAGRAM_USER_ID in GitHub Actions secrets.')
 
           fields = 'id,caption,media_type,media_url,thumbnail_url,permalink,timestamp'
-          query = urllib.parse.urlencode({
-              'fields': fields,
-              'limit': '6',
-              'access_token': token,
-          })
-          url = f'https://graph.instagram.com/{uid}/media?{query}'
-          request = urllib.request.Request(url, headers={'User-Agent': 'GarrawayF-feed/1.0'})
-          with urllib.request.urlopen(request, timeout=30) as response:
-              data = json.load(response)
+
+          def fetch_edge(edge: str) -> list[dict]:
+              query = urllib.parse.urlencode({
+                  'fields': fields,
+                  'limit': '25',
+                  'access_token': token,
+              })
+              url = f'https://graph.instagram.com/{uid}/{edge}?{query}'
+              request = urllib.request.Request(
+                  url,
+                  headers={'User-Agent': 'GarrawayF-feed/2.0'},
+              )
+              with urllib.request.urlopen(request, timeout=30) as response:
+                  payload = json.load(response)
+              return payload.get('data', [])
+
+          # /media contains posts published by Garraway F. Accepted
+          # collaborative posts have their own edge, so merge that feed too.
+          # Keep it optional because older tokens may not expose the endpoint.
+          candidates = fetch_edge('media')
+          collaborative_posts_available = False
+          try:
+              candidates.extend(fetch_edge('collaborative_media'))
+              collaborative_posts_available = True
+          except Exception as error:
+              print(f'Collaborative posts unavailable: {error}')
+
+          unique_posts: dict[str, dict] = {}
+          for post in candidates:
+              identity = str(post.get('id') or post.get('permalink') or '')
+              if identity:
+                  unique_posts[identity] = post
+
+          latest_posts = sorted(
+              unique_posts.values(),
+              key=lambda post: post.get('timestamp', ''),
+              reverse=True,
+          )[:6]
 
           image_root = Path('images/instagram')
           image_root.mkdir(parents=True, exist_ok=True)
           kept_images: set[str] = set()
           posts = []
 
-          for post in data.get('data', [])[:6]:
+          for post in latest_posts:
               post_id = re.sub(r'[^0-9A-Za-z_-]', '', str(post.get('id', ''))) or 'post'
               source_image = post.get('thumbnail_url') or post.get('media_url') or ''
               mirrored_image = ''
@@ -111,14 +143,49 @@ jobs:
                   image_path.unlink()
 
           Path('data').mkdir(exist_ok=True)
-          with Path('data/instagram.json').open('w', encoding='utf-8') as output:
+          feed_path = Path('data/instagram.json')
+          previous_feed = {}
+          if feed_path.exists():
+              try:
+                  previous_feed = json.loads(feed_path.read_text(encoding='utf-8'))
+              except Exception as error:
+                  print(f'Previous feed metadata unavailable: {error}')
+
+          previous_posts = previous_feed.get('posts', []) if isinstance(previous_feed, dict) else []
+          previous_identity = [
+              (post.get('id'), post.get('timestamp'))
+              for post in previous_posts
+              if isinstance(post, dict)
+          ]
+          current_identity = [(post.get('id'), post.get('timestamp')) for post in posts]
+          now = datetime.now(timezone.utc).isoformat().replace('+00:00', 'Z')
+          updated_at = (
+              now
+              if current_identity != previous_identity
+              else previous_feed.get('updated_at', now)
+          )
+
+          with feed_path.open('w', encoding='utf-8') as output:
               json.dump(
-                  {'account': 'garrawayf_lounge', 'posts': posts},
+                  {
+                      'account': 'garrawayf_lounge',
+                      'sort': 'newest_first',
+                      'includes_collaborative_posts': collaborative_posts_available,
+                      'updated_at': updated_at,
+                      'posts': posts,
+                  },
                   output,
                   ensure_ascii=False,
                   indent=2,
               )
               output.write('\n')
+
+          latest = posts[0] if posts else {}
+          print(f'Feed checked at {now}')
+          print(
+              'Latest selected post: '
+              f"{latest.get('id', 'none')} / {latest.get('timestamp', 'unknown')}"
+          )
           PY
       - name: Validate persistent website features
         run: python scripts/validate_site.py

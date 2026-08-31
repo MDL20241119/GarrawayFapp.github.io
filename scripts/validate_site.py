@@ -54,6 +54,10 @@ if not errors:
             if not image_path.exists() or image_path.stat().st_size == 0:
                 errors.append(f"Instagram post {index} local image is missing: {image}")
 
+    timestamps = [post.get("timestamp", "") for post in posts if isinstance(post, dict)]
+    if timestamps != sorted(timestamps, reverse=True):
+        errors.append("Instagram posts must be ordered newest first")
+
     facebook = json.loads((ROOT / "data" / "facebook-events.json").read_text(encoding="utf-8"))
     events = facebook.get("events", []) if isinstance(facebook, dict) else []
     if len(events) < 1:
