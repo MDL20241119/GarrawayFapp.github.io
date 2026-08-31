@@ -1,5 +1,5 @@
 1:"$Sreact.fragment"
 2:I[6965,[],""]
 3:I[1937,[],""]
-:HL["/GarrawayFapp.github.io/_next/static/css/0e6c9f63078eb24d.css","style"]
-0:{"rsc":["$","$1","c",{"children":[[["$","link","0",{"rel":"stylesheet","href":"/GarrawayFapp.github.io/_next/static/css/0e6c9f63078eb24d.css","precedence":"next"}]],["$","html",null,{"lang":"ja","children":["$","body",null,{"children":["$","$L2",null,{"parallelRouterKey":"children","template":["$","$L3",null,{}]}]}]}]]}],"isPartial":false,"staleTime":300,"varyParams":null,"buildId":"ciy6vyTaJUCffOl27yyJt"}
+:HL["/GarrawayFapp.github.io/_next/static/css/86e9d62b6398c074.css","style"]
+0:{"rsc":["$","$1","c",{"children":[[["$","link","0",{"rel":"stylesheet","href":"/GarrawayFapp.github.io/_next/static/css/86e9d62b6398c074.css","precedence":"next"}]],["$","html",null,{"lang":"ja","children":["$","body",null,{"children":["$","$L2",null,{"parallelRouterKey":"children","template":["$","$L3",null,{}]}]}]}]]}],"isPartial":false,"staleTime":300,"varyParams":null,"buildId":"_oZXKNJJ_78P3fweTnHsS"}
