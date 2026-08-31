@@ -18,6 +18,7 @@ type EventItem = {
 type InstagramPost = {
   id?: string;
   caption?: string;
+  is_story?: boolean;
   image?: string;
   media_url?: string;
   thumbnail_url?: string;

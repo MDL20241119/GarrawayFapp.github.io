@@ -60,6 +60,13 @@ export async function loadSocialData(signal?: AbortSignal) {
                 post.thumbnail_url,
               ),
             }))
+            .filter((post: Record<string, unknown>) => {
+              if (post.is_story !== true) return true;
+              const timestamp = Date.parse(
+                typeof post.timestamp === "string" ? post.timestamp : "",
+              );
+              return !Number.isNaN(timestamp) && Date.now() - timestamp < 24 * 60 * 60 * 1000;
+            })
             .sort((a: Record<string, unknown>, b: Record<string, unknown>) => {
               const timeA = Date.parse(typeof a.timestamp === "string" ? a.timestamp : "");
               const timeB = Date.parse(typeof b.timestamp === "string" ? b.timestamp : "");

@@ -10,6 +10,7 @@ type InstagramPost = {
   id?: string;
   caption?: string;
   media_type?: string;
+  is_story?: boolean;
   image?: string;
   media_url?: string;
   thumbnail_url?: string;
@@ -142,7 +143,11 @@ export default function SocialLive() {
               <div className="instagramLiveGrid" role="region" aria-label="Instagramの投稿。横にスワイプして確認できます" tabIndex={0}>
                 {posts.map((post, index) => {
                   const image = post.media_url || post.image || post.thumbnail_url;
-                  const isReel = post.media_type === "VIDEO" || post.permalink?.includes("/reel/");
+                  const badge = post.is_story
+                    ? "STORY"
+                    : post.media_type === "VIDEO" || post.permalink?.includes("/reel/")
+                      ? "REEL"
+                      : "";
                   return (
                     <a
                       className="instagramPost"
@@ -159,7 +164,7 @@ export default function SocialLive() {
                           />
                         ) : <span>GARRAWAY F</span>}
                         <i>{String(index + 1).padStart(2, "0")}</i>
-                        {isReel && <em>REEL</em>}
+                        {badge && <em>{badge}</em>}
                       </div>
                       <div className="instagramCopy">
                         <time>{formatDate(post.timestamp)}</time>
