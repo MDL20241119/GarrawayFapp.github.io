@@ -76,6 +76,17 @@ jobs:
           except Exception as error:
               print(f'Collaborative posts unavailable: {error}')
 
+          # Some existing Instagram Login tokens do not yet expose the newer
+          # collaborative edge. Tagged media is a useful compatibility
+          # fallback and still represents activity connected to this account.
+          tagged_posts_available = False
+          if not collaborative_posts_available:
+              try:
+                  candidates.extend(fetch_edge('tags'))
+                  tagged_posts_available = True
+              except Exception as error:
+                  print(f'Tagged-post fallback unavailable: {error}')
+
           unique_posts: dict[str, dict] = {}
           for post in candidates:
               identity = str(post.get('id') or post.get('permalink') or '')
@@ -171,6 +182,7 @@ jobs:
                       'account': 'garrawayf_lounge',
                       'sort': 'newest_first',
                       'includes_collaborative_posts': collaborative_posts_available,
+                      'includes_tagged_posts': tagged_posts_available,
                       'updated_at': updated_at,
                       'posts': posts,
                   },
