@@ -203,7 +203,6 @@ export default function PrivacyPage() {
                 </dd>
               </div>
             </dl>
-            <p>当社の住所は、本人からのお求めに応じ、上記窓口から遅滞なく回答します。</p>
           </div>
         </section>
 
