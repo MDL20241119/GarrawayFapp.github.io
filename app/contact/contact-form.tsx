@@ -44,7 +44,7 @@ export default function ContactForm({ initialType = "co-creation" }: { initialTy
       "ご相談内容:",
       String(data.get("inquiry") || ""),
     ].join("\n");
-    const mailto = `mailto:${CONTACT_EMAILS[0]}?cc=${encodeURIComponent(CONTACT_EMAILS[1])}&subject=${encodeURIComponent("Garraway Fへのお問い合わせ")}&body=${encodeURIComponent(body)}`;
+    const mailto = `mailto:${CONTACT_EMAILS[0]}?subject=${encodeURIComponent("Garraway Fへのお問い合わせ")}&body=${encodeURIComponent(body)}`;
 
     setMessage("メールアプリを開きました。内容を確認して送信してください。");
     window.location.href = mailto;
@@ -61,11 +61,11 @@ export default function ContactForm({ initialType = "co-creation" }: { initialTy
       <div className="contactFormBoard">
         <aside>
           <span>DELIVERED TO</span>
-          <strong>02</strong>
+          <strong>01</strong>
           <div>
             {CONTACT_EMAILS.map((email) => <a href={`mailto:${email}`} key={email}>{email}</a>)}
           </div>
-          <p>入力内容はサイトに保存されません。メールアプリで送信すると、宛先とCCの2つの公式窓口へ届きます。</p>
+          <p>入力内容はサイトに保存されません。メールアプリで送信すると、公式窓口へ届きます。</p>
         </aside>
 
         <form className="contactForm" onSubmit={handleSubmit}>
@@ -111,7 +111,7 @@ export default function ContactForm({ initialType = "co-creation" }: { initialTy
           <label className="contactFormConsent contactFormWide">
             <input name="consent" type="checkbox" value="yes" required />
             <span>
-              <Link href="/privacy">プライバシーポリシー</Link>を確認し、入力情報を株式会社Serendipityが管理する2つの公式窓口へメール送信して、問い合わせへの連絡・対応に利用することに同意します。
+              <Link href="/privacy">プライバシーポリシー</Link>を確認し、入力情報を株式会社Serendipityが管理する公式窓口へメール送信して、問い合わせへの連絡・対応に利用することに同意します。
             </span>
           </label>
 
@@ -120,7 +120,7 @@ export default function ContactForm({ initialType = "co-creation" }: { initialTy
               <span>メールアプリで送信する</span><b>→</b>
             </button>
             <p className="contactFormStatus" role="status" aria-live="polite">
-              {message || "宛先：info@garrawayf.com ／ CC：2019garrawayf@gmail.com"}
+              {message || "宛先：info@garrawayf.com"}
             </p>
           </div>
         </form>

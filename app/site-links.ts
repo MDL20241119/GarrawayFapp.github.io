@@ -11,5 +11,4 @@ export const SITE_LINKS = {
 
 export const CONTACT_EMAILS = [
   "info@garrawayf.com",
-  "2019garrawayf@gmail.com",
 ] as const;
