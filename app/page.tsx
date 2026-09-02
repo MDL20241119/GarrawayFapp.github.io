@@ -468,14 +468,22 @@ export default function Home() {
             GOOGLE MAPSで開く <span>↗</span>
           </a>
         </div>
-        <div className="mapWrap">
-          <iframe
-            title="Garraway F Google Map"
-            src="https://www.google.com/maps?q=%E7%A6%8F%E5%B2%A1%E5%B8%82%E4%B8%AD%E5%A4%AE%E5%8C%BA%E4%BB%8A%E6%B3%891%E4%B8%81%E7%9B%AE19%E7%95%AA22%E5%8F%B7&output=embed"
-            loading="lazy"
-            referrerPolicy="no-referrer-when-downgrade"
-          />
-          <span>FUKUOKA / 33.587°N</span>
+        <div className="accessArtwork">
+          <a
+            href={withBasePath("/images/access-tenjin-class-3f.webp")}
+            target="_blank"
+            rel="noreferrer"
+            aria-label="アクセス案内画像を大きく表示"
+          >
+            <img
+              src={withBasePath("/images/access-tenjin-class-3f.webp")}
+              alt="天神CLASSの外観と、Garraway Fが3階にあることを示すアクセス案内"
+              width="1448"
+              height="1086"
+              loading="lazy"
+              decoding="async"
+            />
+          </a>
         </div>
       </section>
 
