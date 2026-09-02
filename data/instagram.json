@@ -4,8 +4,17 @@
   "includes_collaborative_posts": false,
   "includes_tagged_posts": true,
   "includes_stories": true,
-  "updated_at": "2026-09-02T04:30:20.742681Z",
+  "updated_at": "2026-09-02T08:59:56.293297Z",
   "posts": [
+    {
+      "id": "18004686086995161",
+      "caption": "",
+      "media_type": "VIDEO",
+      "is_story": true,
+      "image": "images/instagram/18004686086995161.jpg",
+      "permalink": "https://www.instagram.com/stories/garrawayf_lounge/3977079015424470638",
+      "timestamp": "2026-09-02T04:51:14+0000"
+    },
     {
       "id": "17944058976068446",
       "caption": "",
@@ -50,15 +59,6 @@
       "image": "images/instagram/17971604534937564.jpg",
       "permalink": "https://www.instagram.com/p/DciqCqNPBcX/",
       "timestamp": "2026-08-27T11:16:45+0000"
-    },
-    {
-      "id": "17963502483169150",
-      "caption": "🎉本日の来場者数111人達成です🎉\n\nたくさんの方に足を運んでいただき、本当にありがとうございます😊🩷\n\nこれからも多くの方へGarrawayFを知っていただき、\n利用していただくきっかけになれば嬉しいです✨\n\n#来場者111名 #ありがとうございます #イベント #交流",
-      "media_type": "IMAGE",
-      "is_story": false,
-      "image": "images/instagram/17963502483169150.jpg",
-      "permalink": "https://www.instagram.com/p/DcimkmCJiTI/",
-      "timestamp": "2026-08-27T10:49:38+0000"
     }
   ]
 }
