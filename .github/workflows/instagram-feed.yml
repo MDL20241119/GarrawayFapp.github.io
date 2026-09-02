@@ -37,6 +37,7 @@ jobs:
           python - <<'PY'
           from __future__ import annotations
 
+          import hashlib
           import json
           import os
           import re
@@ -107,6 +108,7 @@ jobs:
               post_id = re.sub(r'[^0-9A-Za-z_-]', '', str(post.get('id', ''))) or 'post'
               source_image = post.get('thumbnail_url') or post.get('media_url') or ''
               mirrored_image = ''
+              image_version = ''
 
               if source_image:
                   try:
@@ -147,12 +149,18 @@ jobs:
                           print(f'Image mirror fallback for {post_id}: {error}')
                           mirrored_image = ''
 
+              if mirrored_image:
+                  mirrored_path = Path(mirrored_image)
+                  if mirrored_path.exists():
+                      image_version = hashlib.sha256(mirrored_path.read_bytes()).hexdigest()[:12]
+
               posts.append({
                   'id': post.get('id'),
                   'caption': post.get('caption', ''),
                   'media_type': post.get('media_type', ''),
                   'is_story': False,
                   'image': mirrored_image,
+                  'image_version': image_version,
                   'permalink': post.get('permalink', ''),
                   'timestamp': post.get('timestamp', ''),
               })
@@ -172,11 +180,14 @@ jobs:
 
           previous_posts = previous_feed.get('posts', []) if isinstance(previous_feed, dict) else []
           previous_identity = [
-              (post.get('id'), post.get('timestamp'))
+              (post.get('id'), post.get('timestamp'), post.get('image_version'))
               for post in previous_posts
               if isinstance(post, dict)
           ]
-          current_identity = [(post.get('id'), post.get('timestamp')) for post in posts]
+          current_identity = [
+              (post.get('id'), post.get('timestamp'), post.get('image_version'))
+              for post in posts
+          ]
           now = datetime.now(timezone.utc).isoformat().replace('+00:00', 'Z')
           updated_at = (
               now
