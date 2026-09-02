@@ -529,7 +529,7 @@ export default function Home() {
                 </li>
               ))}
             </ol>
-            <p className="consultationPrivacy"><b>MAIL APP</b> 入力後にメールアプリが開きます。入力内容はサイトに保存されません。</p>
+            <p className="consultationPrivacy"><b>MAIL APP</b> 入力後にメールアプリが開きます。入力内容はサイトに保存されません。<Link href="/privacy">個人情報の取扱いはこちら</Link></p>
           </nav>
         </div>
       </section>
@@ -551,12 +551,14 @@ export default function Home() {
         <nav aria-label="関連リンク">
           <Link href="/events">Events →</Link>
           <Link href="/contact">Contact →</Link>
+          <Link href="/privacy">Privacy →</Link>
+          <a href={SITE_LINKS.webAppTerms} target="_blank" rel="noreferrer">App Terms ↗</a>
           <a href={SITE_LINKS.instagram} target="_blank" rel="noreferrer">Instagram ↗</a>
           <a href={SITE_LINKS.facebook} target="_blank" rel="noreferrer">Facebook ↗</a>
           <a href={SITE_LINKS.x} target="_blank" rel="noreferrer">X ↗</a>
           <a href={SITE_LINKS.note} target="_blank" rel="noreferrer">note ↗</a>
         </nav>
-        <small>FUKUOKA / TENJIN CLASS 3F<br />© GARRAWAY F</small>
+        <small>FUKUOKA / TENJIN CLASS 3F<br />運営：株式会社Serendipity<br />© GARRAWAY F</small>
       </footer>
     </main>
   );
