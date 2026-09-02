@@ -2,7 +2,9 @@
 
 import { FormEvent, useEffect, useState } from "react";
 import Link from "next/link";
-import { CONTACT_EMAILS, CONTACT_FORM_CC_EMAIL } from "../site-links";
+import { CONTACT_EMAILS } from "../site-links";
+
+const CONTACT_FORM_CC_EMAIL = "2019garrawayf@gmail.com";
 
 const contactOptions = [
   ["co-creation", "共創・プロジェクト相談"],

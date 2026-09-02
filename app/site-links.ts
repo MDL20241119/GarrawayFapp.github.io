@@ -12,5 +12,3 @@ export const SITE_LINKS = {
 export const CONTACT_EMAILS = [
   "info@garrawayf.com",
 ] as const;
-
-export const CONTACT_FORM_CC_EMAIL = "2019garrawayf@gmail.com";
