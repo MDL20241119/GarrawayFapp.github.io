@@ -40,7 +40,7 @@ export function SubpageFooter() {
         <a href={SITE_LINKS.x} target="_blank" rel="noreferrer">X ↗</a>
         <a href={SITE_LINKS.note} target="_blank" rel="noreferrer">note ↗</a>
       </nav>
-      <small>FUKUOKA / TENJIN CLASS 3F<br />© GARRAWAY F</small>
+      <small>FUKUOKA / TENJIN CLASS 3F<br />運営：株式会社Serendipity<br />© GARRAWAY F</small>
     </footer>
   );
 }
