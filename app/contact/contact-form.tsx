@@ -2,7 +2,7 @@
 
 import { FormEvent, useEffect, useState } from "react";
 import Link from "next/link";
-import { CONTACT_EMAILS } from "../site-links";
+import { CONTACT_EMAILS, CONTACT_FORM_CC_EMAIL } from "../site-links";
 
 const contactOptions = [
   ["co-creation", "共創・プロジェクト相談"],
@@ -44,7 +44,7 @@ export default function ContactForm({ initialType = "co-creation" }: { initialTy
       "ご相談内容:",
       String(data.get("inquiry") || ""),
     ].join("\n");
-    const mailto = `mailto:${CONTACT_EMAILS[0]}?subject=${encodeURIComponent("Garraway Fへのお問い合わせ")}&body=${encodeURIComponent(body)}`;
+    const mailto = `mailto:${CONTACT_EMAILS[0]}?cc=${encodeURIComponent(CONTACT_FORM_CC_EMAIL)}&subject=${encodeURIComponent("Garraway Fへのお問い合わせ")}&body=${encodeURIComponent(body)}`;
 
     setMessage("メールアプリを開きました。内容を確認して送信してください。");
     window.location.href = mailto;
