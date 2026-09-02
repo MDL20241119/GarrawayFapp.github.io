@@ -195,7 +195,6 @@ export default function PrivacyPage() {
             <h2>事業者情報・お問い合わせ窓口</h2>
             <dl>
               <div><dt>事業者名</dt><dd>株式会社Serendipity</dd></div>
-              <div><dt>所在地</dt><dd>福岡県福岡市東区美和台3丁目19番8号</dd></div>
               <div><dt>代表者</dt><dd>代表取締役　佐藤 加奈</dd></div>
               <div>
                 <dt>窓口</dt>
@@ -204,6 +203,7 @@ export default function PrivacyPage() {
                 </dd>
               </div>
             </dl>
+            <p>当社の住所は、本人からのお求めに応じ、上記窓口から遅滞なく回答します。</p>
           </div>
         </section>
 
