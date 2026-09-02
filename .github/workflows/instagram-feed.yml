@@ -65,41 +65,19 @@ jobs:
                   payload = json.load(response)
               return payload.get('data', [])
 
-          # /media contains posts published by Garraway F. Accepted
-          # collaborative posts have their own edge, so merge that feed too.
-          # Keep it optional because older tokens may not expose the endpoint.
+          # Publish only permanent posts owned by the official account.
+          # Accepted collaborative posts are included when the API exposes
+          # that dedicated edge. Tagged posts and Stories are intentionally
+          # excluded because tagging or temporary publication is not a
+          # website-republication permission.
           candidates = fetch_edge('media')
           collaborative_posts_available = False
           try:
-              candidates.extend(fetch_edge('collaborative_media'))
+              collaborative = fetch_edge('collaborative_media')
+              candidates.extend(collaborative)
               collaborative_posts_available = True
           except Exception as error:
               print(f'Collaborative posts unavailable: {error}')
-
-          # Some existing Instagram Login tokens do not yet expose the newer
-          # collaborative edge. Tagged media is a useful compatibility
-          # fallback and still represents activity connected to this account.
-          tagged_posts_available = False
-          if not collaborative_posts_available:
-              try:
-                  candidates.extend(fetch_edge('tags'))
-                  tagged_posts_available = True
-              except Exception as error:
-                  print(f'Tagged-post fallback unavailable: {error}')
-
-          # Stories are often the account's newest activity even when no new
-          # feed post exists. Include currently active stories in the same
-          # newest-first stream and mark them so the UI can label them.
-          stories_available = False
-          try:
-              story_fields = 'id,media_type,media_url,thumbnail_url,permalink,timestamp'
-              stories = fetch_edge('stories', story_fields)
-              for story in stories:
-                  story['_is_story'] = True
-              candidates.extend(stories)
-              stories_available = True
-          except Exception as error:
-              print(f'Instagram stories unavailable: {error}')
 
           unique_posts: dict[str, dict] = {}
           for post in candidates:
@@ -130,10 +108,10 @@ jobs:
                           headers={'User-Agent': 'Mozilla/5.0'},
                       )
                       with urllib.request.urlopen(image_request, timeout=45) as response:
-                          content = response.read(20_000_001)
+                          content = response.read(5_000_001)
                           content_type = response.headers.get_content_type()
-                      if len(content) > 20_000_000:
-                          raise ValueError('Instagram image exceeded 20 MB')
+                      if len(content) > 5_000_000:
+                          raise ValueError('Instagram image exceeded 5 MB')
                       extensions = {
                           'image/jpeg': 'jpg',
                           'image/png': 'png',
@@ -152,13 +130,13 @@ jobs:
                           kept_images.add(existing[0].name)
                       else:
                           print(f'Image mirror fallback for {post_id}: {error}')
-                          mirrored_image = source_image
+                          mirrored_image = ''
 
               posts.append({
                   'id': post.get('id'),
                   'caption': post.get('caption', ''),
                   'media_type': post.get('media_type', ''),
-                  'is_story': bool(post.get('_is_story', False)),
+                  'is_story': False,
                   'image': mirrored_image,
                   'permalink': post.get('permalink', ''),
                   'timestamp': post.get('timestamp', ''),
@@ -197,8 +175,8 @@ jobs:
                       'account': 'garrawayf_lounge',
                       'sort': 'newest_first',
                       'includes_collaborative_posts': collaborative_posts_available,
-                      'includes_tagged_posts': tagged_posts_available,
-                      'includes_stories': stories_available,
+                      'includes_tagged_posts': False,
+                      'includes_stories': False,
                       'updated_at': updated_at,
                       'posts': posts,
                   },
