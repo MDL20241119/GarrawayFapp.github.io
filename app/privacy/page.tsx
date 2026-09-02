@@ -17,6 +17,13 @@ const externalTransmissions = [
     policy: "https://docs.github.com/ja/site-policy/privacy-policies/github-general-privacy-statement",
   },
   {
+    service: "Google Fonts",
+    operator: "Google LLC",
+    data: "IPアドレス、端末・ブラウザ情報、アクセス日時、参照元URL等",
+    purpose: "本サイトで使用する書体の配信、サービスの提供・改善",
+    policy: "https://policies.google.com/privacy?hl=ja",
+  },
+  {
     service: "Google マップ",
     operator: "Google LLC",
     data: "IPアドレス、端末・ブラウザ情報、Cookieその他の識別子、閲覧・操作情報等",
