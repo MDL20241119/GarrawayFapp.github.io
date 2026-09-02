@@ -113,7 +113,7 @@ export default function ContactForm({ initialType = "co-creation" }: { initialTy
           <label className="contactFormConsent contactFormWide">
             <input name="consent" type="checkbox" value="yes" required />
             <span>
-              <Link href="/privacy">プライバシーポリシー</Link>を確認し、入力情報を株式会社Serendipityが管理する公式窓口へメール送信して、問い合わせへの連絡・対応に利用することに同意します。
+              <Link href="/privacy">プライバシーポリシー</Link>を確認し、問い合わせ情報の取扱いに同意します。
             </span>
           </label>
 

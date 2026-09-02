@@ -7,6 +7,8 @@ export const SITE_LINKS = {
   x: "https://x.com/garraway_f",
   note: "https://note.com/garraway_f",
   webAppTerms: "https://garraway-checkin-app-001.azurewebsites.net/files/terms_of_service.pdf",
+  toyotaPrivacy: "https://global.toyota/jp/privacy-notice/",
+  toyotaCompany: "https://global.toyota/jp/company/profile/overview/",
 } as const;
 
 export const CONTACT_EMAILS = [
