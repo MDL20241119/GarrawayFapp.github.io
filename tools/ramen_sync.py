@@ -375,6 +375,8 @@ def main():
     if feeds:
         try:
             c,actions=update_catalog(old,feeds,now);validate(c)
+            from ramen_geo import apply_geo
+            if 'schedule' in feeds: apply_geo(c,feeds['schedule']['venues'],now)
             c['meta']['notice']='公開登録・公式時間割を毎朝自動取得。独自企画・個別主催者による補足は確認日を別記。未公表企画の完全性は保証しません。'
             c['meta']['catalogVersion']=now;c['meta']['fetchedAt']=now
             if len(feeds)==2:c['meta']['checkedAt']=day
