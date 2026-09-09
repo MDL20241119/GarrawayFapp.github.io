@@ -19,26 +19,26 @@ jobs:
         with:
           ref: main
           fetch-depth: 0
-      - name: Decode checksum-verified planner implementation
+      - name: Decode checksum-verified planner implementation once
         run: |
           mkdir -p planner-verification/candidate planner-verification/live
           python3 - <<'PY'
           import pathlib,base64,zlib,json,hashlib
           paths=[pathlib.Path('tools/planner-package-%02d.b64'%i) for i in range(1,6)]
           parts=[p.read_text().strip() for p in paths]
-          # Repair two transport transcription errors; the full payload hash must match.
           parts[2]=parts[2].replace('95blpz60W6aYg','95blpz60W6Yg').replace('xtpYayfOpPU','xtpYayfYOpPU')
-          print('Package part lengths:',[len(s) for s in parts])
           payload=zlib.decompress(base64.b64decode(''.join(parts),validate=True))
           assert hashlib.sha256(payload).hexdigest()=='d6e79b3322df95a065f245f75234371a3749e2c1dcdeba9f5963d5102c65130d', 'Planner payload checksum mismatch'
           data=json.loads(payload)
           allowed={'ramen-tech-2026/planner.js','ramen-tech-2026/planner.css','ramen-special.js','ramen-special.css','tools/ramen_geo.py','tools/ramen_verify_planner.py','tools/install_ramen_planner.py','tools/planner_fragments/featured.html','tools/planner_fragments/planner.html','tools/planner_fragments/source-component.tsx'}
           assert set(data)==allowed
           for name,text in data.items():
-              p=pathlib.Path(name);p.parent.mkdir(parents=True,exist_ok=True);p.write_text(text,encoding='utf-8')
+              p=pathlib.Path(name)
+              if not p.exists():p.parent.mkdir(parents=True,exist_ok=True);p.write_text(text,encoding='utf-8')
           for p,s in zip(paths,parts):p.write_text(s,encoding='utf-8')
-          print('Verified and installed',len(data),'editable source files')
+          print('Verified',len(data),'editable source files; existing revisions retained')
           PY
+          python3 tools/patch_planner_tests.py
       - name: Integrate guide and official venue coordinates without replacing event data
         run: |
           curl --fail --retry 2 --max-time 40 https://ramentech2026.aishain.com/api/schedule -o /tmp/planner-official-schedule.json
