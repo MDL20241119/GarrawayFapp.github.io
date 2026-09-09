@@ -1,0 +1,144 @@
+name: Verify RAMEN guide publication
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - '.github/workflows/ramen-guide-check.yml'
+      - 'ramen-tech-2026/index.html'
+      - 'ramen-tech-2026/app.js'
+      - 'ramen-tech-2026/search.css'
+      - 'ramen-tech-2026/style.css'
+      - 'ramen-tech-2026/catalog.js'
+permissions:
+  contents: read
+concurrency:
+  group: ramen-guide-check
+  cancel-in-progress: true
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - name: Check JavaScript and transferred files
+        run: |
+          node --check ramen-tech-2026/app.js
+          node --check ramen-tech-2026/catalog.js
+          python3 - <<'PY'
+          import pathlib, hashlib
+          root=pathlib.Path('ramen-tech-2026')
+          for name in ['index.html','app.js','search.css','catalog.js','style.css','assets/tonkotsu.svg']:
+              b=(root/name).read_bytes()
+              print(name,len(b),hashlib.sha256(b).hexdigest())
+          assert '非公式キャラ' in (root/'index.html').read_text()
+          PY
+      - name: Install browser test runtime
+        run: |
+          python3 -m pip install playwright==1.55.0
+          python3 -m playwright install --with-deps chromium
+      - name: Check live public site and browser interactions
+        run: |
+          mkdir -p ramen-verification
+          python3 - <<'PY'
+          import pathlib, time, urllib.request, json, hashlib
+          from playwright.sync_api import sync_playwright
+          base='https://mobilitydlab.com/GarrawayFapp.github.io/ramen-tech-2026/'
+          out=pathlib.Path('ramen-verification')
+          expected=pathlib.Path('ramen-tech-2026/index.html').read_bytes()
+          for attempt in range(24):
+              try:
+                  req=urllib.request.Request(base+'?verify='+str(int(time.time())),headers={'User-Agent':'RAMEN guide publication check'})
+                  with urllib.request.urlopen(req,timeout=20) as r:
+                      body=r.read(); status=r.status
+                  if body==expected: break
+                  print('Waiting for Pages cache',attempt,flush=True)
+              except Exception as exc: print('Publication pending:',str(exc),flush=True)
+              time.sleep(10)
+          else: raise AssertionError('Public HTML did not match this revision')
+          report={'url':base,'httpStatus':status,'checks':[],'errors':[],'assets':{}}
+          for name in ['index.html','app.js','search.css','catalog.js','style.css','assets/tonkotsu.svg']:
+              with urllib.request.urlopen(base+name+'?verify='+str(int(time.time())),timeout=30) as r: actual=r.read()
+              assert actual==pathlib.Path('ramen-tech-2026',name).read_bytes(), 'Published asset differs: '+name
+              report['assets'][name]=hashlib.sha256(actual).hexdigest()
+          report['checks'].append('Public HTTPS HTML and all six assets match GitHub revision')
+          with sync_playwright() as p:
+              browser=p.chromium.launch(headless=True)
+              context=browser.new_context(viewport={'width':1440,'height':1000},reduced_motion='reduce',accept_downloads=True)
+              page=context.new_page(); page.set_default_timeout(15000)
+              page.on('pageerror',lambda e:report['errors'].append(str(e)))
+              page.goto(base,wait_until='networkidle'); page.wait_for_function('!!window.RamenGuide')
+              assert page.evaluate('RAMEN_CATALOG.events.length')==127
+              assert page.locator('#stat-venues').inner_text()=='47'
+              assert page.locator('.mascot-disclaimer').inner_text()=='非公式キャラ'
+              assert page.locator('.mascot').evaluate('(img)=>img.complete&&img.naturalWidth>0')
+              assert page.locator('.event-card').count()==18
+              report['checks'].append('127 records, 47 named venues, mascot and nonofficial badge rendered')
+              for q in ['ＡＩ','ギャラウェイ','交流 天神','NVIDIA']:
+                  page.locator('#search').fill(q); page.wait_for_timeout(250)
+                  count=page.evaluate('RamenGuide.filtered().length')
+                  assert count>0, q
+                  report['checks'].append('Search '+q+': '+str(count)+' date occurrences')
+              page.locator('#search').fill('<script>alert(1)</script>');page.wait_for_timeout(250)
+              assert page.locator('.event-card').count()==0
+              assert page.locator('#event-list script').count()==0
+              page.evaluate('RamenGuide.reset();RamenGuide.change({period:"evening",from:"18:00",until:"20:00"})')
+              assert page.evaluate('RamenGuide.filtered().length>0&&RamenGuide.filtered().every(({e,day})=>{const [s,t]=RamenGuide.getTime(e,day);return s>="18:00"&&t<="20:00"})')
+              page.reload(wait_until='networkidle')
+              assert page.locator('#time-select').input_value()=='evening'
+              assert page.locator('#time-from').input_value()=='18:00'
+              assert page.locator('#time-to').input_value()=='20:00'
+              report['checks'].append('Time containment filters and shared URL restoration')
+              page.evaluate('RamenGuide.reset();RamenGuide.change({venue:"garraway",day:"7",known:true})')
+              btn=page.locator('.save-button').first
+              event_id=btn.get_attribute('data-save');btn.click()
+              assert page.locator('#saved-count').inner_text()=='1'
+              page.reload(wait_until='networkidle')
+              assert page.locator('#saved-count').inner_text()=='1'
+              assert page.locator('.save-button[data-save="'+event_id+'"]').first.get_attribute('aria-pressed')=='true'
+              report['checks'].append('Saved plan persists across real HTTPS browser reload')
+              page.locator('.event-title').first.click()
+              assert page.locator('#detail-dialog').is_visible()
+              assert page.locator('#detail-title').inner_text()
+              with page.expect_download() as event:
+                  page.locator('[data-act="ics-one"]').click()
+              download=event.value;download.save_as(str(out/'test-event.ics'))
+              assert 'BEGIN:VEVENT' in (out/'test-event.ics').read_text()
+              page.locator('[data-act="close"]').click()
+              report['checks'].append('Event detail, Google calendar link and ICS download')
+              target=page.evaluate('RAMEN_CATALOG.events.find(e=>e.dates.includes("2026-10-14")).id')
+              page.goto(base+'?date=any&event='+target+'&on=2026-10-14',wait_until='networkidle')
+              assert '10/14' in page.locator('.detail-date').inner_text()
+              page.locator('[data-act="close"]').click()
+              assert 'event=' not in page.url
+              report['checks'].append('Event deep link opens the requested day and closes cleanly')
+              page.evaluate('RamenGuide.reset()');page.locator('[data-query="ギャラウェイ"]').click()
+              assert page.evaluate('RamenGuide.filtered().every(x=>x.e.venue==="garraway")')
+              page.locator('[data-layout="cards"]').click()
+              assert 'layout-cards' in page.locator('#event-list').get_attribute('class')
+              page.locator('[data-layout="list"]').click()
+              page.locator('#venue-search').fill('ギャラウェイ')
+              assert page.locator('#venue-list .venue-card').count()==1
+              page.locator('#venue-search').fill('')
+              report['checks'].append('Venue aliases, list/card switch and venue directory search')
+              page.evaluate('RamenGuide.reset();RamenGuide.change({day:"7"})')
+              for width in [320,390,768,1440]:
+                  page.set_viewport_size({'width':width,'height':1000})
+                  assert page.evaluate('document.documentElement.scrollWidth<=innerWidth+1'), 'Overflow '+str(width)
+                  page.evaluate('scrollTo({top:0,behavior:"instant"})');page.wait_for_timeout(100)
+                  page.screenshot(path=str(out/('hero-'+str(width)+'.png')))
+                  page.evaluate('scrollTo({top:document.getElementById("schedule").offsetTop-80,behavior:"instant"})');page.wait_for_timeout(100)
+                  page.screenshot(path=str(out/('search-'+str(width)+'.png')))
+                  page.locator('.event-card').first.scroll_into_view_if_needed();page.screenshot(path=str(out/('list-'+str(width)+'.png')))
+                  report['checks'].append('No horizontal overflow and screenshots at '+str(width)+'px')
+              assert not report['errors'],report['errors']
+              browser.close()
+          report['completedAtUTC']=time.strftime('%Y-%m-%dT%H:%M:%SZ',time.gmtime())
+          (out/'report.json').write_text(json.dumps(report,ensure_ascii=False,indent=2))
+          print(json.dumps(report,ensure_ascii=False,indent=2))
+          PY
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: ramen-guide-live-verification
+          path: ramen-verification
+          retention-days: 7
