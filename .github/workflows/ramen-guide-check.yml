@@ -99,6 +99,7 @@ jobs:
               page.locator('.event-title').first.click()
               assert page.locator('#detail-dialog').is_visible()
               assert page.locator('#detail-title').inner_text()
+              assert page.locator('#detail-body a[href^="https://calendar.google.com/"]').count()==1
               with page.expect_download() as event:
                   page.locator('[data-act="ics-one"]').click()
               download=event.value;download.save_as(str(out/'test-event.ics'))
@@ -109,7 +110,7 @@ jobs:
               page.goto(base+'?date=any&event='+target+'&on=2026-10-14',wait_until='networkidle')
               assert '10/14' in page.locator('.detail-date').inner_text()
               page.locator('[data-act="close"]').click()
-              assert 'event=' not in page.url
+              page.wait_for_function('!new URLSearchParams(location.search).has("event")')
               report['checks'].append('Event deep link opens the requested day and closes cleanly')
               page.evaluate('RamenGuide.reset()');page.locator('[data-query="ギャラウェイ"]').click()
               assert page.evaluate('RamenGuide.filtered().every(x=>x.e.venue==="garraway")')
