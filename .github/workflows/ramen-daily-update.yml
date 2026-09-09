@@ -1,0 +1,133 @@
+name: Daily RAMEN event refresh
+on:
+  schedule:
+    - cron: '0 21 * * *'  # 06:00 Asia/Tokyo on the following calendar day
+    - cron: '35 21 * * *' # 06:35 retry if today's refresh or publication failed
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/ramen-daily-update.yml'
+      - 'tools/ramen_sync.py'
+      - 'tools/test_ramen_sync.py'
+      - 'tools/ramen_verify_daily.py'
+      - 'ramen-tech-2026/auto-update.js'
+      - 'ramen-tech-2026/auto-update.css'
+permissions:
+  contents: write
+  pages: write
+concurrency:
+  group: ramen-daily-refresh
+  cancel-in-progress: false
+jobs:
+  refresh:
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+      - name: Decide whether the recovery run is needed
+        id: gate
+        env:
+          EVENT_SCHEDULE: ${{ github.event.schedule }}
+        run: |
+          python3 - <<'PY'
+          import datetime, json, os, pathlib, urllib.request
+          from zoneinfo import ZoneInfo
+          needed=True
+          if os.environ.get('EVENT_SCHEDULE')=='35 21 * * *':
+              try:
+                  current=json.loads(pathlib.Path('ramen-tech-2026/sync-status.json').read_text())
+                  today=datetime.datetime.now(ZoneInfo('Asia/Tokyo')).date().isoformat()
+                  recent=current.get('status')=='success' and (current.get('lastSuccessAt') or '').startswith(today)
+                  url='https://mobilitydlab.com/GarrawayFapp.github.io/ramen-tech-2026/sync-status.json?recovery='+today
+                  with urllib.request.urlopen(url,timeout=20) as r: live=json.load(r)
+                  needed=not(recent and live.get('attemptedAt')==current.get('attemptedAt'))
+              except Exception as exc:
+                  print('Recovery required:',str(exc))
+          with open(os.environ['GITHUB_OUTPUT'],'a') as f:f.write('run='+str(needed).lower()+'\n')
+          if not needed:
+              with open(os.environ['GITHUB_STEP_SUMMARY'],'a') as f:f.write('Today\'s refresh is already successful and published. Recovery skipped.\n')
+          PY
+      - name: Install checksum-verified initial implementation once
+        if: steps.gate.outputs.run == 'true'
+        run: |
+          python3 - <<'PY'
+          import base64, hashlib, io, pathlib, zipfile
+          if pathlib.Path('tools/ramen_sync.py').exists():
+              print('Using editable source files already installed in the repository')
+              raise SystemExit(0)
+          parts=[pathlib.Path('ramen-tech-2026/data/daily-bootstrap-%02d.b64'%n) for n in (1,2,3)]
+          payload=base64.b64decode(''.join(p.read_text().strip() for p in parts),validate=True)
+          assert hashlib.sha256(payload).hexdigest()=='4e146f2ee557e418c1b2e9480755b8b12acba601a8953ee1062b8da7deeaff96','Bootstrap checksum mismatch'
+          allowed={'tools/ramen_sync.py','tools/test_ramen_sync.py','ramen-tech-2026/auto-update.js','ramen-tech-2026/auto-update.css'}
+          with zipfile.ZipFile(io.BytesIO(payload)) as archive:
+              assert set(archive.namelist())==allowed
+              for name in sorted(allowed):
+                  p=pathlib.Path(name);p.parent.mkdir(parents=True,exist_ok=True);p.write_bytes(archive.read(name))
+          PY
+      - name: Test parsers, source conflicts and failure preservation
+        if: steps.gate.outputs.run == 'true'
+        run: |
+          python3 tools/test_ramen_sync.py
+          node --check ramen-tech-2026/auto-update.js
+      - name: Fetch and validate public sources
+        if: steps.gate.outputs.run == 'true'
+        id: sync
+        run: |
+          python3 tools/ramen_sync.py
+          node --check ramen-tech-2026/catalog.js
+          node --check ramen-tech-2026/app.js
+          node --check ramen-tech-2026/sync-status.js
+      - name: Install browser verification runtime
+        if: steps.gate.outputs.run == 'true'
+        run: |
+          python3 -m pip install playwright==1.55.0
+          python3 -m playwright install --with-deps chromium
+      - name: Check the candidate site before publication
+        if: steps.gate.outputs.run == 'true'
+        run: |
+          python3 -m http.server 8765 --bind 127.0.0.1 >/tmp/ramen-http.log 2>&1 &
+          SERVER_PID=$!
+          trap 'kill "$SERVER_PID" 2>/dev/null || true' EXIT
+          python3 tools/ramen_verify_daily.py --url http://127.0.0.1:8765/ramen-tech-2026/ --attempts 3 --out ramen-daily-local-check
+      - name: Commit only guide data and its update implementation
+        if: steps.gate.outputs.run == 'true'
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add tools/ramen_sync.py tools/test_ramen_sync.py ramen-tech-2026/index.html ramen-tech-2026/app.js ramen-tech-2026/catalog.js ramen-tech-2026/sync-status.json ramen-tech-2026/sync-status.js ramen-tech-2026/auto-update.js ramen-tech-2026/auto-update.css
+          if git diff --cached --quiet; then exit 0; fi
+          git commit -m 'Refresh RAMEN official event data and checked-at status (daily JST)'
+          for attempt in 1 2 3; do
+            git pull --rebase origin main
+            if git push origin HEAD:main; then exit 0; fi
+            sleep 3
+          done
+          exit 1
+      - name: Explicitly request a Pages build for the bot commit
+        if: steps.gate.outputs.run == 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh api --method POST "repos/$GITHUB_REPOSITORY/pages/builds"
+      - name: Verify the real HTTPS site and browser behavior
+        if: steps.gate.outputs.run == 'true'
+        run: python3 tools/ramen_verify_daily.py
+      - name: Retain diagnostics and display verification results
+        if: always() && steps.gate.outputs.run == 'true'
+        uses: actions/upload-artifact@v4
+        with:
+          name: ramen-daily-verification
+          path: |
+            ramen-daily-verification
+            ramen-daily-local-check
+            ramen-tech-2026/sync-status.json
+          retention-days: 14
+      - name: Report a source failure after publishing the retained-data status
+        if: steps.gate.outputs.run == 'true' && steps.sync.outputs.health != 'success'
+        run: |
+          echo 'One or more official feeds could not be safely refreshed. Prior data was retained; see the published source status and job summary.'
+          exit 1
