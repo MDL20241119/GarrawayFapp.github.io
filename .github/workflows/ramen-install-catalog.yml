@@ -1,0 +1,47 @@
+name: Install verified RAMEN catalog
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - '.github/workflows/ramen-install-catalog.yml'
+      - 'ramen-tech-2026/catalog-source.b64'
+permissions:
+  contents: write
+concurrency:
+  group: ramen-catalog-install
+  cancel-in-progress: false
+jobs:
+  install:
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    timeout-minutes: 3
+    steps:
+      - uses: actions/checkout@v4
+      - name: Decode verified public-event snapshot
+        run: |
+          python3 - <<'PY'
+          import base64, hashlib, pathlib, zlib
+          source=pathlib.Path('ramen-tech-2026/catalog-source.b64')
+          if not source.exists():
+              print('Waiting for catalog-source.b64; no files modified')
+              raise SystemExit(0)
+          content=zlib.decompress(base64.b64decode(source.read_text()))
+          assert hashlib.sha256(content).hexdigest()=='3d63c2b821bcb0ac73f0d5032b4b55329ce47f270cee1795ae0a3a169b510d08', 'Payload integrity mismatch'
+          assert content.startswith(b'window.RAMEN_CATALOG=')
+          pathlib.Path('ramen-tech-2026/catalog.js').write_bytes(content)
+          PY
+      - name: Commit only the catalog file
+        run: |
+          if [ ! -f ramen-tech-2026/catalog.js ]; then exit 0; fi
+          node --check ramen-tech-2026/catalog.js
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add ramen-tech-2026/catalog.js
+          if git diff --cached --quiet; then exit 0; fi
+          git commit -m 'Install verified 2026-09-09 RAMEN event catalog (127 event/session records)'
+          for attempt in 1 2 3; do
+            git pull --rebase origin main
+            if git push origin HEAD:main; then exit 0; fi
+            sleep 2
+          done
+          exit 1
