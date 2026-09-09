@@ -1,0 +1,291 @@
+{
+  "attemptedAt": "2026-09-09T17:35:18+09:00",
+  "lastSuccessAt": "2026-09-09T17:35:18+09:00",
+  "schedule": "毎朝6:00（日本時間）／失敗時6:35再試行",
+  "sources": {
+    "members": {
+      "url": "https://members.ramentech.jp/",
+      "ok": true,
+      "count": 48,
+      "lastSuccessAt": "2026-09-09T17:35:18+09:00"
+    },
+    "schedule": {
+      "url": "https://ramentech2026.aishain.com/api/schedule",
+      "ok": true,
+      "count": 98,
+      "lastSuccessAt": "2026-09-09T17:35:18+09:00"
+    }
+  },
+  "changes": [
+    {
+      "id": "event-cvcmeetup",
+      "title": "CVC×スタートアップ×鉄道の船上MeetUp ～社会をよりよくしたい人集合！～",
+      "type": "changed"
+    },
+    {
+      "id": "event-japan-korea-deep-tech-pitch-arena",
+      "title": "Japan × Korea Deep Tech Pitch Arena",
+      "type": "changed"
+    },
+    {
+      "id": "event-nomikai",
+      "title": "ただの飲み会",
+      "type": "changed"
+    },
+    {
+      "id": "event-kumamoto-city",
+      "title": "二度の震災を経験した熊本市の新たな挑戦 スタートアップとともに未来を創る「くまもと課題解決ファンド」始動",
+      "type": "changed"
+    },
+    {
+      "id": "slot-22be4b1d-6c77-4184-805e-82233802d530",
+      "title": "【STARTUP KYUSHU】STARTUP MORNING RAVE Produced by キャンプ女子",
+      "type": "changed"
+    },
+    {
+      "id": "slot-summit-2026-104e8976",
+      "title": "オープニング",
+      "type": "changed"
+    },
+    {
+      "id": "slot-summit-2026-0b85896b",
+      "title": "【スタートアップ共創】先駆者が語る、新しい価値を生む挑戦と次の仮説",
+      "type": "changed"
+    },
+    {
+      "id": "slot-summit-2026-a873f17d",
+      "title": "【九州発ディープテック】地域の知を、世界で戦う事業へ",
+      "type": "changed"
+    },
+    {
+      "id": "slot-gogo-2026-9cb0c2f0",
+      "title": "オープニング",
+      "type": "changed"
+    },
+    {
+      "id": "slot-gogo-2026-f7557679",
+      "title": "CVCリバースピッチ",
+      "type": "changed"
+    },
+    {
+      "id": "slot-gogo-2026-da5dfdb6",
+      "title": "StartupGo!Go! The Pitch セミファイナル Aブロック",
+      "type": "changed"
+    },
+    {
+      "id": "slot-gogo-2026-80761606",
+      "title": "グローバルセッション",
+      "type": "changed"
+    },
+    {
+      "id": "slot-gogo-2026-28b61c82",
+      "title": "熊本復興アトツギセッション",
+      "type": "changed"
+    },
+    {
+      "id": "slot-gogo-2026-128b1b42",
+      "title": "FFG×新規事業 新規事業創出プログラム『共挑』オープニングイベント",
+      "type": "changed"
+    },
+    {
+      "id": "slot-summit-2026-7d8cf8a6",
+      "title": "【福岡発イノベーション】街を舞台に、新しい日常をつくる",
+      "type": "changed"
+    },
+    {
+      "id": "slot-gogo-2026-73158640",
+      "title": "挑戦する地域企業のリバースピッチ&交流会",
+      "type": "changed"
+    },
+    {
+      "id": "slot-summit-2026-a1e64296",
+      "title": "【クロスボーダー投資と成長】国境を越える資本が、企業の世界を広げる",
+      "type": "changed"
+    },
+    {
+      "id": "slot-gogo-2026-4ee40b02",
+      "title": "StartupGo!Go! The Pitch セミファイナル Bブロック",
+      "type": "changed"
+    },
+    {
+      "id": "slot-gogo-2026-60896a01",
+      "title": "地方創生セッション",
+      "type": "changed"
+    },
+    {
+      "id": "slot-gogo-2026-57a267f3",
+      "title": "キューテック贈呈式",
+      "type": "changed"
+    },
+    {
+      "id": "slot-gogo-2026-f9b3f791",
+      "title": "DX／AXセッション",
+      "type": "changed"
+    },
+    {
+      "id": "slot-gogo-2026-e1f203d6",
+      "title": "Good Local九州 地域共創セッション",
+      "type": "changed"
+    },
+    {
+      "id": "slot-summit-2026-57c4fece",
+      "title": "【東南アジアでの事業創出】土地に根を張り、理解し、事業を育てる",
+      "type": "changed"
+    },
+    {
+      "id": "slot-summit-2026-7f559404",
+      "title": "【日本市場への上場】海外からの挑戦が、成長・投資・競争を変える",
+      "type": "changed"
+    },
+    {
+      "id": "slot-gogo-2026-3021b5ce",
+      "title": "StartupGo!Go! The Pitch セミファイナル Cブロック",
+      "type": "changed"
+    },
+    {
+      "id": "slot-gogo-2026-db937715",
+      "title": "全国地銀・地銀系VCリバースピッチ＆交流会",
+      "type": "changed"
+    },
+    {
+      "id": "slot-32c206f2-e7b1-409b-bf1f-f7cb8fda1012",
+      "title": "AI時代のピッチで「選ばれる企業」になる！― 記憶と感情を揺さぶる「紙芝居」プレゼンテーション ―",
+      "type": "changed"
+    },
+    {
+      "id": "slot-4424a41c-85d4-46d5-8141-98ce064d39c5",
+      "title": "SHE SAILS: When East Meets West Day 1 — Discover New Perspectives",
+      "type": "changed"
+    },
+    {
+      "id": "slot-8e068889-9564-4585-a237-6db479b5937c",
+      "title": "SHE SAILS: When East Meets West. Day 2 — Put Reflection into Practice",
+      "type": "changed"
+    },
+    {
+      "id": "slot-gogo-2026-d84bf4dc",
+      "title": "FFGみらいの会議 スペシャルセッション",
+      "type": "changed"
+    },
+    {
+      "id": "slot-gogo-2026-3ef53877",
+      "title": "福岡起業家セッション",
+      "type": "changed"
+    },
+    {
+      "id": "slot-43b1adbb-06ad-45d6-8c8f-50d1d6c5c13c",
+      "title": "セッション１.地方発スタートアップのM&Aロールアップ戦略",
+      "type": "changed"
+    },
+    {
+      "id": "slot-summit-2026-67262968",
+      "title": "【地域発インパクト】社会課題に挑む、スタートアップ・エコシステムの現在地",
+      "type": "changed"
+    },
+    {
+      "id": "slot-gogo-2026-4b2cde03",
+      "title": "大学発スタートアップ創業・成長セッション",
+      "type": "changed"
+    },
+    {
+      "id": "slot-8a0db0aa-8576-4bdb-bbfb-a7e891d70c64",
+      "title": "セッション２.「単独成長か、グループインか」経験者が語るリアル",
+      "type": "changed"
+    },
+    {
+      "id": "slot-3186fe44-b287-49fc-bbf9-966072309d38",
+      "title": "AAN Startup & Partner Pitch",
+      "type": "changed"
+    },
+    {
+      "id": "slot-gogo-2026-56e35b07",
+      "title": "「世界を変えるAI、その先の未来をNVIDIAが語る」",
+      "type": "changed"
+    },
+    {
+      "id": "slot-gogo-2026-91a48a43",
+      "title": "Global Pitch",
+      "type": "changed"
+    },
+    {
+      "id": "slot-80fd3c61-4582-42c0-b34f-388bc3cfbf46",
+      "title": "【STARTUP KYUSHU】ビジネスのヒントを発見する「じぶんをこねる粘土」＜先着30名限定ワークショップ＞",
+      "type": "changed"
+    },
+    {
+      "id": "slot-gogo-2026-c5b53358",
+      "title": "九州企業の成長戦略最前線",
+      "type": "changed"
+    },
+    {
+      "id": "slot-gogo-2026-48541b08",
+      "title": "九州自治体リバースピッチ",
+      "type": "changed"
+    },
+    {
+      "id": "slot-bc5ff701-4ad4-45c8-9874-87825b157133",
+      "title": "セッション３.地方企業の成長戦略としてのM&A・事業承継",
+      "type": "changed"
+    },
+    {
+      "id": "slot-summit-2026-5981eaaa",
+      "title": "Global Summit Startup Pitch",
+      "type": "changed"
+    },
+    {
+      "id": "slot-gogo-2026-ae729236",
+      "title": "スポンサーPRタイム",
+      "type": "changed"
+    },
+    {
+      "id": "slot-3fa6c142-f5ee-4368-9088-f08a11ed5cde",
+      "title": "MAP in FUKUOKA M&Aバイサイドピッチ",
+      "type": "changed"
+    },
+    {
+      "id": "slot-gogo-2026-34ff779d",
+      "title": "StartupGo!Go! The Pitch決勝・表彰式",
+      "type": "changed"
+    },
+    {
+      "id": "slot-summit-2026-a3affa65",
+      "title": "審査発表・表彰式",
+      "type": "changed"
+    },
+    {
+      "id": "slot-401640b3-7ad3-4bae-896c-25e775ca89be",
+      "title": "【STARTUP KYUSHU】九州スタートアップPRリレー",
+      "type": "changed"
+    },
+    {
+      "id": "slot-summit-2026-66a9423c",
+      "title": "クロージング",
+      "type": "changed"
+    },
+    {
+      "id": "slot-2cfb032f-cd70-4952-8f4d-dd43f00d126c",
+      "title": "【STARTUP KYUSHU】メインセッション＜要事前申込＞",
+      "type": "changed"
+    },
+    {
+      "id": "slot-26df7712-e669-4447-a172-b944c3c877c7",
+      "title": "【STARTUP KYUSHU】BBQ交流会＜要事前申込＞",
+      "type": "changed"
+    },
+    {
+      "id": "slot-52b322a4-d917-4df1-a8d4-f7f8b50a6abb",
+      "title": "【STARTUP KYUSHU】KYUSHU 次世代ナイトピッチ",
+      "type": "changed"
+    },
+    {
+      "id": "slot-bec5e310-7eb8-4626-94c6-05d78b2e981c",
+      "title": "【STARTUP KYUSHU】エンジェル投資家 Meet up（宿泊者限定）＜要事前申込＞",
+      "type": "changed"
+    }
+  ],
+  "status": "success",
+  "catalogVersion": "2026-09-09T17:35:18+09:00",
+  "catalogCount": 127,
+  "venueCount": 47,
+  "scope": "公式登録・公式時間割の公開構造化データを更新。個別主催者サイトの本文とGarraway F独自企画は自動上書きしません。"
+}
