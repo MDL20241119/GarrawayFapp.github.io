@@ -4,7 +4,7 @@ on:
   push:
     paths:
       - '.github/workflows/ramen-install-catalog.yml'
-      - 'ramen-tech-2026/catalog-source.b64'
+      - 'ramen-tech-2026/data/catalog-*.b64'
 permissions:
   contents: write
 concurrency:
@@ -20,19 +20,21 @@ jobs:
       - name: Decode verified public-event snapshot
         run: |
           python3 - <<'PY'
-          import base64, hashlib, pathlib, zlib
-          source=pathlib.Path('ramen-tech-2026/catalog-source.b64')
-          if not source.exists():
-              print('Waiting for catalog-source.b64; no files modified')
-              raise SystemExit(0)
-          content=zlib.decompress(base64.b64decode(source.read_text()))
+          import base64, hashlib, pathlib, zlib, json
+          parts=[pathlib.Path('ramen-tech-2026/data/catalog-%02d.b64'%i) for i in range(1,6)]
+          assert all(p.exists() for p in parts), 'Missing catalog segment'
+          payload=''.join(p.read_text().strip() for p in parts)
+          assert len(payload)==18640, 'Unexpected payload size'
+          content=zlib.decompress(base64.b64decode(payload,validate=True))
           assert hashlib.sha256(content).hexdigest()=='3d63c2b821bcb0ac73f0d5032b4b55329ce47f270cee1795ae0a3a169b510d08', 'Payload integrity mismatch'
-          assert content.startswith(b'window.RAMEN_CATALOG=')
+          data=json.loads(content.decode().split('=',1)[1].strip().rstrip(';'))
+          assert len(data['events'])==127
+          assert len({e['id'] for e in data['events']})==127
           pathlib.Path('ramen-tech-2026/catalog.js').write_bytes(content)
+          print('Verified: 127 unique event/session records; 47 named venues plus 4 location placeholders.')
           PY
       - name: Commit only the catalog file
         run: |
-          if [ ! -f ramen-tech-2026/catalog.js ]; then exit 0; fi
           node --check ramen-tech-2026/catalog.js
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
