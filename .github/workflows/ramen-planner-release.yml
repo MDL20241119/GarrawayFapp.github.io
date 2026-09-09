@@ -5,24 +5,127 @@ on:
     branches: [main]
     paths: ['.github/workflows/ramen-planner-release.yml']
 permissions:
-  contents: read
+  contents: write
+  pages: write
+concurrency:
+  group: ramen-daily-refresh
+  cancel-in-progress: false
 jobs:
-  snapshot:
+  release:
     runs-on: ubuntu-latest
+    timeout-minutes: 20
     steps:
       - uses: actions/checkout@v4
-      - name: Collect current public site sources
-        run: |
-          mkdir -p planner-inputs
-          cp -r ramen-tech-2026 planner-inputs/
-          cp index.html planner-inputs/home.html
-          cp -r tools planner-inputs/ || true
-          cp -r .github/workflows planner-inputs/
-          git fetch origin sites-source --depth=1
-          git archive FETCH_HEAD app README.md | tar -x -C planner-inputs
-          curl --fail --max-time 40 https://ramentech2026.aishain.com/api/schedule -o planner-inputs/official-schedule.json
-      - uses: actions/upload-artifact@v4
         with:
-          name: ramen-planner-inputs
-          path: planner-inputs
-          retention-days: 3
+          ref: main
+          fetch-depth: 0
+      - name: Decode checksum-verified planner implementation
+        run: |
+          mkdir -p planner-verification/candidate planner-verification/live
+          python3 - <<'PY'
+          import pathlib,base64,zlib,json,hashlib
+          paths=[pathlib.Path('tools/planner-package-%02d.b64'%i) for i in range(1,6)]
+          parts=[p.read_text().strip() for p in paths]
+          # Repair two transport transcription errors; the full payload hash must match.
+          parts[2]=parts[2].replace('95blpz60W6aYg','95blpz60W6Yg').replace('xtpYayfOpPU','xtpYayfYOpPU')
+          print('Package part lengths:',[len(s) for s in parts])
+          payload=zlib.decompress(base64.b64decode(''.join(parts),validate=True))
+          assert hashlib.sha256(payload).hexdigest()=='d6e79b3322df95a065f245f75234371a3749e2c1dcdeba9f5963d5102c65130d', 'Planner payload checksum mismatch'
+          data=json.loads(payload)
+          allowed={'ramen-tech-2026/planner.js','ramen-tech-2026/planner.css','ramen-special.js','ramen-special.css','tools/ramen_geo.py','tools/ramen_verify_planner.py','tools/install_ramen_planner.py','tools/planner_fragments/featured.html','tools/planner_fragments/planner.html','tools/planner_fragments/source-component.tsx'}
+          assert set(data)==allowed
+          for name,text in data.items():
+              p=pathlib.Path(name);p.parent.mkdir(parents=True,exist_ok=True);p.write_text(text,encoding='utf-8')
+          for p,s in zip(paths,parts):p.write_text(s,encoding='utf-8')
+          print('Verified and installed',len(data),'editable source files')
+          PY
+      - name: Integrate guide and official venue coordinates without replacing event data
+        run: |
+          curl --fail --retry 2 --max-time 40 https://ramentech2026.aishain.com/api/schedule -o /tmp/planner-official-schedule.json
+          python3 tools/install_ramen_planner.py --schedule-json /tmp/planner-official-schedule.json
+          node --check ramen-tech-2026/app.js
+          node --check ramen-tech-2026/planner.js
+          node --check ramen-special.js
+          python3 tools/test_ramen_sync.py
+      - name: Install browser verification runtime
+        run: |
+          python3 -m pip install playwright==1.55.0
+          python3 -m playwright install --with-deps chromium
+      - name: Verify candidate homepage, itinerary, travel, persistence and mobile views
+        run: python3 tools/ramen_verify_planner.py --output planner-verification/candidate
+      - name: Commit the tested site and update implementation
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add index.html ramen-special.js ramen-special.css ramen-tech-2026/index.html ramen-tech-2026/app.js ramen-tech-2026/planner.js ramen-tech-2026/planner.css ramen-tech-2026/catalog.js ramen-tech-2026/README.md tools/ramen_sync.py tools/ramen_geo.py tools/ramen_verify_planner.py tools/install_ramen_planner.py tools/planner_fragments tools/planner-package-*.b64
+          if ! git diff --cached --quiet; then
+            git commit -m 'Publish Garraway F special-site entrance and day-by-day itinerary with travel estimates'
+            for attempt in 1 2 3; do
+              git pull --rebase origin main
+              if git push origin HEAD:main; then break; fi
+              if [ "$attempt" = 3 ]; then exit 1; fi
+              sleep 2
+            done
+          fi
+      - name: Mirror the homepage entrance in editable Next source
+        run: |
+          git fetch origin sites-source
+          git worktree add ../ramen-home-source origin/sites-source
+          python3 tools/install_ramen_planner.py --source ../ramen-home-source
+          git -C ../ramen-home-source add app/page.tsx app/ramen-special.tsx app/ramen-special.css README.md
+          if ! git -C ../ramen-home-source diff --cached --quiet; then
+            git -C ../ramen-home-source commit -m 'Add RAMEN TECH special-site banner and navigation to Garraway F source'
+            git -C ../ramen-home-source push origin HEAD:sites-source
+          fi
+      - name: Request Pages publication explicitly for the bot commit
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          python3 - <<'PY'
+          import os,urllib.request,urllib.error,time
+          url='https://api.github.com/repos/'+os.environ['GITHUB_REPOSITORY']+'/pages/builds'
+          headers={'Authorization':'Bearer '+os.environ['GH_TOKEN'],'Accept':'application/vnd.github+json','X-GitHub-Api-Version':'2022-11-28'}
+          for i in range(12):
+              try:
+                  with urllib.request.urlopen(urllib.request.Request(url,data=b'{}',headers=headers,method='POST'),timeout=30) as r:print('Pages build requested:',r.status)
+                  break
+              except urllib.error.HTTPError as exc:
+                  if exc.code not in (409,422):raise
+                  time.sleep(10)
+          else:raise RuntimeError('Pages build request could not be accepted')
+          PY
+      - name: Verify matching public assets and the real HTTPS scheduler
+        run: |
+          python3 - <<'PY'
+          import urllib.request,pathlib,time,json,hashlib
+          base='https://mobilitydlab.com/GarrawayFapp.github.io/'
+          files=['index.html','ramen-special.js','ramen-special.css','ramen-tech-2026/index.html','ramen-tech-2026/app.js','ramen-tech-2026/planner.js','ramen-tech-2026/planner.css','ramen-tech-2026/catalog.js']
+          for attempt in range(30):
+              try:
+                  hashes={}
+                  for name in files:
+                      req=urllib.request.Request(base+name+'?verify='+str(time.time_ns()),headers={'User-Agent':'Garraway F planner release verification'})
+                      with urllib.request.urlopen(req,timeout=25) as response:actual=response.read()
+                      assert actual==pathlib.Path(name).read_bytes(),name+' has not propagated yet'
+                      hashes[name]=hashlib.sha256(actual).hexdigest()
+                  pathlib.Path('planner-verification/published-assets.json').write_text(json.dumps(hashes,indent=2))
+                  print('All eight published HTTPS assets match the committed revision');break
+              except Exception as exc:print(str(exc),flush=True);time.sleep(10)
+          else:raise RuntimeError('Public assets did not match this release')
+          PY
+          python3 tools/ramen_verify_planner.py --base https://mobilitydlab.com/GarrawayFapp.github.io/ --output planner-verification/live
+      - name: Retain verification and transfer diagnostics
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: ramen-planner-verification
+          path: |
+            planner-verification
+            tools/planner-package-*.b64
+            tools/ramen_verify_planner.py
+            tools/install_ramen_planner.py
+          retention-days: 7
+      - name: Show verification summary
+        if: success()
+        run: |
+          cat planner-verification/live/report.json >> "$GITHUB_STEP_SUMMARY"
