@@ -25,3 +25,7 @@ npm run build
 `data/facebook-events.json`を利用します。
 
 ChatGPT Sites版は別の公開環境として継続し、このリポジトリの更新では削除されません。
+
+
+## RAMEN TECH special site
+`RamenSpecial` is the homepage entrance. Keep the current main-branch `ramen-tech-2026/`, its tools and daily workflows when republishing this source. Never replace the daily catalog with an old source snapshot.

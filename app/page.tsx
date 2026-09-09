@@ -1,4 +1,5 @@
 import SocialLive from "./social-live";
+import RamenSpecial from "./ramen-special";
 import Link from "next/link";
 import { withBasePath } from "./base-path";
 import { SITE_LINKS } from "./site-links";
@@ -162,6 +163,7 @@ export default function Home() {
           <Link href="/events">EVENTS</Link>
           <a href="#floor">FLOOR</a>
           <a href="#access">ACCESS</a>
+          <a className="gf-ramen-nav" href={withBasePath("/ramen-tech-2026/")}>RAMEN TECH ↗</a>
           <Link href="/contact">CONTACT</Link>
         </nav>
         <a className="headerCta" href={SITE_LINKS.line} target="_blank" rel="noreferrer">
@@ -215,6 +217,8 @@ export default function Home() {
           <span>CO-CREATION</span><i>✦</i><span>やりましょうよ！</span><i>✦</i>
         </div>
       </div>
+
+      <RamenSpecial />
 
       <section className="stats" aria-label="Garraway Fの実績">
         <p className="statsIntro">SINCE 2019 / AS OF AUG 2026<br /><b>つながりが、動き出している。</b></p>
