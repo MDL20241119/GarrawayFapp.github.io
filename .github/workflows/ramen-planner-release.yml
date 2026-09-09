@@ -1,0 +1,28 @@
+name: RAMEN planner integration
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths: ['.github/workflows/ramen-planner-release.yml']
+permissions:
+  contents: read
+jobs:
+  snapshot:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Collect current public site sources
+        run: |
+          mkdir -p planner-inputs
+          cp -r ramen-tech-2026 planner-inputs/
+          cp index.html planner-inputs/home.html
+          cp -r tools planner-inputs/ || true
+          cp -r .github/workflows planner-inputs/
+          git fetch origin sites-source --depth=1
+          git archive FETCH_HEAD app README.md | tar -x -C planner-inputs
+          curl --fail --max-time 40 https://ramentech2026.aishain.com/api/schedule -o planner-inputs/official-schedule.json
+      - uses: actions/upload-artifact@v4
+        with:
+          name: ramen-planner-inputs
+          path: planner-inputs
+          retention-days: 3
