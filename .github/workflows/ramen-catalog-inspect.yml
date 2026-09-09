@@ -11,40 +11,29 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 5
     steps:
-      - name: Collect public event page assets
+      - name: Collect public event schedule data
         run: |
           mkdir -p public-source-snapshot
           python3 - <<'PY'
-          import urllib.request, urllib.parse, re, json, pathlib, concurrent.futures
+          import urllib.request, json, pathlib
           root=pathlib.Path('public-source-snapshot')
-          sources={'official':'https://www.ramentech.jp/','timetable':'https://ramentech2026.aishain.com/','members':'https://members.ramentech.jp/'}
-          manifest=[]
-          def get(url):
-              req=urllib.request.Request(url,headers={'User-Agent':'Mozilla/5.0 (public event schedule verification)'})
-              with urllib.request.urlopen(req,timeout=30) as res:
-                  return res.read().decode('utf-8','replace'),dict(res.headers)
+          sources={'schedule':'https://ramentech2026.aishain.com/api/schedule','members':'https://members.ramentech.jp/','summit':'https://ramentech-summit.com/','startup-kyushu':'https://startupkyushu.com/','ffg':'https://ffg-mirainokaigi.jp/','gogo':'https://startup-gogo.com/event/'}
           for name,url in sources.items():
               try:
-                  body,headers=get(url)
-                  (root/(name+'.html')).write_text(body)
-                  print(name,'HTML bytes',len(body),'embed headers',{k:v for k,v in headers.items() if k.lower() in ['x-frame-options','content-security-policy','access-control-allow-origin']})
-                  scripts=re.findall(r'<script[^>]+src=[\"\x27]([^\"\x27]+)',body)
-                  print(name,'SCRIPTS',json.dumps(scripts))
-                  manifest.append({'name':name,'url':url,'scripts':scripts})
-                  for i,src in enumerate(scripts[:24]):
-                      src=urllib.parse.urljoin(url,src.replace('&amp;','&'))
-                      if urllib.parse.urlparse(src).hostname not in ['www.ramentech.jp','ramentech2026.aishain.com','members.ramentech.jp','cdn.entrytickets.be']:continue
-                      try:
-                          text,_=get(src)
-                          (root/(name+'-'+str(i)+'.js')).write_text(text)
-                          hits=re.findall(r'.{0,140}(?:/api/|events\.json|supabase|fetch\(|axios|calendar-events|eventData|eventsData).{0,250}',text)
-                          print(name,i,'bytes',len(text),'ENDPOINT HINTS',json.dumps(hits[:50],ensure_ascii=False))
-                      except Exception as exc: print('asset unavailable',src,str(exc))
-              except Exception as exc:print('page unavailable',url,str(exc))
-          (root/'manifest.json').write_text(json.dumps(manifest,ensure_ascii=False,indent=2))
+                  req=urllib.request.Request(url,headers={'User-Agent':'Mozilla/5.0 (public event schedule verification)'})
+                  with urllib.request.urlopen(req,timeout=30) as res:
+                      body=res.read().decode('utf-8','replace')
+                      print(name,res.status,'bytes',len(body))
+                  if name=='schedule':
+                      data=json.loads(body)
+                      print('PUBLIC SCHEDULE KEYS',list(data.keys()))
+                      print('COUNTS',{k:len(v) for k,v in data.items() if isinstance(v,(list,dict))})
+                      print('FIRST SESSION',json.dumps(data.get('sessions',[])[:1],ensure_ascii=False))
+                  (root/(name+('.json' if name=='schedule' else '.html'))).write_text(body)
+              except Exception as exc:print('SOURCE UNAVAILABLE',name,str(exc))
           PY
       - uses: actions/upload-artifact@v4
         with:
-          name: ramen-public-source-snapshot
+          name: ramen-public-schedule-data
           path: public-source-snapshot
           retention-days: 3
