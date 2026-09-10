@@ -10,6 +10,7 @@
   const ticker=document.createElement('div');ticker.className='classic-ticker';ticker.setAttribute('aria-hidden','true');ticker.innerHTML='<span>GOOD PEOPLE. GREAT IDEAS. NEXT CHALLENGE. ↗</span>'.repeat(4);hero.after(ticker);
   const title=document.createElement('div');title.className='classic-search-heading';title.id='classic-search';title.innerHTML='<div><p class="eyebrow">01 / FIND YOUR NEXT.</p><h2>次は、どこ行く？</h2></div><p>日付・会場・時間帯で、迷わず探す。<br>検索結果から、そのままマイ予定へ。</p>';document.querySelector('.search-area').before(title);
   const meta=document.querySelector('meta[name="theme-color"]');if(meta)meta.content='#1892F5';
+  const style=document.createElement('style');style.textContent='.plan-fallback-map{margin-top:22px}.fallback-osm{height:320px;background:#eef1ec}.fallback-osm iframe{display:block;width:100%;height:100%;border:0}@media(max-width:800px){.plan-map-aside{order:-1}.plan-fallback-map{margin-top:18px}.fallback-osm{height:280px}}';document.head.appendChild(style);
   const jump=()=>{if(document.querySelector('#screen-explore')?.hidden)return;window.scrollTo({top:Math.max(0,window.scrollY+title.getBoundingClientRect().top-(document.querySelector('.site-header')?.getBoundingClientRect().height||65)-12),behavior:'instant'});};
   const fallbackMap=()=>{
     const screen=document.querySelector('#screen-plan');
