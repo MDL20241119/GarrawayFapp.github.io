@@ -37,10 +37,10 @@
   const watchMaps=new MutationObserver(()=>requestAnimationFrame(ensureRoadMap));
   const planContent=document.getElementById('plan-content');
   if(planContent)watchMaps.observe(planContent,{childList:true,subtree:true});
-
   const watchPlan=new MutationObserver(()=>requestAnimationFrame(fallbackMap));
   ['plan-empty','plan-content'].forEach(id=>{const el=document.getElementById(id);if(el)watchPlan.observe(el,{childList:true,subtree:true});});
   document.addEventListener('click',ev=>{const b=ev.target.closest('button,a');if(!b)return;if(b.hasAttribute('data-classic-search')){ev.preventDefault();window.GuideApp?.displayScreen('explore',{scroll:false});requestAnimationFrame(jump);}else if(b.dataset.screen==='explore'&&b.closest('nav')){requestAnimationFrame(jump);}else if(b.dataset.screen==='plan'){setTimeout(()=>{fallbackMap();ensureRoadMap();},0);}});
   if(initialHash==='#schedule'||(new URLSearchParams(location.search).has('q')&&!new URLSearchParams(location.search).has('event'))){requestAnimationFrame(jump);}
   setTimeout(()=>{fallbackMap();ensureRoadMap();},0);
+  const access=document.createElement('script');access.src='access-planner.js?v=20260910a1';access.defer=true;document.head.appendChild(access);
 })();
