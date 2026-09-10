@@ -11,8 +11,8 @@
   };
   const presets={tokyo:{label:'東京',airOrigin:'羽田空港',railOrigin:'東京駅'},osaka:{label:'大阪',airOrigin:'伊丹空港',railOrigin:'新大阪駅'}};
   const style=document.createElement('style');style.textContent=`
-  .access-planner{margin:34px 0 26px;border:2px solid #111;border-radius:5px;background:#fff;overflow:hidden}.access-head{padding:15px 18px;background:#ffe248;border-bottom:2px solid #111}.access-head h2{font-size:20px;margin:0;font-weight:900}.access-head p{margin:4px 0 0;font-size:12px}.access-tabs{display:flex;border-bottom:1px solid #111}.access-tabs button{flex:1;min-height:46px;border:0;border-right:1px solid #111;background:#fff;font-weight:900}.access-tabs button:last-child{border-right:0}.access-tabs button[aria-pressed=true]{background:#1892f5;color:#fff}.access-body{padding:18px}.access-intro{font-size:13px;margin-bottom:14px}.access-row{display:grid;grid-template-columns:1.2fr .9fr .9fr;gap:12px;align-items:end}.access-field{display:flex;flex-direction:column;gap:6px}.access-field label{font-size:11px;font-weight:900}.access-field select,.access-field input{min-height:44px;border:1px solid #111;border-radius:4px;padding:8px 10px;background:#fff}.access-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px}.access-actions button,.access-actions a{min-height:44px;display:inline-flex;align-items:center;border:1px solid #111;border-radius:4px;padding:8px 12px;font-weight:900;background:#fff}.access-actions .primary{background:#111;color:#fff}.access-result{margin-top:16px;border-top:1px dashed #777;padding-top:14px}.access-result h3{font-size:15px;margin:0 0 6px}.access-result p{font-size:12px;color:#444;margin:3px 0}.access-summary{margin:28px 0 0;border:1px solid #111;border-radius:4px;overflow:hidden}.access-summary-head{background:#1892f5;color:#fff;padding:9px 12px;font-size:12px;font-weight:900}.access-summary-body{padding:12px 14px;font-size:13px}.access-summary-body strong{font-size:15px}.access-links{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}.access-links a{font-size:12px;font-weight:800;text-decoration:underline}.access-note{font-size:11px;color:#555;margin-top:8px}
-  @media(max-width:700px){.access-row{grid-template-columns:1fr}.access-tabs{position:sticky;top:78px;z-index:2}}
+  .access-planner{margin:34px 0 26px;border:2px solid #111;border-radius:5px;background:#fff;overflow:hidden}.access-head{padding:15px 18px;background:#ffe248;border-bottom:2px solid #111}.access-head h2{font-size:20px;margin:0;font-weight:900}.access-head p{margin:4px 0 0;font-size:12px}.access-tabs{display:flex;border-bottom:1px solid #111}.access-tabs button{flex:1;min-height:46px;border:0;border-right:1px solid #111;background:#fff;font-weight:900}.access-tabs button:last-child{border-right:0}.access-tabs button[aria-pressed=true]{background:#1892f5;color:#fff}.access-body{padding:18px}.access-intro{font-size:13px;margin-bottom:14px}.access-row{display:grid;grid-template-columns:1.2fr .9fr .9fr;gap:12px;align-items:end}.access-field{display:flex;flex-direction:column;gap:6px}.access-field label{font-size:11px;font-weight:900}.access-field select,.access-field input{min-height:44px;border:1px solid #111;border-radius:4px;padding:8px 10px;background:#fff}.access-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px}.access-actions button,.access-actions a{min-height:44px;display:inline-flex;align-items:center;border:1px solid #111;border-radius:4px;padding:8px 12px;font-weight:900;background:#fff}.access-actions .primary{background:#111;color:#fff}.access-result{margin-top:16px;border-top:1px dashed #777;padding-top:14px}.access-result h3{font-size:15px;margin:0 0 6px}.access-result p{font-size:12px;color:#444;margin:3px 0}.access-summary{margin:28px 0 0;border:1px solid #111;border-radius:4px;overflow:hidden}.access-summary-head{background:#1892f5;color:#fff;padding:9px 12px;font-size:12px;font-weight:900}.access-summary-body{padding:12px 14px;font-size:13px}.access-summary-body strong{font-size:15px}.access-note{font-size:11px;color:#555;margin-top:8px}
+  @media(max-width:700px){.access-row{grid-template-columns:1fr}.access-tabs{position:static}.access-planner{margin-top:28px}}
   `;document.head.appendChild(style);
 
   function getPlannedEvents(){
@@ -20,8 +20,7 @@
     return cards.map(card=>({title:card.querySelector('h3')?.textContent?.trim()||'イベント',time:card.querySelector('.plan-time')?.textContent?.trim()||'',venue:card.querySelector('.venue-button')?.textContent?.trim()||''}));
   }
   function pickTarget(kind){const ev=getPlannedEvents();return kind==='outbound'?ev[0]:ev[ev.length-1]}
-  function template(){
-    return `<section class="access-planner" id="access-planner"><div class="access-head"><p class="eyebrow">TRIP PLANNER</p><h2>行きたいイベントから、往復を逆算。</h2><p>マイ予定を組んだあとに、間に合う行き方／帰れる便を探します。</p></div><div class="access-tabs"><button type="button" data-trip-tab="outbound" aria-pressed="true">行き｜このイベントに間に合う</button><button type="button" data-trip-tab="return" aria-pressed="false">帰り｜このイベント後に帰る</button></div><div class="access-body" data-trip-body></div></section>`}
+  function template(){return `<section class="access-planner" id="access-planner"><div class="access-head"><p class="eyebrow">TRIP PLANNER</p><h2>行きたいイベントから、往復を逆算。</h2><p>マイ予定を組んだあとに、間に合う行き方／帰れる便を探します。</p></div><div class="access-tabs"><button type="button" data-trip-tab="outbound" aria-pressed="true">行き｜このイベントに間に合う</button><button type="button" data-trip-tab="return" aria-pressed="false">帰り｜このイベント後に帰る</button></div><div class="access-body" data-trip-body></div></section>`}
   function renderBody(root,kind){
     const v=load();const target=pickTarget(kind);const city=v[kind+'City']||'tokyo';const mode=v[kind+'Mode']||'air';const p=presets[city];
     const targetLabel=target?`${target.title} ${target.time}`:(kind==='outbound'?'最初のイベントを予定に追加してください':'最後のイベントを予定に追加してください');
@@ -36,17 +35,35 @@
     const bits=[];if(v.outboundTarget)bits.push(`<div><strong>行き：</strong>${esc(v.outboundTarget.title)} に間に合う ${presets[v.outboundCity||'tokyo'].label}発・${v.outboundMode==='rail'?'新幹線':'飛行機'}を検索</div>`);if(v.returnTarget)bits.push(`<div><strong>帰り：</strong>${esc(v.returnTarget.title)} の後に帰れる ${presets[v.returnCity||'tokyo'].label}行き・${v.returnMode==='rail'?'新幹線':'飛行機'}を検索</div>`);if(!bits.length)return;
     const box=document.createElement('section');box.className='access-summary';box.innerHTML=`<div class="access-summary-head">TRIP PLAN / 往復アクセス</div><div class="access-summary-body">${bits.join('')}<div class="access-note">便・列車は公式検索で最新時刻を確認し、選んだ内容をマイ予定へ反映してください。</div></div>`;planner.before(box);
   }
-  function placeAtBottom(planner){
-    const screen=document.querySelector('#screen-plan');if(!screen||!planner)return;
-    const footer=screen.querySelector('.plan-actions,.plan-footer,.screen-actions');
-    if(footer&&footer.parentElement===screen)screen.insertBefore(planner,footer);else screen.appendChild(planner);
+  function placeAfterPlanContent(planner){
+    const screen=document.querySelector('#screen-plan');if(!screen||!planner)return false;
+    const content=screen.querySelector('#plan-content');
+    if(content){
+      if(content.nextElementSibling!==planner)content.insertAdjacentElement('afterend',planner);
+      return true;
+    }
+    const empty=screen.querySelector('#plan-empty');
+    if(empty){
+      if(empty.nextElementSibling!==planner)empty.insertAdjacentElement('afterend',planner);
+      return true;
+    }
+    return false;
   }
   function mount(){
     const screen=document.querySelector('#screen-plan');if(!screen)return;
     let planner=screen.querySelector('#access-planner');
-    if(!planner){const wrap=document.createElement('div');wrap.innerHTML=template();planner=wrap.firstElementChild;placeAtBottom(planner);let kind='outbound';renderBody(planner,kind);planner.addEventListener('click',e=>{const tab=e.target.closest('[data-trip-tab]');if(!tab)return;kind=tab.dataset.tripTab;planner.querySelectorAll('[data-trip-tab]').forEach(b=>b.setAttribute('aria-pressed',String(b===tab)));renderBody(planner,kind)});}
-    else placeAtBottom(planner);
+    if(!planner){
+      const wrap=document.createElement('div');wrap.innerHTML=template();planner=wrap.firstElementChild;
+      if(!placeAfterPlanContent(planner))screen.appendChild(planner);
+      let kind='outbound';renderBody(planner,kind);
+      planner.addEventListener('click',e=>{const tab=e.target.closest('[data-trip-tab]');if(!tab)return;kind=tab.dataset.tripTab;planner.querySelectorAll('[data-trip-tab]').forEach(b=>b.setAttribute('aria-pressed',String(b===tab)));renderBody(planner,kind)});
+    } else {
+      placeAfterPlanContent(planner);
+    }
     renderSummary();
   }
-  const obs=new MutationObserver(()=>mount());obs.observe(document.documentElement,{childList:true,subtree:true});if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',mount);else mount();
+  let raf=0;
+  const obs=new MutationObserver(()=>{cancelAnimationFrame(raf);raf=requestAnimationFrame(mount)});
+  obs.observe(document.documentElement,{childList:true,subtree:true});
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',mount);else mount();
 })();
