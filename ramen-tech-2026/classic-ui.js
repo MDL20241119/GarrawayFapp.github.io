@@ -2,9 +2,9 @@
 'use strict';
 (()=>{
   const hero=document.querySelector('.compact-hero');
-  if(!hero||hero.dataset.classic==='20260910c3')return;
+  if(!hero||hero.dataset.classic==='20260910c4')return;
   const initialHash=location.hash;
-  hero.dataset.classic='20260910c3';hero.classList.add('classic-hero');
+  hero.dataset.classic='20260910c4';hero.classList.add('classic-hero');
   hero.innerHTML=`<div class="classic-hero-top"><span>FUKUOKA, JAPAN</span><span>GARRAWAY F EDITION</span></div><div class="classic-hero-grid"><div class="classic-hero-copy"><p class="eyebrow">ONE CITY. ENDLESS CONNECTIONS.</p><h1 id="explore-title">RAMEN<br>TECH<span>.</span></h1><p class="classic-jp">福岡を、まるごと一杯。</p><p class="classic-description">気になるイベントへ。まだ知らない誰かへ。<br>街じゅうの出会いを、自分だけの一日に。</p><div class="classic-hero-actions"><button class="button yellow" type="button" data-classic-search>スケジュールを探す <span>↗</span></button><button class="classic-textlink" type="button" data-screen="map">会場から選ぶ ↗</button></div></div><div class="classic-hero-art"><span class="classic-sticker">HEY,<br>LET’S GO!</span><img src="assets/tonkotsu.svg" width="660" height="640" fetchpriority="high" alt="笑顔で手を振るラーメンの非公式キャラクター"><span class="classic-mascot-note">非公式キャラ</span><span class="classic-art-label">ORIGINAL TONKOTSU MASCOT / UNOFFICIAL</span></div></div><div class="classic-hero-bottom"><p class="classic-festival-date">10.07<span>WED</span><b>—</b>11<span>SUN</span></p><p class="classic-festival-caption">2026年10月7日（水）— 11日（日）<br><small>関連日程：9/30〜10/6・10/12〜14も掲載</small></p></div>`;
   const crumb=document.createElement('div');crumb.className='classic-breadcrumb';crumb.innerHTML='<a href="../">← Garraway F ホーム</a><span>RAMEN TECH 2026 非公式回遊ガイド</span>';hero.before(crumb);
   const ticker=document.createElement('div');ticker.className='classic-ticker';ticker.setAttribute('aria-hidden','true');ticker.innerHTML='<span>GOOD PEOPLE. GREAT IDEAS. NEXT CHALLENGE. ↗</span>'.repeat(4);hero.after(ticker);
@@ -25,9 +25,22 @@
       empty.appendChild(box);
     }
   };
+  const ensureRoadMap=()=>{
+    document.querySelectorAll('#plan-map.map-panel').forEach(panel=>{
+      const road=panel.querySelector('[data-map-mode="road"]');
+      const tiles=panel.querySelector('.map-tiles');
+      if(!road||!tiles||panel.dataset.autoRoad==='1')return;
+      panel.dataset.autoRoad='1';
+      requestAnimationFrame(()=>road.click());
+    });
+  };
+  const watchMaps=new MutationObserver(()=>requestAnimationFrame(ensureRoadMap));
+  const planContent=document.getElementById('plan-content');
+  if(planContent)watchMaps.observe(planContent,{childList:true,subtree:true});
+
   const watchPlan=new MutationObserver(()=>requestAnimationFrame(fallbackMap));
   ['plan-empty','plan-content'].forEach(id=>{const el=document.getElementById(id);if(el)watchPlan.observe(el,{childList:true,subtree:true});});
-  document.addEventListener('click',ev=>{const b=ev.target.closest('button,a');if(!b)return;if(b.hasAttribute('data-classic-search')){ev.preventDefault();window.GuideApp?.displayScreen('explore',{scroll:false});requestAnimationFrame(jump);}else if(b.dataset.screen==='explore'&&b.closest('nav')){requestAnimationFrame(jump);}else if(b.dataset.screen==='plan'){setTimeout(fallbackMap,0);}});
+  document.addEventListener('click',ev=>{const b=ev.target.closest('button,a');if(!b)return;if(b.hasAttribute('data-classic-search')){ev.preventDefault();window.GuideApp?.displayScreen('explore',{scroll:false});requestAnimationFrame(jump);}else if(b.dataset.screen==='explore'&&b.closest('nav')){requestAnimationFrame(jump);}else if(b.dataset.screen==='plan'){setTimeout(()=>{fallbackMap();ensureRoadMap();},0);}});
   if(initialHash==='#schedule'||(new URLSearchParams(location.search).has('q')&&!new URLSearchParams(location.search).has('event'))){requestAnimationFrame(jump);}
-  setTimeout(fallbackMap,0);
+  setTimeout(()=>{fallbackMap();ensureRoadMap();},0);
 })();
