@@ -1,5 +1,6 @@
-const fs=require('fs'),vm=require('vm'),assert=require('assert/strict');
-const window={};vm.runInNewContext(fs.readFileSync(require('path').join(__dirname,'../access-planner.js'),'utf8'),{window,document:{readyState:'loading',addEventListener(){}},localStorage:{getItem(){throw new Error('blocked')}},URLSearchParams,Date,Math,Number,JSON});
+(async()=>{
+const {default:fs}=await import('node:fs'),{default:vm}=await import('node:vm'),{default:assert}=await import('node:assert/strict'),{join}=await import('node:path');
+const window={};vm.runInNewContext(fs.readFileSync(join(__dirname,'../access-planner.js'),'utf8'),{window,document:{readyState:'loading',addEventListener(){}},localStorage:{getItem(){throw new Error('blocked')}},URLSearchParams,Date,Math,Number,JSON});
 const t=window.RamenTrip;let count=0;
 for(const city of ['tokyo','osaka'])for(const mode of ['air','rail'])for(const kind of ['outbound','return']){
  const list=t.services(city,mode,kind,'2026-10-07');assert.ok(list.length>=7);assert.equal(new Set(list.map(s=>s.id)).size,list.length);
@@ -30,3 +31,5 @@ const sameday={getState:()=>({entries:{a:{day:'2026-10-07'}}}),itinerary:()=>({r
 const corrected=t.services('osaka','rail','return','2026-10-07').find(s=>s.name==='ひかり682号');assert.equal(corrected.dep,'20:52');
 assert.equal(t.services('osaka','rail','outbound','2026-10-07').find(s=>s.name==='さくら741号').dep,'06:25');
 console.log(`PASS: ${count} timetable rows, airport/rail routes, multi-day event selection, connection limits, late-night transfer, unknown venues, dates and corrupt storage.`);
+
+})().catch(error=>{console.error(error);process.exitCode=1;});
