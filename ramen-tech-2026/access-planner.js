@@ -5,6 +5,7 @@
  */
 'use strict';
 (()=>{
+if(window.RamenTrip)return;
 const AIR={
  tokyo:{
   outbound:`239,06:20,08:10,W;3841,06:35,08:30,S;1075,06:45,08:35,A;241,07:30,09:25,A;243,08:10,10:00,A;245,08:45,10:35,A;3843,09:20,11:15,S;247,09:40,11:30,A;249,10:15,12:10,A;3845,10:15,12:10,S;251,11:30,13:20,A;3847,12:20,14:15,S;253,12:35,14:30,A;3849,13:15,15:10,S;255,13:30,15:20,A;257,14:25,16:15,A;259,15:00,16:55,A;261,15:40,17:35,A;3851,15:55,17:50,S;263,16:20,18:20,A;265,17:00,19:05,A;267,18:00,19:55,A;3853,18:30,20:25,S;269,19:00,20:50,A;271,19:20,21:15,A;273,19:35,21:30,A;3855,19:55,21:50,S`,
@@ -212,6 +213,6 @@ function mount(){
  window.addEventListener('storage',e=>{if(e.key===KEY){prefs=readPrefs();render();}else if(e.key==='ramen-guide-v3')refresh();});
 }
 // Small pure API for verifying timetable/connection arithmetic independently of the UI.
-window.RamenTrip={services,targets,cityRoute,assess,minutes,clock,validDay,cleanPref};
+window.RamenTrip={version:'20260911t2',services,targets,cityRoute,assess,minutes,clock,validDay,cleanPref};
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',mount);else mount();
 })();
