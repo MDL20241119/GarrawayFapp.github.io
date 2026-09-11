@@ -66,3 +66,19 @@ Garraway FトップページにRAMEN TECH特設サイトへのバナー・ナビ
 開催情報変更、時刻未確認、中止、移動未確認、時間不足は表示して確認を促し、未解消の日のICS出力を止めます。手入力の移動時間は会場・座標が変わると無効になり再確認が必要です。選択済み参加時間が更新された開催時間の範囲外になった場合も要確認にします。外部カレンダーは自動同期されません。
 
 `tools/ramen_verify_planner.py` は公開トップ、検索、日別選択、複数会場移動、参加時間調整、手入力、保存、要確認、ICS、印刷、320/390/768/1440pxの動作を検証します。mainのトップは既存Next成果物を変更しすぎない追加ウィジェット方式、sites-sourceは同じ案内のReactコンポーネントを追加しています。ソース再ビルド時も最新の専用ディレクトリと自動更新用tools・workflowを保持してください。
+
+
+
+## Event-first trip planner (2026-09-11)
+
+`access-planner.js` reads `GuideApp.getState()` / `itinerary(day)` across all saved dates. It anchors outbound travel to the earliest valid start and return travel to the latest valid end, independently of the selected day or timeline/table view. Conditions and selected services are saved locally under `garraway_ramen_access_v3`; previous city/mode preferences migrate from v2. Event exports continue to contain event schedules only.
+
+Timetables are published reference snapshots, not live search or availability. The UI intentionally limits the embedded data to October 1–24, 2026.
+
+- ANA Tokyo and Osaka PDFs, July 1–October 24 schedule, published March 30, checked September 11. October rows only; ANA flight numbers include the actual codeshare operators. JAL and other airlines are linked, not included in the embedded table.
+- JR Central `https://railway.jr-central.co.jp/pwd/_pdf/N700S-every.pdf`: selected regular direct trains from the March 14, 2026 timetable. Not an exhaustive rail listing. Numbers and endpoint times were visually checked against the official PDF.
+- Fukuoka Airport subway access: `https://www.fukuoka-airport.jp/access/subway.html`. Hakata station: `https://subway.city.fukuoka.lg.jp/eki/stations/hakata.php`. Subway timetables: `https://subway.city.fukuoka.lg.jp/schedule/index.php`.
+
+City routes use a simple no-transfer airport-line route via Tenjin, or walking from Hakata for nearby venues. Walking estimates use distance × 1.35 / 70 metres per minute, rounded up to five minutes. Station access/waiting, terminal time and event buffer are separately visible. Unknown/distant venues need a manually verified city travel duration. Manual durations are invalidated when the target event/venue changes. Late-night subway transfers require verification. Overnight itineraries explicitly leave hotel travel unplanned.
+
+Run the meaningful arithmetic/data checks with `node ramen-tech-2026/tests/access-planner.test.cjs` from the repository root. The UI observes only the host plan containers, avoiding the former self-triggering render loop. Changes to events, modes, dates and timings are recalculated; selected services need review when their target changes.

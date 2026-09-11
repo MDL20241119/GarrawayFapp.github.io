@@ -14,3 +14,150 @@ body{background:#fff;color:#111;font-family:var(--font);line-height:1.65}h1,h2,h
 @media(max-width:540px){.screen{width:calc(100% - 32px);padding-top:24px}#screen-explore{width:100%;padding-top:0}#screen-explore>.search-area,#screen-explore>.results-meta,#screen-explore>.event-list,#screen-explore>.load-more,#screen-explore>.catalog-footnote,#screen-explore>.classic-search-heading{width:calc(100% - 32px)}.site-header{height:65px;padding:0 16px}.brand{font-size:15px;gap:9px}.brand small{font-size:9px;letter-spacing:0}.brand-bowl{width:36px;height:36px;font-size:23px}.brand b{font-size:11px}.classic-breadcrumb{padding:8px 16px;font-size:11px;gap:10px}.classic-breadcrumb span{max-width:175px;font-size:10px;text-align:right;line-height:1.5}.compact-hero.classic-hero{padding:18px 20px 22px;margin:0;min-height:0}.classic-hero-top{font-size:9px;letter-spacing:1px;padding-bottom:12px}.classic-hero-grid{grid-template-columns:1fr;min-height:0;gap:0}.classic-hero-copy{padding:24px 0 5px}.classic-hero-copy .eyebrow{font-size:9px;letter-spacing:1.3px;margin-bottom:20px}.compact-hero.classic-hero h1{font-size:clamp(83px,23.5vw,123px);line-height:.83;letter-spacing:-.065em;margin-left:-4px}.classic-hero .classic-jp{font-size:25px;letter-spacing:-1px;margin-top:23px}.classic-hero .classic-description{font-size:14px;line-height:1.9;margin-top:9px}.classic-hero-actions{margin-top:16px;gap:8px 16px}.classic-hero-actions .button{font-size:14px;gap:22px;min-height:48px;padding:11px 14px}.classic-hero-actions .classic-textlink{font-size:13px}.classic-hero-art{height:260px;max-width:380px;width:100%;margin:auto}.classic-hero-art img{width:100%;height:270px;max-height:280px}.classic-sticker{left:0;top:9%;width:88px;height:88px;font-size:18px}.classic-mascot-note{font-size:12px;right:0;bottom:23px;padding:6px 11px}.classic-art-label{font-size:8px;letter-spacing:.7px;bottom:3px}.classic-hero-bottom{flex-wrap:wrap;gap:13px;padding-top:17px;margin-top:7px}.classic-festival-date{font-size:47px;letter-spacing:-2px}.classic-festival-date b{font-size:30px}.classic-festival-date span{font-size:10px;margin-right:7px}.classic-festival-caption{text-align:left;font-size:12px;line-height:1.8}.classic-festival-caption small{font-size:11px}.classic-ticker{font-size:14px;padding:9px 0;gap:30px}.classic-search-heading{padding:28px 0 16px;align-items:start;gap:12px;scroll-margin-top:78px}.classic-search-heading h2{font-size:29px;letter-spacing:-1px}.classic-search-heading>p{display:none}.classic-search-heading .eyebrow{font-size:9px;margin-bottom:9px}.search-area{top:64px;padding-top:5px;padding-bottom:10px}.day-tabs{margin-bottom:10px;padding:0}.day-tab{min-width:74px;min-height:68px;font-size:24px;padding:8px 9px}.day-tab small{font-size:11px}.day-tab:first-child,.day-tab.related{font-size:12px}.search-row{gap:7px}.searchbox{min-height:52px;height:52px;padding:0 9px}.searchbox input{font-size:16px;height:46px}.filter-button{font-size:12px;min-height:52px;padding:8px 10px}.results-meta{margin-top:15px;margin-bottom:15px}.results-meta #result-count{font-size:13px}.results-meta #result-count strong{font-size:23px}.active-filters button{font-size:12px;min-height:39px}.sort-control select{font-size:13px;width:84px}.event-card,.event-list.grid .event-card{padding:21px 17px 15px;grid-template-columns:1fr;gap:11px;border-radius:5px}.event-clock,.grid .event-clock{display:block;border:0;grid-column:1;padding:0}.event-date,.grid .event-date{font-size:14px;margin:0 0 6px}.event-time,.grid .event-time{font-size:28px;font-weight:900;line-height:1.2;letter-spacing:-1px}.event-end,.grid .event-end{font-size:inherit;display:inline;margin-left:4px}.event-end:before,.grid .event-end:before{font-size:18px;content:"—"}.event-kind,.grid .event-kind{font-size:11px;margin-top:8px;text-align:left;max-width:none}.event-copy,.card-actions{grid-column:1}.card-title{font-size:18px;line-height:1.7;font-weight:800}.event-place{font-size:14px;margin-top:7px}.event-room{font-size:13px}.badge{font-size:12px;padding:3px 6px}.card-actions{display:grid;grid-template-columns:1fr 1.15fr;gap:8px;margin:2px 0 0;padding-top:12px;border-top:1px solid #ccc}.card-actions button{font-size:13px;min-height:46px;padding:8px}.nested-sessions{grid-column:1}.nested-sessions summary{font-size:13px}.session-mini .title-button{font-size:13px}.source-hint{font-size:12px}.date-heading{font-size:21px;margin-top:18px}.page-heading{margin:0 0 21px;padding-bottom:21px}.page-heading h1{font-size:32px;letter-spacing:-1px}.page-heading .subtle{font-size:14px}.page-heading .eyebrow{font-size:10px}.heading-actions .button{font-size:13px;min-height:48px}.plan-date{font-size:14px;min-height:46px;padding:8px 12px}.plan-date span{font-size:11px}.plan-stats{font-size:12px;gap:20px}.plan-stats strong{font-size:24px}.map-heading{padding:14px;gap:10px}.map-heading h2{font-size:17px}.map-heading p{font-size:12px}.map-display-select button{font-size:11px;min-height:44px;padding:7px}.plan-map-aside .geo-map{height:280px}.map-label{font-size:11px;max-width:135px}.map-legend,.map-status{font-size:12px}.map-selected strong{font-size:14px}.map-selected p{font-size:13px}.map-selected .button{font-size:12px}.flow-head h2{font-size:20px}.segmented button{min-height:44px;font-size:12px}.plan-event{grid-template-columns:54px minmax(0,1fr);gap:10px;scroll-margin-top:80px}.plan-time{font-size:18px;padding-top:16px}.plan-time small{font-size:13px}.plan-event-card{padding:14px}.plan-event-card h3{font-size:17px;line-height:1.7}.plan-event-card .venue-button{font-size:13px;line-height:1.7}.plan-event-card .event-room{font-size:12px}.stop-id{font-size:10px;gap:6px}.stop-id .stop-area{display:none}.stop-number{width:25px;height:25px;font-size:12px}.plan-event-foot button{font-size:12px;min-height:44px}.visit-line{font-size:12px}.plan-warning{font-size:13px}.plan-leg{margin-left:63px;padding:17px 0 17px 14px}.plan-leg h4{font-size:14px}.plan-leg h4 strong{font-size:19px}.plan-leg .leg-label,.plan-leg .leg-result{font-size:13px}.plan-leg .leg-actions a,.plan-leg .leg-actions button{font-size:13px}.plan-gap{margin-left:63px;padding:14px;flex-wrap:wrap}.plan-gap h4{font-size:15px}.plan-gap p{font-size:12px}.plan-gap button{font-size:12px;min-height:44px}.notice{font-size:13px}.notice button{font-size:12px}.gf-hero{padding:25px 21px}.gf-hero h1{font-size:30px;letter-spacing:-1px}.gf-day-title{font-size:23px}.site-footer{padding:24px 16px calc(108px + env(safe-area-inset-bottom));font-size:12px}dialog{border-radius:5px}.dialog-header{padding:15px 18px}.dialog-header h2{font-size:18px}#modal-body{padding:20px}.detail-title{font-size:22px}}
 @media(prefers-reduced-motion:reduce){.classic-hero-art img{transform:none}.classic-sticker{transform:none}}
 @media print{.classic-breadcrumb,.classic-ticker,.classic-hero,.classic-search-heading{display:none!important}.plan-event,.map-panel{break-inside:avoid}.map-heading,.plan-gap{print-color-adjust:exact;-webkit-print-color-adjust:exact}.map-pin{box-shadow:none}main{padding:0}}
+
+/* Trip planner: scoped to preserve the existing guide and event cards. */
+#access-planner{margin:32px 0 28px;border:2px solid #171717;border-radius:6px;background:#fff;color:#171717;overflow:hidden;scroll-margin-top:100px}
+#access-planner *{box-sizing:border-box}
+#access-planner .tp-head{padding:22px 24px;background:#ffe248;border-bottom:2px solid #171717}
+#access-planner .tp-head>p:first-child{font-size:12px;letter-spacing:.11em;font-weight:900;margin:0 0 8px}
+#access-planner h2{font-size:clamp(21px,2.6vw,29px);line-height:1.5;font-weight:900;letter-spacing:-.035em;margin:0 0 8px}
+#access-planner h3{font-size:17px;line-height:1.6;margin:0;font-weight:900}
+#access-planner p{font-size:14px;line-height:1.8;margin:5px 0}
+#access-planner .tp-inner{padding:24px;min-width:0}
+#access-planner button,#access-planner input,#access-planner select{font:inherit}
+#access-planner button{cursor:pointer;background:#fff;color:#171717;border:1px solid #171717;border-radius:4px;min-height:44px;padding:9px 12px;font-size:14px;font-weight:800;line-height:1.5}
+#access-planner button:hover:not(:disabled){background:#f2f6fd}
+#access-planner button:disabled{cursor:not-allowed;background:#eee;border-color:#bbb;color:#666}
+#access-planner :is(button,a,input,select,summary,[tabindex]):focus-visible{outline:3px solid #125dc8;outline-offset:4px}
+#access-planner a{color:#075caf;font-weight:700;text-decoration:underline;text-underline-offset:3px}
+#access-planner .tp-summary{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:24px}
+#access-planner .tp-summary-card{text-align:left;display:flex;flex-direction:column;gap:6px;padding:16px;border-width:2px;min-width:0;word-break:break-word}
+#access-planner .tp-summary-card.tp-active{background:#1167ce;border-color:#1167ce;color:#fff}
+#access-planner .tp-summary-card>span{font-size:12px;line-height:1.7}
+#access-planner .tp-summary-card>strong{font-size:17px;font-weight:900}
+#access-planner .tp-summary-card>small{font-size:12px;font-weight:500;line-height:1.7}
+#access-planner .tp-target{background:#f3f6fa;border-left:4px solid #1167ce;padding:16px 20px;margin-bottom:24px}
+#access-planner .tp-kicker{font-size:12px;color:#40516a;font-weight:900;letter-spacing:.04em}
+#access-planner .tp-target b{font-size:17px}
+#access-planner .tp-target h3{font-size:16px;overflow-wrap:anywhere}
+#access-planner .tp-controls{display:grid;grid-template-columns:1fr 1fr;gap:18px 16px}
+#access-planner .tp-field{display:flex;flex-direction:column;gap:7px;font-size:12px;font-weight:800;min-width:0}
+#access-planner .tp-field input,#access-planner .tp-field select{height:46px;min-width:0;max-width:100%;width:100%;background:#fff;color:#171717;border:1px solid #969da7;border-radius:4px;padding:8px 10px;font-size:15px;font-weight:500}
+#access-planner .tp-mode{border:0;margin:0;padding:0;min-width:0;grid-column:1/-1}
+#access-planner .tp-mode legend{font-size:12px;font-weight:800;margin-bottom:8px}
+#access-planner .tp-mode>div{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+#access-planner .tp-mode button{font-size:15px;display:flex;align-items:center;justify-content:center;gap:12px;border:2px solid #b8bec8;min-height:52px}
+#access-planner .tp-mode button[aria-pressed=true]{background:#eaf3ff;border-color:#1167ce;color:#0753a8}
+#access-planner .tp-mode button small{font-size:12px;font-weight:500}
+#access-planner .tp-route{margin-top:25px;padding:20px 0;border-top:1px solid #d9dee5}
+#access-planner .tp-section-title{display:flex;gap:12px;align-items:center;justify-content:space-between;flex-wrap:wrap;margin-bottom:12px}
+#access-planner .tp-pill{font-size:12px;line-height:1.5;font-weight:800;display:inline-block;background:#eef3f9;border:1px solid #c4cfdd;border-radius:4px;padding:5px 9px}
+#access-planner .tp-route-steps{list-style:none;margin:16px 0;padding:0}
+#access-planner .tp-route-steps li{position:relative;display:grid;grid-template-columns:30px 1fr auto;gap:12px;align-items:start;padding:0 0 20px;min-width:0}
+#access-planner .tp-route-steps li:not(:last-child):before{content:'';position:absolute;left:14px;top:26px;bottom:0;width:2px;background:#bacbe1}
+#access-planner .tp-route-steps li:last-child{padding-bottom:0}
+#access-planner .tp-step-num{background:#1167ce;color:#fff;display:flex;align-items:center;justify-content:center;width:30px;height:30px;border-radius:50%;font-size:12px;font-weight:900;z-index:1}
+#access-planner .tp-route-steps strong{font-size:14px;line-height:1.8;overflow-wrap:anywhere}
+#access-planner .tp-route-steps p{color:#4e5b6d;font-size:12px;margin:3px 0 0}
+#access-planner .tp-route-steps b{font-size:12px;white-space:nowrap;line-height:30px}
+#access-planner .tp-links{display:flex;gap:8px 18px;flex-wrap:wrap;margin:10px 0}
+#access-planner .tp-links a{font-size:12px;display:inline-flex;align-items:center;min-height:36px}
+#access-planner .tp-fine{font-size:12px;color:#596474;line-height:1.9}
+#access-planner .tp-note{font-size:12px;color:#435066}
+#access-planner .tp-note a{display:inline;line-height:1.9}
+#access-planner .tp-settings{border:1px solid #c7cfda;border-radius:4px;padding:0 16px;margin:2px 0 20px;background:#fafbfd}
+#access-planner .tp-settings summary{cursor:pointer;font-size:14px;font-weight:800;min-height:48px;padding:14px 0;line-height:1.6}
+#access-planner .tp-settings summary span{font-size:12px;font-weight:500;color:#526176;margin-left:10px}
+#access-planner .tp-settings-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;margin:8px 0 12px}
+#access-planner .tp-settings>.tp-fine{padding-bottom:12px}
+#access-planner .tp-deadline{padding:20px;border-radius:4px;background:#101f35;color:#fff;margin:20px 0 30px}
+#access-planner .tp-deadline>span{font-size:12px;font-weight:700}
+#access-planner .tp-deadline>strong{display:block;font-size:32px;font-weight:900;line-height:1.6;font-variant-numeric:tabular-nums}
+#access-planner .tp-deadline strong small{font-size:14px;font-weight:500;margin-left:8px}
+#access-planner .tp-deadline p{color:#e2e9f1;font-size:12px}
+#access-planner .tp-timetable{border-top:2px solid #171717;padding-top:22px}
+#access-planner .tp-line-label{font-size:18px;font-weight:900;line-height:1.6}
+#access-planner .tp-line-label span{margin:0 8px;color:#1167ce}
+#access-planner .tp-result-count{margin:18px 0 10px;font-size:12px}
+#access-planner .tp-result-count strong{font-size:18px;color:#075caf}
+#access-planner .tp-table-wrap{overflow-x:auto;border:1px solid #c5ceda;border-radius:4px;margin-top:14px;overscroll-behavior-x:contain}
+#access-planner table{border-collapse:collapse;min-width:580px;width:100%;text-align:left;font-size:12px;table-layout:auto;margin:0}
+#access-planner thead{background:#eef3f9}
+#access-planner th,#access-planner td{padding:13px 12px;border-bottom:1px solid #dce2ea;vertical-align:middle;text-align:left}
+#access-planner thead th{font-size:12px;font-weight:800;white-space:nowrap}
+#access-planner tbody th{font-weight:800;min-width:155px}
+#access-planner tbody th small{display:block;font-size:12px;font-weight:500;color:#586575;margin-top:5px;line-height:1.6}
+#access-planner tbody tr:last-child>*{border-bottom:0}
+#access-planner .tp-time{font-weight:900;font-size:19px;font-variant-numeric:tabular-nums;white-space:nowrap}
+#access-planner .tp-status{font-size:12px;display:inline-block;border-radius:3px;padding:5px 7px;line-height:1.6}
+#access-planner .tp-ok{background:#e7f5ed;color:#1b6744}
+#access-planner .tp-check{background:#f5efe3;color:#78561f}
+#access-planner .tp-picked{background:#f0f7ff}
+#access-planner td button{font-size:12px;white-space:nowrap}
+#access-planner td button[aria-pressed=true]{background:#1167ce;color:#fff;border-color:#1167ce}
+#access-planner .tp-show-all{width:100%;margin:10px 0 5px;border-color:#9faebe}
+#access-planner .tp-alert{background:#fff3d4;color:#684907;padding:12px 14px;border-left:3px solid #c98a10;font-size:12px;margin:14px 0;line-height:1.8}
+#access-planner .tp-itinerary{margin:26px 0 12px;border:2px solid #1167ce;border-radius:5px;padding:20px}
+#access-planner .tp-itinerary h3{color:#0753a8}
+#access-planner .tp-itinerary .tp-section-title button{font-size:12px;border-color:#9faebe;min-height:36px}
+#access-planner .tp-timeline{padding:0;list-style:none;margin:20px 0 10px}
+#access-planner .tp-timeline li{display:grid;grid-template-columns:108px 1fr;gap:24px;position:relative;min-width:0;padding-bottom:22px}
+#access-planner .tp-timeline li:last-child{padding-bottom:0}
+#access-planner .tp-timeline li:before{content:'';position:absolute;left:111px;top:8px;width:8px;height:8px;border-radius:50%;background:#1167ce;z-index:1}
+#access-planner .tp-timeline li:not(:last-child):after{content:'';position:absolute;left:114px;width:2px;background:#bfd4ed;top:12px;bottom:-8px}
+#access-planner .tp-timeline time{font-size:16px;font-weight:900;font-variant-numeric:tabular-nums;line-height:1.6}
+#access-planner .tp-timeline strong{font-size:14px;line-height:1.8}
+#access-planner .tp-timeline p{font-size:12px;color:#526176;margin-top:3px;overflow-wrap:anywhere}
+#access-planner .tp-storage{font-size:12px;color:#526176;border-top:1px solid #dce2ea;margin:20px 0 0;padding-top:14px}
+#access-planner .tp-sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+#access-planner .tp-mobile-break{display:none}
+@media(max-width:600px){
+ #access-planner .tp-head{padding:19px 16px}
+ #access-planner .tp-inner{padding:16px}
+ #access-planner .tp-mobile-break{display:inline}
+ #access-planner .tp-head>p:last-child{font-size:12px}
+ #access-planner .tp-summary{gap:8px;margin-bottom:18px}
+ #access-planner .tp-summary-card{padding:11px 10px;gap:6px}
+ #access-planner .tp-summary-card>strong{font-size:14px}
+ #access-planner .tp-summary-card>span,#access-planner .tp-summary-card>small{font-size:12px}
+ #access-planner .tp-target{padding:14px;margin-bottom:18px}
+ #access-planner .tp-controls{gap:14px 10px}
+ #access-planner .tp-field input,#access-planner .tp-field select{font-size:16px;padding:8px;min-width:0}
+ #access-planner .tp-mode>div{gap:8px}
+ #access-planner .tp-mode button{gap:6px;flex-direction:column;font-size:14px}
+ #access-planner .tp-mode button small{font-size:12px}
+ #access-planner .tp-route-steps li{grid-template-columns:26px 1fr auto;gap:9px}
+ #access-planner .tp-step-num{width:26px;height:26px;font-size:12px}
+ #access-planner .tp-route-steps li:not(:last-child):before{left:12px}
+ #access-planner .tp-route-steps strong{font-size:14px}
+ #access-planner .tp-route-steps p{font-size:12px}
+ #access-planner .tp-route-steps b{font-size:12px}
+ #access-planner .tp-settings-grid{grid-template-columns:1fr}
+ #access-planner .tp-settings summary span{display:block;margin:3px 0 0 16px}
+ #access-planner .tp-deadline{padding:16px;margin-bottom:24px}
+ #access-planner .tp-itinerary{padding:15px 12px}
+ #access-planner .tp-timeline li{grid-template-columns:76px 1fr;gap:24px}
+ #access-planner .tp-timeline time{font-size:14px}
+ #access-planner .tp-timeline li:before{left:78px}
+ #access-planner .tp-timeline li:not(:last-child):after{left:81px}
+}
+@media(prefers-reduced-motion:reduce){#access-planner *{scroll-behavior:auto!important}}
+@media(max-width:600px){
+ #access-planner .tp-table-wrap{border:0;overflow:visible}
+ #access-planner table{min-width:0;display:block}
+ #access-planner thead{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0)}
+ #access-planner tbody{display:grid;gap:12px}
+ #access-planner tbody tr{display:grid;grid-template-columns:1fr 1fr;border:1px solid #c5ceda;border-radius:5px;padding:12px;gap:10px 12px}
+ #access-planner tbody tr.tp-picked{border:2px solid #1167ce;padding:11px}
+ #access-planner tbody th{grid-column:1/-1;font-size:14px}
+ #access-planner tbody th small{font-size:12px}
+ #access-planner td,#access-planner th{padding:0;border:0}
+ #access-planner .tp-time{font-size:25px;line-height:1.5}
+ #access-planner td:nth-child(2):before,#access-planner td:nth-child(3):before{font-size:12px;display:block;font-weight:500;color:#526176}
+ #access-planner td:nth-child(2):before{content:'出発'}
+ #access-planner td:nth-child(3):before{content:'到着'}
+ #access-planner td:nth-child(5){text-align:right;align-self:center}
+ #access-planner td button{font-size:12px;min-width:108px}
+ #access-planner td[colspan]{grid-column:1/-1}
+ #access-planner .tp-summary-card>span,#access-planner .tp-summary-card>small{font-size:12px}
+}
