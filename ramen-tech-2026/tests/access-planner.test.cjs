@@ -1,6 +1,6 @@
 (async()=>{
 const {default:fs}=await import('node:fs'),{default:vm}=await import('node:vm'),{default:assert}=await import('node:assert/strict'),{join}=await import('node:path');
-const window={};vm.runInNewContext(fs.readFileSync(join(__dirname,'../access-planner.js'),'utf8'),{window,document:{readyState:'loading',addEventListener(){}},localStorage:{getItem(){throw new Error('blocked')}},URLSearchParams,Date,Math,Number,JSON});
+const window={};for(const file of ['flight-data.js','flight-monthly.js'])vm.runInNewContext(fs.readFileSync(join(__dirname,'../'+file),'utf8'),{window});vm.runInNewContext(fs.readFileSync(join(__dirname,'../access-planner.js'),'utf8'),{window,document:{readyState:'loading',addEventListener(){}},localStorage:{getItem(){throw new Error('blocked')}},URLSearchParams,Date,Math,Number,JSON});
 const t=window.RamenTrip;let count=0;
 for(const city of ['tokyo','osaka'])for(const mode of ['air','rail'])for(const kind of ['outbound','return']){
  const list=t.services(city,mode,kind,'2026-10-07');assert.ok(list.length>=7);assert.equal(new Set(list.map(s=>s.id)).size,list.length);
@@ -30,6 +30,37 @@ const targets=t.targets(app);assert.equal(targets.outbound.key,'long');assert.eq
 const sameday={getState:()=>({entries:{a:{day:'2026-10-07'}}}),itinerary:()=>({rows:dates['2026-10-07']})};assert.equal(t.targets(sameday).return.key,'long');
 const corrected=t.services('osaka','rail','return','2026-10-07').find(s=>s.name==='ひかり682号');assert.equal(corrected.dep,'20:52');
 assert.equal(t.services('osaka','rail','outbound','2026-10-07').find(s=>s.name==='さくら741号').dep,'06:25');
+// Both endpoints and exact October adjustments are checked against the official sources.
+const hnd=t.services('tokyo','air','outbound','2026-10-07','HND');
+assert.equal(hnd.length,56);assert.equal(hnd.find(s=>s.name==='JAL 303').arr,'08:15');
+assert.equal(hnd.find(s=>s.name==='JAL 335').dep,'19:30');
+const itm=t.services('osaka','air','outbound','2026-10-07','ITM');
+assert.equal(itm.length,11);assert.equal(itm.find(s=>s.name==='JAL 2051').dep,'07:20');assert.equal(itm.find(s=>s.name==='JAL 2051').arr,'08:30');
+assert.equal(itm.find(s=>s.name==='JAL 2053').arr,'10:55');
+const narita=day=>t.services('tokyo','air','outbound',day,'NRT');
+assert.equal(narita('2026-10-07').find(s=>s.name==='MM 359').dep,'12:50');
+assert.equal(narita('2026-10-08').find(s=>s.name==='MM 359').dep,'12:40');
+assert.ok(t.services('tokyo','air','outbound','2026-10-07','CTS').some(s=>s.name==='SKY 774'));
+assert.ok(!t.services('tokyo','air','outbound','2026-10-08','CTS').some(s=>s.name==='SKY 774'));
+assert.ok(t.services('tokyo','air','outbound','2026-10-08','CTS').some(s=>s.name==='SKY 772'));
+assert.ok(!t.services('tokyo','air','outbound','2026-10-02','NKM').some(s=>s.name==='JAL 4393'));
+assert.ok(t.services('tokyo','air','outbound','2026-10-07','NKM').some(s=>s.name==='JAL 4393'));
+for(let date=1;date<=24;date++)for(const kind of ['outbound','return']){
+ const all=t.services('tokyo','air',kind,'2026-10-'+String(date).padStart(2,'0'),'ALL');
+ assert.equal(new Set(all.map(s=>s.id)).size,all.length,'No duplicate physical flight on the same date');
+ for(const s of all)assert.ok(t.minutes(s.dep)<t.minutes(s.arr),s.id);
+}
+const sep=t.services('tokyo','air','outbound','2026-09-12','ALL');
+assert.equal(Object.keys(window.RamenFlightData.airports).length,53);
+assert.ok(sep.some(s=>s.carrier==='GK'));assert.ok(sep.some(s=>s.carrier==='JAL'));
+const overnight=sep.find(s=>s.airport==='KUL'&&s.depDiff==='前日');assert.ok(overnight);assert.equal(t.assess(overnight,{threshold:600}).ok,false);
+assert.equal(t.services('tokyo','air','outbound','2026-10-07','ICN').length,0,'No September data used for October');
+assert.equal(t.services('tokyo','air','outbound','2026-09-11','HND').length,0,'No unsupported date extrapolation');
+const shared=t.services('tokyo','air','outbound','2026-10-07','AXJ').find(s=>(s.shares||[]).some(x=>x.carrier==='JAL'));
+assert.ok(shared);assert.ok(t.flightMatches(shared,'JAL'));assert.ok(t.flightMatches(shared,'ANA'));
+assert.equal(t.services('tokyo','air','outbound','2026-10-01','AXJ').length,1,'Physical flight cancellation applies to all codeshares');
+const railContext={p:{mode:'rail',city:'osaka'},kind:'outbound',origin:'新大阪駅',terminal:'博多駅'};
+assert.equal(t.endpoints(railContext).from,'新大阪駅');assert.equal(t.endpoints(railContext).to,'博多駅');
 console.log(`PASS: ${count} timetable rows, airport/rail routes, multi-day event selection, connection limits, late-night transfer, unknown venues, dates and corrupt storage.`);
 
 })().catch(error=>{console.error(error);process.exitCode=1;});

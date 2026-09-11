@@ -82,3 +82,22 @@ Timetables are published reference snapshots, not live search or availability. T
 City routes use a simple no-transfer airport-line route via Tenjin, or walking from Hakata for nearby venues. Walking estimates use distance × 1.35 / 70 metres per minute, rounded up to five minutes. Station access/waiting, terminal time and event buffer are separately visible. Unknown/distant venues need a manually verified city travel duration. Manual durations are invalidated when the target event/venue changes. Late-night subway transfers require verification. Overnight itineraries explicitly leave hotel travel unplanned.
 
 Run the meaningful arithmetic/data checks with `node ramen-tech-2026/tests/access-planner.test.cjs` from the repository root. The UI observes only the host plan containers, avoiding the former self-triggering render loop. Changes to events, modes, dates and timings are recalculated; selected services need review when their target changes.
+
+
+### 到着時刻・全社時刻表の拡張（2026-09-11）
+
+- 飛行機は出発空港名と「福岡空港 着」、新幹線は「東京駅／新大阪駅 発」と「博多駅 着」を各行に表示。到着時刻を大きくし、到着順・出発順、航空会社／共同運航便で絞り込める。
+- `flight-data.js` は福岡空港公式サイトの公開時刻表APIの保存データ。初回は2026年9月12日、国内28・国際25路線、往復544行（運休情報を含む）。国内線と国際線を区別し、国際線の出発地・帰着地は現地時刻、福岡の発着は日本時間で表示する。
+- `scripts/update-flight-data.py` は既存の公開処理から実行する。公式の掲載可能日だけを取得し、翌日と10月6〜10日を対象とする。全路線の取得成功を確認した日だけ `completeDates` に入れる。取得失敗時には検証済みの保存データを維持する。サイト閲覧中に空港APIへはアクセスしない。
+- `flight-monthly.js` は2026年10月1〜24日の確認済み定期便。ANA九州版公式PDF、JALの9/1〜10/24公開XML、スカイマーク夏ダイヤPDF、Peachの7/6更新夏ダイヤPDFから作成。28路線・時刻／運航日別363行。羽田は往復各56便、伊丹は各11便。成田のPeach MM359/360は水曜日の時刻、スカイマーク札幌・那覇便は曜日別便名を反映する。
+- JALの「早発／遅発」は、到着時刻の別指定がない限り到着も同じ分数ずらす（JAL公式の表記ルール）。小牧・天草の10月の運休日を反映する。ANAとJALで時刻と運航会社が一致するORC・天草・JAC便は1行にまとめ、運休日を共同便すべてに適用する。
+- 9月の便を10月の日付へ流用しない。2026/9/11時点では空港全社データは9月分のみで、10月のジェットスター・国際線は未収録。10月の部分掲載と、9月の全社掲載を画面上で区別する。日付が未掲載の場合は「運航便なし」と表示しない。
+- 公式保存データの閲覧ボタンは旅程の日付・選択済み便を変更しない。国際線は日付・入出国時間を別途確認する閲覧用とし、国内線の地下鉄直結ルートによる自動逆算を適用しない。
+- 確認: `node tests/access-planner.test.cjs`。全24日について便の重複、運休日、曜日変更、JALの10月時刻、到着先、イベントへの接続、前日出発、未掲載日の扱いを検証する。
+
+公式出典:
+- 福岡空港: https://www.fukuoka-airport.jp/flight/schedule/
+- JAL: https://www.jal.co.jp/jp/ja/dom/route/time/ （公開XML: `/dom/time/xml/20260901_20261024/出発地_到着地.xml`）
+- ANA: https://www.ana.co.jp/guide/plan/airinfo/dom-timetable/pdf/timetable_kyushu_20260701_20261024.pdf
+- スカイマーク: https://www.skymark.co.jp/ja/news/detail/__icsFiles/afieldfile/2026/03/09/timetable_2026summerUpdate.pdf
+- Peach: https://www.flypeach.com/application/files/5117/8304/1614/20260706_S26_20260329-20261024_dom_JP.pdf

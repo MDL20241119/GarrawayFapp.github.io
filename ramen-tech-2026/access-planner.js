@@ -41,26 +41,41 @@ const rows=s=>s.split(';').map(r=>r.split(','));
 const number=(v,d,min=0,max=240)=>v!==''&&v!==null&&v!==undefined&&Number.isFinite(+v)?Math.max(min,Math.min(max,Math.round(+v))):d;
 const duration=n=>n>=60?`${Math.floor(n/60)}時間${n%60?`${n%60}分`:''}`:`${n}分`;
 const link=(label,url)=>`<a href="${esc(url)}" target="_blank" rel="noopener noreferrer">${label} ↗</a>`;
-function services(city,mode,kind,day){
- if(!validDay(day)||day<'2026-10-01'||day>'2026-10-24')return [];
- let list;
- if(mode==='air')list=rows(AIR[city][kind]).map(([n,dep,arr,op])=>({id:'NH'+n,name:'ANA（NH）'+n+'便',dep,arr,operator:{A:'ANA',W:'ANAウィングス',S:'スターフライヤー',I:'IBEXエアラインズ'}[op]}));
- else {
+const flightData=()=>window.RamenFlightData||{airports:{},dates:{},completeDates:[]};
+const monthlyData=()=>window.RamenFlightMonthly||{routes:{},sources:{}};
+const airportName=code=>({HND:'羽田空港',NRT:'成田空港',ITM:'伊丹空港',KIX:'関西空港',CTS:'新千歳空港',NKM:'名古屋（小牧）空港',NGO:'中部国際空港',ALL:'すべての空港'}[code]||flightData().airports[code]?.name||code);
+const carrierCode=code=>({JL:'JAL',NH:'ANA',NU:'JTA',BC:'SKY',FW:'IBX',JH:'FDA',OC:'ORC',MZ:'AMX',HD:'ADO','6J':'SNA'}[code]||code);
+function services(city,mode,kind,day,airport){
+ if(!validDay(day))return [];
+ let list=[];
+ if(mode==='air'){
+  const code=airport||(city==='osaka'?'ITM':'HND'),snapshot=flightData().dates[day]||{},monthly=monthlyData().routes;
+  const codes=code==='ALL'?[...new Set([...Object.keys(snapshot),...Object.keys(monthly)])]:[code];
+  for(const route of codes){
+   if(snapshot[route])list.push(...(snapshot[route][kind]||[]));
+   else if(day>='2026-10-01'&&day<='2026-10-24'){
+    if(monthly[route])list.push(...(monthly[route][kind]||[]).filter(x=>!(x.excludedDays||[]).includes(day)&&(!x.onlyDays||x.onlyDays.includes(day))&&(!x.weekdays||x.weekdays.includes(new Date(day+'T12:00:00Z').getUTCDay()))));
+    else if(route==='HND'||route==='ITM')list.push(...rows(AIR[route==='HND'?'tokyo':'osaka'][kind]).map(([n,dep,arr,op])=>({id:route+'-ANA'+n,airport:route,name:'ANA '+n,carrier:'ANA',dep,arr,operator:{A:'ANA',W:'ANAウィングス',S:'スターフライヤー',I:'IBEXエアラインズ'}[op],source:'ana',shares:[]})));
+   }
+  }
+ }else if(day>='2026-10-01'&&day<='2026-10-24'){
   list=rows(kind==='outbound'?RAIL_DOWN:RAIL_UP).map(([n,a,b,c])=>({id:'N'+n,name:'のぞみ'+n+'号',dep:kind==='outbound'?(city==='tokyo'?a:b):a,arr:kind==='outbound'?c:(city==='tokyo'?c:b),operator:'新幹線・直通'}));
   if(city==='osaka')list.push(...rows(OSAKA_EXTRA[kind]).map(([name,dep,arr])=>({id:name,name,dep,arr,operator:'新幹線・直通'})));
  }
- return list.sort((a,b)=>minutes(a.dep)-minutes(b.dep));
+ return list.slice().sort((a,b)=>(minutes(a.dep)??1440)-(minutes(b.dep)??1440));
 }
+function flightMatches(s,carrier){return !carrier||[s.carrier,...(s.shares||[]).map(x=>x.carrier)].some(x=>carrierCode(x)===carrier||(carrier==='JAL'&&carrierCode(x)==='JTA'));}
+function endpoints(c,s){const origin=c.p.mode==='air'?airportName(s?.airport||c.p.airport):c.origin;return c.kind==='outbound'?{from:origin,to:c.terminal}:{from:c.terminal,to:origin};}
 function cleanPref(raw,kind){
  const p=raw&&typeof raw==='object'?raw:{};
- return {city:p.city==='osaka'?'osaka':'tokyo',mode:p.mode==='rail'?'rail':'air',day:validDay(p.day)?p.day:'',eventBuffer:number(p.eventBuffer,15),airBuffer:number(p.airBuffer,kind==='outbound'?25:60),railBuffer:number(p.railBuffer,kind==='outbound'?10:20),manualCity:number(p.manualCity,null,1),manualTarget:typeof p.manualTarget==='string'?p.manualTarget:'',selected:typeof p.selected==='string'?p.selected:'',selectionDay:validDay(p.selectionDay)?p.selectionDay:'',selectionTarget:typeof p.selectionTarget==='string'?p.selectionTarget:''};
+ return {airport:/^(?:[A-Z]{3}|ALL)$/.test(p.airport||'')?p.airport:p.city==='osaka'?'ITM':'HND',carrier:typeof p.carrier==='string'?p.carrier:'',sort:['arrival','departure'].includes(p.sort)?p.sort:'arrival',city:p.city==='osaka'?'osaka':'tokyo',mode:p.mode==='rail'?'rail':'air',day:validDay(p.day)?p.day:'',eventBuffer:number(p.eventBuffer,15),airBuffer:number(p.airBuffer,kind==='outbound'?25:60),railBuffer:number(p.railBuffer,kind==='outbound'?10:20),manualCity:number(p.manualCity,null,1),manualTarget:typeof p.manualTarget==='string'?p.manualTarget:'',selected:typeof p.selected==='string'?p.selected:'',selectionDay:validDay(p.selectionDay)?p.selectionDay:'',selectionTarget:typeof p.selectionTarget==='string'?p.selectionTarget:''};
 }
 function readPrefs(){
  let p={};try{p=JSON.parse(localStorage.getItem(KEY)||'{}')||{};}catch{}
  if(!p.outbound&&!p.return){try{const old=JSON.parse(localStorage.getItem('garraway_ramen_access_v2')||'{}')||{};for(const kind of ['outbound','return'])p[kind]={city:old[kind+'City'],mode:old[kind+'Mode']};}catch{}}
  return {outbound:cleanPref(p.outbound,'outbound'),return:cleanPref(p.return,'return')};
 }
-let prefs=readPrefs(),active='outbound',showAll=false,storageOK=true,lastSignature='',raf=0,root;
+let prefs=readPrefs(),active='outbound',showAll=false,browseDay='',storageOK=true,lastSignature='',raf=0,root;
 const persist=()=>{try{localStorage.setItem(KEY,JSON.stringify(prefs));storageOK=true;}catch{storageOK=false;}};
 function targets(app=window.GuideApp){
  if(!app?.getState||!app.itinerary)return {outbound:null,return:null,unresolved:0};
@@ -97,41 +112,60 @@ function cityRoute(venue,mode,kind,manual=null){
  return {minutes:steps.reduce((s,x)=>s+x.minutes,0),steps,url,station,manual:false};
 }
 function context(kind,ts=targets()){
- const p=prefs[kind],target=ts[kind],day=p.day||target?.day||'2026-10-07',route=cityRoute(target?.venue,p.mode,kind,p.manualTarget===targetSig(target)?p.manualCity:null);
- const terminal=p.mode==='air'?'福岡空港':'博多駅',origin=p.mode==='air'?(p.city==='tokyo'?'羽田空港':'伊丹空港'):(p.city==='tokyo'?'東京駅':'新大阪駅');
+ const p=prefs[kind],target=ts[kind],day=p.day||target?.day||'2026-10-07';
+ const isInternational=p.mode==='air'&&flightData().airports[p.airport]?.international;
+ const route=isInternational?{minutes:null,steps:[],url:mapURL(kind==='outbound'?'福岡空港 国際線ターミナル':place(target?.venue),kind==='outbound'?place(target?.venue):'福岡空港 国際線ターミナル'),international:true}:cityRoute(target?.venue,p.mode,kind,p.manualTarget===targetSig(target)?p.manualCity:null);
+ const terminal=p.mode==='air'?'福岡空港':'博多駅',origin=p.mode==='air'?airportName(p.airport):(p.city==='tokyo'?'東京駅':'新大阪駅');
  const buffer=p.mode==='air'?p.airBuffer:p.railBuffer;
  const targetMinute=target?(ordinal(target.day)-ordinal(day))*1440+(kind==='outbound'?target.start:target.end):null;
  const total=route.minutes===null?null:route.minutes+buffer+p.eventBuffer;
  const threshold=targetMinute===null||total===null?null:targetMinute+(kind==='outbound'?-total:total);
- return {p,kind,target,day,route,terminal,origin,buffer,targetMinute,total,threshold,services:services(p.city,p.mode,kind,day)};
+ return {p,kind,target,day,route,terminal,origin,buffer,targetMinute,total,threshold,services:services(p.city,p.mode,kind,day,p.airport)};
 }
 function assess(service,c){
+ if(service.suspended)return {ok:false,unknown:true,label:'運休'};
+ if(service.international)return {ok:false,unknown:true,label:'入出国・日付を要確認'};
+ if(service.unverified||minutes(service.dep)===null||minutes(service.arr)===null)return {ok:false,unknown:true,label:'時刻を要確認'};
  if(c.threshold===null)return {ok:false,unknown:true,label:'予定・経路を確認'};
  const slack=c.kind==='outbound'?c.threshold-minutes(service.arr):minutes(service.dep)-c.threshold;
  // Estimate on the same day as the transport. Overnight stays need their own hotel route.
  const night=!!c.route.station&&!(c.p.mode==='rail'&&c.route.station==='博多駅')&&(c.kind==='outbound'?minutes(service.arr)+c.buffer>23*60:minutes(service.dep)-c.buffer-c.route.minutes<6*60);
  return {ok:slack>=0&&!night,slack,night,label:slack<0?`${duration(-slack)}不足`:night?'地下鉄の始発・終電を確認':`余裕 ${duration(slack)}`};
 }
-function selected(c){return c.p.selectionDay===c.day?c.services.find(s=>s.id===c.p.selected):null;}
+function selected(c){return c.p.selectionDay===c.day?c.services.find(s=>s.id===c.p.selected||(s.legacyIds||[]).includes(c.p.selected)):null;}
 function choiceStale(c){return !!c.p.selected&&(c.p.selectionTarget!==targetSig(c.target)||!selected(c));}
 function field(label,name,value,type='number',extra=''){return `<label class="tp-field"><span>${label}</span><input data-pref="${name}" type="${type}" value="${esc(value??'')}" ${type==='number'?'min="0" max="240" step="1"':''} ${extra}></label>`;}
 function routeHTML(c){
  const {route,terminal,p,kind,target}=c;
  const end=target?.venue?.name||'会場未確認';
+ if(route.international)return `<section class="tp-route"><h3>福岡空港・国際線ターミナルのアクセス</h3><p class="tp-note">国際線は国内線と別のターミナルです。入出国の時間に加え、国内線への連絡バスと地下鉄、または市内へのバス・タクシーを確認してください。</p><div class="tp-links">${link('国際線・国内線の連絡バス','https://www.fukuoka-airport.jp/access/bus2.html')}${target?link('会場までの経路を確認',route.url):''}</div></section>`;
  const steps=route.steps.map((s,i)=>`<li><span class="tp-step-num">${i+1}</span><div><strong>${esc(s.title)}</strong><p>${esc(s.note)}</p></div><b>約${s.minutes}分</b></li>`).join('');
  return `<section class="tp-route"><div class="tp-section-title"><h3>${kind==='outbound'?terminal+'から会場へ':'会場から'+terminal+'へ'}</h3>${route.minutes!==null?`<span class="tp-pill">市内移動 約${route.minutes}分</span>`:''}</div>${steps?`<ol class="tp-route-steps">${steps}</ol>`:`<p class="tp-note">${target?esc(end)+'の経路は未確認です。地図で所要時間を確認し、「時間を調整」から市内移動時間を入力してください。':'イベントをマイ予定に追加すると、会場までの動線が表示されます。'}</p>`}<div class="tp-links">${target?link('この経路を地図で確認',route.url):''}${link(p.mode==='air'?'空港の地下鉄乗り場':'博多駅の構内図',SOURCE[p.mode==='air'?'airport':'hakata'])}${link('地下鉄の時刻表',SOURCE.subway)}</div><p class="tp-fine">徒歩・駅移動・待ち時間は目安です。徒歩は会場位置からの概算。${p.mode==='air'?'国内線ターミナルを利用するルートです。':''}</p></section>`;
 }
 function scheduleHTML(c){
- const {kind,p,services:list}=c,available=list.filter(s=>assess(s,c).ok);
- const ordered=available.slice().sort((a,b)=>kind==='outbound'?minutes(b.dep)-minutes(a.dep):minutes(a.dep)-minutes(b.dep));
- const current=selected(c),recommend=ordered.slice(0,3),display=showAll||c.threshold===null?list:recommend;
- if(current&&!display.some(s=>s.id===current.id))display.unshift(current);
- const outbound=kind==='outbound',from=outbound?c.origin:c.terminal,to=outbound?c.terminal:c.origin;
- return `<section class="tp-timetable"><div class="tp-section-title"><h3>${p.mode==='air'?'飛行機':'新幹線'}の時刻表</h3><span class="tp-pill">${esc(dateLabel(c.day))}</span></div><p class="tp-line-label">${esc(from)} <span aria-hidden="true">→</span> ${esc(to)}</p><p class="tp-note">${p.mode==='air'?'ANA便名で掲載（共同運航便を含む）。JALなど他社便は公式検索へ。':'直通の定期列車を抜粋。臨時列車・乗り継ぎ便は公式検索へ。'} ${link('元の公式時刻表PDF',SOURCE[p.mode==='air'?p.city:'rail'])}</p>${!list.length?'<p class="tp-alert">この日付の時刻表は掲載していません。掲載期間は2026年10月1日〜24日です。公式サイトで日付を指定して確認してください。</p>':c.threshold!==null?`<p class="tp-result-count">${available.length?`掲載${list.length}件のうち <strong>${available.length}件</strong>が時間条件に合います。${showAll?'':outbound?'遅く出発できる順に表示しています。':'早く出発できる順に表示しています。'}`:'掲載候補には、時間条件に合う便・列車がありません。前泊・翌日帰着、交通手段の変更、他社便も検討してください。'}</p>`:'<p class="tp-note">時刻表は閲覧できます。イベントと経路が決まると、時間条件に合う候補を選べます。</p>'}${list.length?`<div class="tp-table-wrap" tabindex="0" aria-label="${p.mode==='air'?'飛行機':'新幹線'}の時刻表"><table><caption class="tp-sr-only">${esc(dateLabel(c.day)+' '+from+'から'+to+'の時刻表')}</caption><thead><tr><th scope="col">${p.mode==='air'?'便名・運航会社':'列車名'}</th><th scope="col">出発</th><th scope="col">到着</th><th scope="col">時間の判定</th><th scope="col">選択</th></tr></thead><tbody>${display.map(s=>{const a=assess(s,c),is=current?.id===s.id;return `<tr class="${is?'tp-picked':''}"><th scope="row">${esc(s.name)}<small>${esc(s.operator)}・${duration(minutes(s.arr)-minutes(s.dep))}</small></th><td class="tp-time">${s.dep}</td><td class="tp-time">${s.arr}</td><td><span class="tp-status ${a.ok?'tp-ok':'tp-check'}">${esc(a.label)}</span></td><td><button type="button" data-select-service="${esc(s.id)}" aria-pressed="${is}" ${!a.ok?'disabled':''}>${is?'✓ 選択済み':p.mode==='air'?'この便を選ぶ':'この列車を選ぶ'}</button></td></tr>`;}).join('')||'<tr><td colspan="5">候補がありません。「すべての時刻を見る」から比較できます。</td></tr>'}</tbody></table></div><button class="tp-show-all" type="button" data-show-all aria-expanded="${showAll}">${showAll?'時間条件に合う候補に戻る':`すべての時刻を見る（${list.length}件）`}</button>`:''}<div class="tp-links">${p.mode==='air'?link('ANAで日時・空席を確認','https://www.ana.co.jp/')+link('JALの時刻表','https://www.jal.co.jp/jp/ja/dom/route/time/')+link('福岡空港の全社時刻表','https://www.fukuoka-airport.jp/flight/schedule/'):link('JR東海の時刻検索','https://railway.jr-central.co.jp/jikoku/')+link('スマートEXで予約を確認','https://smart-ex.jp/')}</div><p class="tp-fine">2026/9/11確認。${p.mode==='air'?'ANAの7/1〜10/24ダイヤから10月の時刻を掲載。':'JR東海の2026/3/14改正・定期列車時刻表から抜粋。'} 時刻は日本時間。運航日・時刻変更・空席は公式サイトで最終確認してください。選択は予約ではありません。</p></section>`;
+ const {kind,p}=c,outbound=kind==='outbound',air=p.mode==='air';
+ const list=c.services.filter(s=>!air||flightMatches(s,p.carrier)),available=list.filter(s=>assess(s,c).ok);
+ const ordered=available.slice().sort((a,b)=>outbound?minutes(b.dep)-minutes(a.dep):minutes(a.dep)-minutes(b.dep));
+ const current=selected(c),display=(showAll||c.threshold===null?list.slice():ordered.slice(0,3));
+ if(current&&flightMatches(current,air?p.carrier:'')&&!display.some(s=>s.id===current.id))display.unshift(current);
+ if(showAll||c.threshold===null)display.sort((a,b)=>(minutes(p.sort==='arrival'?a.arr:a.dep)??1440)-(minutes(p.sort==='arrival'?b.arr:b.dep)??1440));
+ const {from,to}=endpoints(c),data=flightData(),snapshot=data.dates[c.day],full=air&&(p.airport==='ALL'?data.completeDates.includes(c.day):!!snapshot?.[p.airport]);
+ const carriers=[...new Set(c.services.flatMap(s=>[carrierCode(s.carrier),...(s.shares||[]).map(x=>carrierCode(x.carrier))]).filter(Boolean))].sort();
+ if(p.carrier&&!carriers.includes(p.carrier))carriers.push(p.carrier);
+ const international=air&&(p.airport==='ALL'||data.airports[p.airport]?.international);
+ const sourceLinks=air?[...new Set(list.flatMap(s=>[s.source,s.alsoSource].filter(Boolean)))].map(source=>link(monthlyData().sources[source]?.name||'福岡空港の公式時刻表',monthlyData().sources[source]?.url||'https://www.fukuoka-airport.jp/flight/schedule/')).join(''):link('JRの公式時刻表PDF',SOURCE.rail);
+ const latest=data.completeDates.slice().sort().at(-1);
+ const coverage=air?`<div class="tp-coverage">${full?`<strong>福岡空港の公式掲載便を収録</strong>（${esc(dateLabel(c.day))}・${p.airport==='ALL'?'国内線・国際線の全路線':'選択した路線'}）`:`<strong>${esc(dateLabel(c.day))}は確認済みの便を掲載</strong>。空港の全社データは未掲載のため、全便の一覧ではありません。`}${!full&&latest?`<br><button type="button" data-view-date="${latest}">${esc(dateLabel(latest))}の全社時刻表を見る</button>`:''}<br>共同運航便は同じ飛行機を1行にまとめ、別の便名を併記しています。</div>`:'<p class="tp-note">東京駅発・新大阪駅発の直通定期列車を抜粋。臨時列車・乗り継ぎは公式検索で確認できます。</p>';
+ const tools=`<div class="tp-timetable-tools">${air?`<label class="tp-field"><span>航空会社・共同運航便</span><select data-pref="carrier"><option value="">すべての航空会社</option>${carriers.map(code=>`<option value="${esc(code)}" ${p.carrier===code?'selected':''}>${esc(({JAL:'JALグループ・JAL共同運航',ANA:'ANA・ANA共同運航',SKY:'スカイマーク',MM:'Peach',GK:'ジェットスター',SFJ:'スターフライヤー',FDA:'FDA',IBX:'IBEX'}[code]||code))}</option>`).join('')}</select></label>`:''}<label class="tp-field"><span>一覧の並び順</span><select data-pref="sort"><option value="arrival" ${p.sort==='arrival'?'selected':''}>${outbound?(air?'福岡空港':'博多駅')+'着が早い順':'帰着が早い順'}</option><option value="departure" ${p.sort==='departure'?'selected':''}>出発が早い順</option></select></label></div>`;
+ return `<section class="tp-timetable">${c.preview?`<p class="tp-alert">${esc(dateLabel(c.day))}の公式掲載データを閲覧中です。移動日と選んだ便は保持しています。<button type="button" data-close-preview>移動日の時刻表に戻る</button></p>`:''}<div class="tp-section-title"><h3>${air?'飛行機':'新幹線'}の時刻表</h3><span class="tp-pill">${esc(dateLabel(c.day))}</span></div><div class="tp-route-banner"><div><small>${outbound?'出発地':'福岡から出発'}</small><strong>${esc(from)} 発</strong></div><span class="tp-route-arrow" aria-hidden="true">→</span><div class="tp-destination"><small>${outbound?'福岡での到着時刻をチェック':'帰着時刻をチェック'}</small><strong>${esc(to)} 着</strong></div></div>${coverage}${tools}${c.services.length&&!list.length?'<p class="tp-alert">この会社の掲載便はありません。航空会社を「すべて」に戻すと比較できます。</p>':!list.length?'<p class="tp-alert">この日付・路線の時刻表はまだ掲載していません。運航便がないという意味ではありません。公式時刻表で確認してください。</p>':c.threshold!==null?`<p class="tp-result-count">${available.length?`掲載${list.length}件のうち <strong>${available.length}件</strong>が時間条件に合います。${showAll?'':outbound?'遅く出発できる3候補を表示。':'早く出発できる3候補を表示。'}`:'掲載候補には、時間条件に合う便・列車がありません。全時刻の一覧や前泊・翌日の移動も確認してください。'}</p>`:'<p class="tp-note">イベントを選ぶ前でも、すべての掲載時刻を比較できます。</p>'}${list.length?`<div class="tp-table-wrap" tabindex="0" aria-label="${air?'飛行機':'新幹線'}の時刻表"><table><caption class="tp-sr-only">${esc(dateLabel(c.day)+' '+from+'発 '+to+'着の時刻表')}</caption><thead><tr><th scope="col">${air?'便名・運航会社':'列車名'}</th><th scope="col">${esc(from)} 発</th><th scope="col">${esc(to)} 着</th><th scope="col">時間の判定</th><th scope="col">選択</th></tr></thead><tbody>${display.map(s=>{
+ const a=assess(s,c),is=current?.id===s.id,{from:departure,to:arrival}=endpoints(c,s),elapsed=minutes(s.arr)-minutes(s.dep);
+ return `<tr class="${is?'tp-picked':''}"><th scope="row">${air?`<span class="tp-airline-tag" data-carrier="${esc(carrierCode(s.carrier))}">${esc(carrierCode(s.carrier))}</span><br>`:''}${esc(s.name)}<small>${esc(s.operator)}${!s.international&&elapsed>0?'・'+duration(elapsed):''}</small>${s.shares?.some(x=>x.name!==s.name)?`<small>共同運航：${esc(s.shares.filter(x=>x.name!==s.name).map(x=>x.name).join(' / '))}</small>`:''}${s.waypoint?`<small>${esc(s.waypoint)}経由</small>`:''}</th><td class="tp-time"><span class="tp-time-place">${esc(departure)} 発</span><strong>${esc(s.dep)}</strong>${s.depDiff?`<small>${esc(s.depDiff)}</small>`:''}${s.international&&outbound?'<small>出発地の現地時刻</small>':''}</td><td class="tp-time tp-arrival"><span class="tp-time-place">${esc(arrival)} 着</span><strong>${esc(s.arr)}</strong>${s.arrDiff?`<small>${esc(s.arrDiff)}</small>`:''}${s.international?`<small>${outbound?'日本時間':'到着地の現地時刻'}</small>`:''}</td><td><span class="tp-status ${a.ok?'tp-ok':'tp-check'}">${esc(a.label)}</span></td><td><button type="button" data-select-service="${esc(s.id)}" aria-label="${esc(s.name+' '+departure+' '+s.dep+'発 '+arrival+' '+s.arr+'着を選ぶ')}" aria-pressed="${is}" ${!a.ok?'disabled':''}>${is?'✓ 選択済み':air?'この便を選ぶ':'この列車を選ぶ'}</button></td></tr>`;
+ }).join('')||'<tr><td colspan="5">「すべての時刻を見る」で、到着時刻を比較できます。</td></tr>'}</tbody></table></div>${c.threshold!==null?`<button class="tp-show-all" type="button" data-show-all aria-expanded="${showAll}">${showAll?'時間条件に合う候補に戻る':`すべての時刻を見る（${list.length}件）`}</button>`:''}`:''}<div class="tp-links">${sourceLinks}${air?link('福岡空港の全社・全路線を確認','https://www.fukuoka-airport.jp/flight/schedule/')+link('JALの空席・予約','https://www.jal.co.jp/jp/ja/')+link('ANAの空席・予約','https://www.ana.co.jp/'):link('JR東海の時刻検索','https://railway.jr-central.co.jp/jikoku/')+link('スマートEX','https://smart-ex.jp/')}</div><p class="tp-fine">${air&&full?esc(data.checked)+'確認／空港データ '+esc(data.sourceUpdated)+'時点。':'2026/9/11確認。'} ${air?'運航日・時刻変更・空席は公式で確認してください。':'2026/3/14改正の定期列車時刻表から抜粋。'} ${air&&international?'国際線は現地時刻、福岡の発着は日本時間です。入出国・前日出発の確認が必要なため、自動の行程選択は国内線のみです。':'時刻は日本時間。'} 選択は予約ではありません。</p></section>`;
 }
 function timelineHTML(c){
  const s=selected(c);if(!s)return '';
  const a=assess(s,c),out=c.kind==='outbound',t=c.target;
+ c={...c,origin:c.p.mode==='air'?airportName(s.airport):c.origin};
  if(!t)return '<p class="tp-alert">予定を追加して、選択した便との接続を再確認してください。</p>';
  const lines=[],add=(time,title,note='')=>lines.push({time,title,note});
  if(t.day!==c.day){
@@ -160,7 +194,14 @@ function timelineHTML(c){
  return `<section class="tp-itinerary"><div class="tp-section-title"><h3>選んだ便での${out?'行き':'帰り'}の行程</h3><button type="button" data-clear-service>選択を解除</button></div>${choiceStale(c)?'<p class="tp-alert">イベント・会場・日付が変わりました。最新の予定で再計算しています。時刻表から便を選び直してください。</p>':''}${!a.ok?`<p class="tp-alert">接続を見直してください：${esc(a.label)}</p>`:''}${t.day!==c.day?'<p class="tp-alert">別の日の移動です。宿泊先への経路・宿泊先から会場への移動は、この直行ルートには含みません。</p>':''}<ol class="tp-timeline">${lines.map(l=>`<li><time>${esc(at(l.time,c.day))}</time><div><strong>${esc(l.title)}</strong>${l.note?`<p>${esc(l.note)}</p>`:''}</div></li>`).join('')}</ol><p class="tp-fine">地下鉄と徒歩の時刻は目安です。便・列車以外の発着時刻は実際の時刻表ではありません。</p></section>`;
 }
 function summaryHTML(ts){
- return ['outbound','return'].map(kind=>{const c=context(kind,ts),s=selected(c),a=s?assess(s,c):null;return `<button type="button" class="tp-summary-card ${active===kind?'tp-active':''}" data-trip-tab="${kind}" aria-pressed="${active===kind}"><span>${kind==='outbound'?'行き｜このイベントに間に合う':'帰り｜このイベント後に帰る'}</span><strong>${s?`${esc(dateLabel(c.day))} ${s.dep} → ${s.arr}`:kind==='outbound'?'行きの便を選ぶ':'帰りの便を選ぶ'}</strong><small>${s?esc(s.name+' ／ '+(choiceStale(c)?'予定変更・要確認':a.label)):kind==='outbound'?'最初のイベントから逆算':'最後のイベントから逆算'}</small></button>`;}).join('');
+ return ['outbound','return'].map(kind=>{const c=context(kind,ts),s=selected(c),a=s?assess(s,c):null,{from,to}=endpoints(c,s);return `<button type="button" class="tp-summary-card ${active===kind?'tp-active':''}" data-trip-tab="${kind}" aria-pressed="${active===kind}"><span>${kind==='outbound'?'行き｜このイベントに間に合う':'帰り｜このイベント後に帰る'}</span>${s?`<span class="tp-summary-route"><em>${esc(dateLabel(c.day))} ${esc(s.name)}</em><span>${esc(from)} 発 <b>${s.dep}</b></span><span>${esc(to)} 着 <b>${s.arr}</b></span></span>`:`<strong>${kind==='outbound'?'行きの便を選ぶ':'帰りの便を選ぶ'}</strong>`}<small>${s?esc(choiceStale(c)?'予定変更・要確認':a.label):kind==='outbound'?'最初のイベントから逆算':'最後のイベントから逆算'}</small></button>`;}).join('');
+}
+function originControls(c){
+ const {p,kind}=c,out=kind==='outbound';
+ if(p.mode==='rail')return `<label class="tp-field"><span>${out?'新幹線の出発駅':'新幹線の帰着駅'}</span><select data-pref="city"><option value="tokyo" ${p.city==='tokyo'?'selected':''}>東京駅 ${out?'発 → 博多駅 着':'着 ← 博多駅 発'}</option><option value="osaka" ${p.city==='osaka'?'selected':''}>新大阪駅 ${out?'発 → 博多駅 着':'着 ← 博多駅 発'}</option></select></label>`;
+ const airports={HND:{name:'東京（羽田）'},ITM:{name:'大阪（伊丹）'},...flightData().airports};
+ const codes=Object.keys(airports).sort((a,b)=>(['HND','NRT','ITM','KIX'].includes(a)?['HND','NRT','ITM','KIX'].indexOf(a)-10:0)-(['HND','NRT','ITM','KIX'].includes(b)?['HND','NRT','ITM','KIX'].indexOf(b)-10:0));
+ return `<label class="tp-field"><span>${out?'出発空港':'帰着空港'}</span><select data-pref="airport"><option value="ALL" ${p.airport==='ALL'?'selected':''}>すべての空港（国内・海外）</option>${[false,true].map(international=>`<optgroup label="${international?'海外の空港（福岡国際線）':'国内の空港（福岡国内線）'}">${codes.filter(code=>!!airports[code].international===international).map(code=>`<option value="${code}" ${p.airport===code?'selected':''}>${esc(airports[code].name)}（${code}）</option>`).join('')}</optgroup>`).join('')}</select></label>`;
 }
 function render(){
  if(!root)return;
@@ -168,7 +209,7 @@ function render(){
  const focus=root.contains(document.activeElement)?document.activeElement:null;
  const focusKey=focus?.dataset.pref;
  const detailsOpen=root.querySelector('[data-settings]')?.open;
- root.innerHTML=`<header class="tp-head"><p>TRIP PLANNER / 往復アクセス</p><h2>イベントが決まったら、<br class="tp-mobile-break">行き方・帰り方を選ぼう。</h2><p>マイ予定の全日程から、最初と最後のイベントに合わせて逆算します。</p></header><div class="tp-inner"><div class="tp-summary" role="group" aria-label="行きと帰り">${summaryHTML(ts)}</div><div class="tp-target"><span class="tp-kicker">${out?'最初のイベント':'最後のイベント'}</span>${target?`<p><b>${esc(dateLabel(target.day))} ${clock(out?target.start:target.end)} ${out?'開始':'終了'}</b></p><h3>${esc(target.e?.title||target.x?.title)}</h3><p>${esc(target.venue?.name||'会場未確認')}</p>`:'<h3>まずはイベントをマイ予定に追加</h3><p>参加する時間が決まると、移動の候補と会場までの行程が表示されます。</p><a href="#explore" data-screen="explore">イベントを探す →</a>'}${ts.unresolved?`<p class="tp-alert">時刻・開催情報が未確定の${ts.unresolved}件は逆算に含めていません。マイ予定で確認してください。</p>`:''}</div><div class="tp-controls"><label class="tp-field"><span>${out?'出発エリア':'帰着エリア'}</span><select data-pref="city"><option value="tokyo" ${p.city==='tokyo'?'selected':''}>東京（羽田／東京駅）</option><option value="osaka" ${p.city==='osaka'?'selected':''}>大阪（伊丹／新大阪駅）</option></select></label>${field(out?'福岡へ移動する日':'福岡から帰る日','day',c.day,'date','min="2026-01-01" max="2026-12-31"')}<fieldset class="tp-mode"><legend>交通手段・福岡の玄関口</legend><div><button type="button" data-mode="air" aria-pressed="${p.mode==='air'}">✈ 飛行機<small>福岡空港</small></button><button type="button" data-mode="rail" aria-pressed="${p.mode==='rail'}">新幹線<small>博多駅</small></button></div></fieldset></div>${target&&p.day&&p.day!==target.day?`<p class="tp-note">${out?'前泊':'翌日以降の帰着'}も検討できます。<button type="button" data-reset-day>イベント当日に戻す</button></p>`:''}${routeHTML(c)}<details class="tp-settings" data-settings ${detailsOpen?'open':''}><summary>時間を調整する <span>荷物・乗り換え・受付の余裕</span></summary><div class="tp-settings-grid">${field(out?(p.mode==='air'?'降機・荷物受け取り（分）':'新幹線を降りて改札まで（分）'):(p.mode==='air'?'空港に出発何分前に着く？':'博多駅に出発何分前に着く？'),p.mode==='air'?'airBuffer':'railBuffer',c.buffer)}${field(out?'受付・開始前の余裕（分）':'終了後の余裕（分）','eventBuffer',p.eventBuffer)}${field('市内移動の合計を手入力（分）','manualCity',p.manualTarget===targetSig(target)?p.manualCity:null,'number','placeholder="空欄なら自動計算"')}</div><p class="tp-fine">市内移動の手入力は、地図で確認した徒歩・待ち時間・乗車時間の合計を入力。空港・駅での余裕は別に加算します。初期値は計画用の目安です。</p></details>${c.threshold!==null?`<div class="tp-deadline"><span>${out?c.terminal+'への到着リミット':c.terminal+'を出発できる目安'}</span><strong>${esc(at(c.threshold,c.day))}<small>${out?'まで':'以降'}</small></strong><p>${out?'開始から':'終了に'} 市内移動${c.route.minutes}分 ＋ ${p.mode==='air'?'空港':'駅'}で${c.buffer}分 ＋ イベント${out?'前':'後'}${p.eventBuffer}分 ${out?'を引いて計算':'を足して計算'}</p></div>`:''}${scheduleHTML(c)}${timelineHTML(c)}<p class="tp-storage" role="status">${storageOK?'条件と選んだ便は、この端末に自動保存されます。':'この端末には保存できませんでした。選択内容はこの画面を開いている間だけ保持されます。'}</p></div>`;
+ root.innerHTML=`<header class="tp-head"><p>TRIP PLANNER / 往復アクセス</p><h2>イベントが決まったら、<br class="tp-mobile-break">行き方・帰り方を選ぼう。</h2><p>マイ予定の全日程から、最初と最後のイベントに合わせて逆算します。</p></header><div class="tp-inner"><div class="tp-summary" role="group" aria-label="行きと帰り">${summaryHTML(ts)}</div><div class="tp-target"><span class="tp-kicker">${out?'最初のイベント':'最後のイベント'}</span>${target?`<p><b>${esc(dateLabel(target.day))} ${clock(out?target.start:target.end)} ${out?'開始':'終了'}</b></p><h3>${esc(target.e?.title||target.x?.title)}</h3><p>${esc(target.venue?.name||'会場未確認')}</p>`:'<h3>まずはイベントをマイ予定に追加</h3><p>参加する時間が決まると、移動の候補と会場までの行程が表示されます。</p><a href="#explore" data-screen="explore">イベントを探す →</a>'}${ts.unresolved?`<p class="tp-alert">時刻・開催情報が未確定の${ts.unresolved}件は逆算に含めていません。マイ予定で確認してください。</p>`:''}</div><div class="tp-controls">${originControls(c)}${field(out?'福岡へ移動する日':'福岡から帰る日','day',c.day,'date','min="2026-01-01" max="2026-12-31"')}<fieldset class="tp-mode"><legend>交通手段・福岡の玄関口</legend><div><button type="button" data-mode="air" aria-pressed="${p.mode==='air'}">✈ 飛行機<small>福岡空港</small></button><button type="button" data-mode="rail" aria-pressed="${p.mode==='rail'}">新幹線<small>博多駅</small></button></div></fieldset></div>${target&&p.day&&p.day!==target.day?`<p class="tp-note">${out?'前泊':'翌日以降の帰着'}も検討できます。<button type="button" data-reset-day>イベント当日に戻す</button></p>`:''}${p.mode==='rail'?`<div class="tp-origin-shortcuts" role="group" aria-label="新幹線の駅を選択"><button type="button" data-rail-city="tokyo" aria-pressed="${p.city==='tokyo'}">東京駅 ${out?'発':'着'}</button><button type="button" data-rail-city="osaka" aria-pressed="${p.city==='osaka'}">新大阪駅 ${out?'発':'着'}</button></div>`:''}${routeHTML(c)}<details class="tp-settings" data-settings ${detailsOpen?'open':''}><summary>時間を調整する <span>荷物・乗り換え・受付の余裕</span></summary><div class="tp-settings-grid">${field(out?(p.mode==='air'?'降機・荷物受け取り（分）':'新幹線を降りて改札まで（分）'):(p.mode==='air'?'空港に出発何分前に着く？':'博多駅に出発何分前に着く？'),p.mode==='air'?'airBuffer':'railBuffer',c.buffer)}${field(out?'受付・開始前の余裕（分）':'終了後の余裕（分）','eventBuffer',p.eventBuffer)}${field('市内移動の合計を手入力（分）','manualCity',p.manualTarget===targetSig(target)?p.manualCity:null,'number','placeholder="空欄なら自動計算"')}</div><p class="tp-fine">市内移動の手入力は、地図で確認した徒歩・待ち時間・乗車時間の合計を入力。空港・駅での余裕は別に加算します。初期値は計画用の目安です。</p></details>${c.threshold!==null?`<div class="tp-deadline"><span>${out?c.terminal+'への到着リミット':c.terminal+'を出発できる目安'}</span><strong>${esc(at(c.threshold,c.day))}<small>${out?'まで':'以降'}</small></strong><p>${out?'開始から':'終了に'} 市内移動${c.route.minutes}分 ＋ ${p.mode==='air'?'空港':'駅'}で${c.buffer}分 ＋ イベント${out?'前':'後'}${p.eventBuffer}分 ${out?'を引いて計算':'を足して計算'}</p></div>`:''}${scheduleHTML(browseDay?{...c,day:browseDay,threshold:null,preview:true,services:services(p.city,p.mode,kind,browseDay,p.airport)}:c)}${timelineHTML(c)}<p class="tp-storage" role="status">${storageOK?'条件と選んだ便は、この端末に自動保存されます。':'この端末には保存できませんでした。選択内容はこの画面を開いている間だけ保持されます。'}</p></div>`;
  if(focusKey)root.querySelector(`[data-pref="${focusKey}"]`)?.focus({preventScroll:true});
  lastSignature=JSON.stringify(ts);
 }
@@ -177,18 +218,23 @@ function handleChange(e){
  const name=e.target.dataset.pref;if(!name)return;
  const p=prefs[active];
  if(name==='day'&&!validDay(e.target.value))return;
- if(name==='city'){p.city=e.target.value;resetSelection(p);}
+ if(name==='city'){p.city=e.target.value;p.airport=p.city==='osaka'?'ITM':'HND';resetSelection(p);}
+ else if(name==='airport'){p.airport=e.target.value;if(['HND','NRT'].includes(p.airport))p.city='tokyo';if(['ITM','KIX'].includes(p.airport))p.city='osaka';p.carrier='';p.manualCity=null;resetSelection(p);}
+ else if(name==='carrier'||name==='sort'){p[name]=e.target.value;persist();showAll=true;render();return;}
  else if(name==='day'){p.day=e.target.value;resetSelection(p);}
  else {p[name]=number(e.target.value,name==='manualCity'?null:15,name==='manualCity'?1:0);if(name==='manualCity')p.manualTarget=targetSig(targets()[active]);}
- persist();showAll=false;render();
+ browseDay='';persist();showAll=false;render();
 }
 function handleClick(e){
  const b=e.target.closest('button');if(!b||!root.contains(b))return;
- if(b.dataset.tripTab){active=b.dataset.tripTab;showAll=false;render();root.querySelector(`[data-trip-tab="${active}"]`)?.focus({preventScroll:true});return;}
+ if(b.dataset.tripTab){active=b.dataset.tripTab;showAll=false;browseDay='';render();root.querySelector(`[data-trip-tab="${active}"]`)?.focus({preventScroll:true});return;}
  const p=prefs[active];
- if(b.dataset.mode){p.mode=b.dataset.mode;p.manualCity=null;resetSelection(p);showAll=false;}
+ if(b.dataset.railCity){browseDay='';p.city=b.dataset.railCity;resetSelection(p);showAll=true;}
+ else if(b.dataset.viewDate){browseDay=b.dataset.viewDate;showAll=true;render();return;}
+ else if(b.hasAttribute('data-close-preview')){browseDay='';showAll=false;render();return;}
+ else if(b.dataset.mode){browseDay='';p.mode=b.dataset.mode;p.manualCity=null;resetSelection(p);showAll=false;}
  else if(b.hasAttribute('data-show-all')){showAll=!showAll;render();root.querySelector('[data-show-all]')?.focus({preventScroll:true});return;}
- else if(b.dataset.selectService){const c=context(active),s=c.services.find(x=>x.id===b.dataset.selectService);if(!s||!assess(s,c).ok)return;p.selected=s.id;p.selectionDay=c.day;p.selectionTarget=targetSig(c.target);}
+ else if(b.dataset.selectService){if(browseDay)return;const c=context(active),s=c.services.find(x=>x.id===b.dataset.selectService);if(!s||!assess(s,c).ok)return;if(s.airport)p.airport=s.airport;p.selected=s.id;p.selectionDay=c.day;p.selectionTarget=targetSig(c.target);}
  else if(b.hasAttribute('data-clear-service'))resetSelection(p);
  else if(b.hasAttribute('data-reset-day')){p.day='';resetSelection(p);}
  else return;
@@ -213,6 +259,11 @@ function mount(){
  window.addEventListener('storage',e=>{if(e.key===KEY){prefs=readPrefs();render();}else if(e.key==='ramen-guide-v3')refresh();});
 }
 // Small pure API for verifying timetable/connection arithmetic independently of the UI.
-window.RamenTrip={version:'20260911t2',services,targets,cityRoute,assess,minutes,clock,validDay,cleanPref};
-if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',mount);else mount();
+window.RamenTrip={version:'20260911f1',services,targets,cityRoute,assess,minutes,clock,validDay,cleanPref,flightMatches,airportName,endpoints};
+function start(){
+ const missing=[['RamenFlightData','flight-data.js'],['RamenFlightMonthly','flight-monthly.js']].filter(([name])=>!window[name]);
+ if(!missing.length){mount();return;}
+ Promise.all(missing.map(([,file])=>new Promise(resolve=>{const script=document.createElement('script');script.src=file+'?v=20260911f1';script.onload=resolve;script.onerror=resolve;document.head.appendChild(script);}))).then(mount);
+}
+if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',start);else start();
 })();

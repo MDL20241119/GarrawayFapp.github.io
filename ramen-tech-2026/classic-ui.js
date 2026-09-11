@@ -42,6 +42,6 @@
   document.addEventListener('click',ev=>{const b=ev.target.closest('button,a');if(!b)return;if(b.hasAttribute('data-classic-search')){ev.preventDefault();window.GuideApp?.displayScreen('explore',{scroll:false});requestAnimationFrame(jump);}else if(b.dataset.screen==='explore'&&b.closest('nav')){requestAnimationFrame(jump);}else if(b.dataset.screen==='plan'){setTimeout(()=>{fallbackMap();ensureRoadMap();},0);}});
   if(initialHash==='#schedule'||(new URLSearchParams(location.search).has('q')&&!new URLSearchParams(location.search).has('event'))){requestAnimationFrame(jump);}
   setTimeout(()=>{fallbackMap();ensureRoadMap();},0);
-  if(!document.querySelector('script[src^="access-planner.js"]')){const access=document.createElement('script');access.src='access-planner.js?v=20260911t2';access.defer=true;document.head.appendChild(access);}
+  if(!document.querySelector('script[src^="access-planner.js"]')){const access=document.createElement('script');access.src='access-planner.js?v=20260911f1';access.defer=true;document.head.appendChild(access);}
 })();
 

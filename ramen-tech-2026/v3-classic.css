@@ -155,10 +155,51 @@ body{background:#fff;color:#111;font-family:var(--font);line-height:1.65}h1,h2,h
  #access-planner td,#access-planner th{padding:0;border:0}
  #access-planner .tp-time{font-size:25px;line-height:1.5}
  #access-planner td:nth-child(2):before,#access-planner td:nth-child(3):before{font-size:12px;display:block;font-weight:500;color:#526176}
- #access-planner td:nth-child(2):before{content:'出発'}
- #access-planner td:nth-child(3):before{content:'到着'}
+ #access-planner td:nth-child(2):before{content:none}
+ #access-planner td:nth-child(3):before{content:none}
  #access-planner td:nth-child(5){text-align:right;align-self:center}
  #access-planner td button{font-size:12px;min-width:108px}
  #access-planner td[colspan]{grid-column:1/-1}
  #access-planner .tp-summary-card>span,#access-planner .tp-summary-card>small{font-size:12px}
+}
+
+/* Arrival-first timetable: every time keeps its airport/station label. */
+#access-planner .tp-route-banner{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:16px;background:#f3f6fa;border:1px solid #c5d4e7;border-radius:6px;padding:18px;margin:15px 0}
+#access-planner .tp-route-banner small{display:block;font-size:12px;font-weight:600;color:#526176;margin-bottom:5px}
+#access-planner .tp-route-banner strong{display:block;font-size:21px;font-weight:900}
+#access-planner .tp-route-banner .tp-destination{color:#0753a8}
+#access-planner .tp-route-arrow{color:#1167ce;font-size:24px}
+#access-planner .tp-time-place{display:block;font-size:12px;line-height:1.5;white-space:normal;font-weight:700;color:#526176;margin-bottom:3px}
+#access-planner .tp-time strong{display:block;font-size:22px;line-height:1.35}
+#access-planner .tp-arrival{background:#eef6ff}
+#access-planner .tp-arrival strong{font-size:29px;color:#0753a8}
+#access-planner .tp-arrival .tp-time-place{color:#0753a8}
+#access-planner .tp-timetable-tools{display:flex;gap:12px;flex-wrap:wrap;align-items:end;margin:16px 0 10px}
+#access-planner .tp-timetable-tools .tp-field{flex:1;min-width:140px}
+#access-planner .tp-origin-shortcuts{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px}
+#access-planner .tp-origin-shortcuts button{font-size:13px;flex:1;min-width:125px}
+#access-planner .tp-origin-shortcuts button[aria-pressed=true]{background:#1167ce;border-color:#1167ce;color:#fff}
+#access-planner .tp-origin-shortcuts button[aria-pressed=true]:hover{background:#0955b2}
+#access-planner .tp-airline-tag{display:inline-block;padding:3px 7px;margin-bottom:4px;background:#edf3f9;border:1px solid #c8d8ed;border-radius:3px;font-size:12px;color:#174879}
+#access-planner .tp-airline-tag[data-carrier=JAL]{background:#fff0f0;border-color:#efbaba;color:#aa1928}
+#access-planner .tp-airline-tag[data-carrier=ANA]{background:#edf3ff;border-color:#b4caef;color:#1246a5}
+#access-planner .tp-airline-tag[data-carrier=SKY]{background:#fff8da;border-color:#dfce75;color:#63510a}
+#access-planner .tp-coverage{border:1px solid #c5d4e7;border-radius:5px;padding:12px 14px;background:#f7faff;font-size:12px;line-height:1.8;margin:12px 0}
+#access-planner .tp-coverage strong{color:#0753a8}
+#access-planner .tp-summary-card .tp-summary-route{display:grid;gap:5px;font-size:12px;line-height:1.6}
+#access-planner .tp-summary-route b{font-size:18px;font-variant-numeric:tabular-nums}
+#access-planner .tp-summary-route em{font-style:normal;font-size:12px}
+#access-planner .tp-time small{display:block;font-size:11px;font-weight:500;color:#526176}
+@media(max-width:600px){
+ #access-planner .tp-route-banner{gap:8px;padding:13px 11px}
+ #access-planner .tp-route-banner strong{font-size:17px}
+ #access-planner .tp-route-banner small{font-size:11px}
+ #access-planner td.tp-time{padding:9px 10px;border-radius:4px;align-self:stretch;white-space:normal}
+ #access-planner .tp-time-place{font-size:12px}
+ #access-planner .tp-time strong{font-size:25px}
+ #access-planner .tp-arrival strong{font-size:32px}
+ #access-planner .tp-time-place{min-height:18px}
+ #access-planner .tp-timetable-tools{gap:10px}
+ #access-planner .tp-summary-route b{font-size:17px}
+ #access-planner .tp-summary-card .tp-summary-route{font-size:11px}
 }
