@@ -27,6 +27,7 @@ body{background:#fff;color:#111;font-family:var(--font);line-height:1.65}h1,h2,h
 #access-planner button,#access-planner input,#access-planner select{font:inherit}
 #access-planner button{cursor:pointer;background:#fff;color:#171717;border:1px solid #171717;border-radius:4px;min-height:44px;padding:9px 12px;font-size:14px;font-weight:800;line-height:1.5}
 #access-planner button:hover:not(:disabled){background:#f2f6fd}
+#access-planner .tp-summary-card.tp-active:hover,#access-planner td button[aria-pressed=true]:hover{background:#0955b2;color:#fff}
 #access-planner button:disabled{cursor:not-allowed;background:#eee;border-color:#bbb;color:#666}
 #access-planner :is(button,a,input,select,summary,[tabindex]):focus-visible{outline:3px solid #125dc8;outline-offset:4px}
 #access-planner a{color:#075caf;font-weight:700;text-decoration:underline;text-underline-offset:3px}
