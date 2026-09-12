@@ -1,5 +1,6 @@
 """Static regression tests for the Kyushu feature's asset provenance and citations."""
 import json
+import hashlib
 import re
 import unittest
 from html.parser import HTMLParser
@@ -38,19 +39,28 @@ class ComplianceTests(unittest.TestCase):
 
     def test_only_original_generated_assets_shipped(self):
         allowed = {a['path'] for a in self.manifest['assets']}
-        self.assertEqual(len(allowed), 6)
+        self.assertEqual(len(allowed), 19)
+        self.assertEqual(len({e['image']['url'] for e in self.events}), 19)
+        self.assertEqual(len({a['sha256'] for a in self.manifest['assets']}), 19)
+        by_id = {e['id']: e for e in self.events}
+        for asset in self.manifest['assets']:
+            self.assertEqual(asset['eventIds'], [asset['id']])
+            self.assertEqual(asset['path'], by_id[asset['id']]['image']['url'])
+            self.assertEqual(asset['style'], 'oil-painting')
+            self.assertEqual(hashlib.sha256((FEATURE / asset['path']).read_bytes()).hexdigest(), asset['sha256'])
         self.assertEqual(self.manifest['sourceImages'], [])
         self.assertEqual({str(p.relative_to(FEATURE)) for p in (FEATURE / 'images').iterdir() if p.is_file()}, allowed)
         for e in self.events:
             im = e['image']
             self.assertEqual(im['kind'], 'ai-generated')
             self.assertIs(im['sourceImagesUsed'], False)
+            self.assertEqual(im['style'], 'oil-painting')
             self.assertIn(im['url'], allowed)
             self.assertIn('AI生成', im['label'])
             self.assertIn('写真ではありません', im['alt'])
             self.assertNotIn('source', im)
             self.assertNotIn('originalUrl', im)
-        for old in self.manifest['removedExternalPhotoFiles']:
+        for old in self.manifest['removedExternalPhotoFiles'] + self.manifest['retiredGeneratedFiles']:
             self.assertFalse((FEATURE / 'images' / old).exists())
 
     def test_images_are_local_and_declared_generated(self):
@@ -65,6 +75,10 @@ class ComplianceTests(unittest.TestCase):
 
     def test_sources_are_clear_and_not_false_endorsement(self):
         self.assertEqual(self.page.count('class="card-source"'), 19)
+        self.assertEqual(self.page.count('class="source-publisher"'), 19)
+        self.assertIn('class="reference-publisher"', self.page)
+        self.assertIn('情報の掲載元は、画像の提供元ではありません', self.page)
+        self.assertNotIn('テーマ別に共通使用', self.page)
         for e in self.events:
             self.assertTrue(e['source'].startswith('https://'))
             self.assertTrue(e['sourceName'])
@@ -86,10 +100,10 @@ class ComplianceTests(unittest.TestCase):
         self.assertIn('class="image-disclosure"', js)
         self.assertIn('class="dialog-sources"', js)
         self.assertNotIn('e.image.source', js)
-        self.assertIn('images/ai-festival-20260912.webp', entry)
+        self.assertIn('images/ai-oil-nagasaki-kunchi-20260912.webp', entry)
         self.assertIn('kyushu-entry-image-label', entry)
         self.assertNotIn('images/nagasaki-kunchi.webp', entry)
-        self.assertIn('20260912k2', self.page)
+        self.assertIn('20260912k3', self.page)
         embedded = re.search(r'<script type="application/json" id="event-data">(.*?)</script>', self.page, re.S)
         self.assertEqual(len(json.loads(embedded.group(1))), 19)
 

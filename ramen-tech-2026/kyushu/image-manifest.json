@@ -1,83 +1,238 @@
 {
-  "version": "20260912k2",
+  "version": "20260912k3",
   "created": "2026-09-12",
   "generator": "OpenAI built-in image_gen",
   "sourceImages": [],
-  "policy": "本特集用に新規生成したテーマ別イメージ。外部サイトの写真やロゴを入力素材として使用していません。実際のイベント・会場・出演者・作品・商品・景観の再現ではありません。第三者の権利非侵害や独占的権利を保証する記録ではありません。",
-  "basePrompt": "Use case: stylized-concept. Asset type: landscape editorial website image for an unofficial autumn travel guide. Generate a BRAND NEW original image, 3:2 landscape, high resolution, edge-to-edge composition, professionally art directed with rich cinematic lighting and sophisticated tactile depth, a tasteful blend of photoreal materials and clearly conceptual illustration. No borders or collages. This is an imaginative illustration of a theme, NOT a photo of an actual event. Do not imitate or use any existing photograph, artist style, brand, artwork or event. No text, no watermark, no logos, no distinctive real location, no identifiable real person. The webpage supplies all copy and an AI-generated-image label separately. Scene: ",
+  "policy": "本特集の19件のイベントに1点ずつ、異なる油絵風イメージを新規生成しました。外部サイトの写真・ロゴ・告知ビジュアルを入力素材や加工元として使用していません。実際のイベント・会場・出演者・作品・商品・景観の再現ではありません。情報の掲載元と画像制作元は別です。第三者の権利非侵害や独占的権利を保証する記録ではありません。同じイベントのカバー・カード・詳細および案内バナーでの再表示を除き、画像を共用しません。",
+  "basePrompt": "Use case: stylized-concept. Asset type: one distinct landscape image for a Japanese Kyushu autumn event guide. Create an original, sophisticated oil painting, 1536x1024 landscape, edge-to-edge with no frame. Rich impasto brushwork, visibly painted pigment, tactile canvas, editorial travel-magazine quality, expressive yet recognizable subject, luminous light, clear composition that reads at thumbnail size. This is a conceptual theme illustration, NOT documentation or a recreation of a real event, place, product or artwork. No input photograph or reference artwork. No text, letters, numbers, logos, branding, signatures, watermarks, identifiable faces, named artist style, real artworks, real venue landmarks, or promotional posters. Do not produce a collage or multiple panels. Subject and composition: ",
   "assets": [
     {
-      "id": "festival",
-      "theme": "祭り・灯り",
-      "path": "images/ai-festival-20260912.webp",
-      "sourceGeneratedFile": "exec-07474a07-06dc-41a7-9f95-d120fdb2aad3.png",
-      "prompt": "A fictional Japanese autumn evening festival with sweeping rows of plain glowing amber paper lanterns, red and golden foliage, dark indigo dusk sky, a few tiny anonymous visitors seen only from behind. No festival float, shrine, identifiable landmark or recognizable real event. The lanterns have no writing. Dramatic warm light, tactile paper and subtle dimensional depth.",
+      "id": "nagasaki-kunchi",
+      "theme": "祭りの鼓動",
+      "style": "oil-painting",
+      "path": "images/ai-oil-nagasaki-kunchi-20260912.webp",
+      "sourceGeneratedFile": "exec-af1c1422-5f9e-4a3b-acde-5568d24c646b.png",
+      "prompt": "A dramatic low-angle close-up of a traditional plain Japanese wooden festival drum with unmarked cream leather and two drumsticks resting diagonally, sweeping vermilion festival fabric across the background, a few soft golden lantern lights in indigo evening. Powerful rhythm without showing a specific performance, no crest or recognizable festival float. Vermilion, indigo, warm gold.",
       "eventIds": [
-        "nagasaki-kunchi",
+        "nagasaki-kunchi"
+      ],
+      "sha256": "5706e5a16d19c5318f6fad05bccf49b6f1541c10c6cc988e8e534a052857077c"
+    },
+    {
+      "id": "afaf",
+      "theme": "現代アートとの出会い",
+      "style": "oil-painting",
+      "path": "images/ai-oil-afaf-20260912.webp",
+      "sourceGeneratedFile": "exec-950dace9-a6f5-4944-9ed2-1fcacccc2704.png",
+      "prompt": "A luminous spacious imaginary contemporary art gallery with three original abstract canvases of simple coral and cobalt pigment fields, a small unrecognizable visitor silhouette seen from behind, long cream walls and soft skylight, elegant quiet perspective. The depicted paintings must be newly invented simple abstractions, not existing art. Warm ivory, coral, cobalt.",
+      "eventIds": [
+        "afaf"
+      ],
+      "sha256": "0ed8689b880db3f0fbe41b6debafd576423fd57fee6febaea72cc7f32470bdc9"
+    },
+    {
+      "id": "sunset",
+      "theme": "海辺の音楽",
+      "style": "oil-painting",
+      "path": "images/ai-oil-sunset-20260912.webp",
+      "sourceGeneratedFile": "exec-13379bca-b0bc-4eb4-a35d-623658d82fab.png",
+      "prompt": "A wide coastal outdoor music atmosphere at a magnificent orange sunset, a generic guitarist silhouette from behind at the edge of a very small plain wooden stage, turquoise ocean horizon occupying the distance, wind-tossed grasses. Not a real stage or festival layout. Broad energetic oil strokes, glowing peach sky, deep teal sea, near-black silhouette.",
+      "eventIds": [
+        "sunset"
+      ],
+      "sha256": "69c6ab110ebc927b3782efe1afa8f7a1634643d18498bdb28784a22284336e0c"
+    },
+    {
+      "id": "mct",
+      "theme": "街に流れる音楽",
+      "style": "oil-painting",
+      "path": "images/ai-oil-mct-20260912.webp",
+      "sourceGeneratedFile": "exec-01fac2c9-9af0-489e-b8ed-23c64640cd0e.png",
+      "prompt": "An atmospheric intimate street-jazz still life, a gleaming brass saxophone on a stand dominating the foreground beside an unbranded microphone, blurred urban cafe windows and evening pedestrian silhouettes in the far distance. Eye-level diagonal framing, cool blue city dusk punctuated with warm brass highlights. No specific city buildings, signs or concert stage.",
+      "eventIds": [
+        "mct"
+      ],
+      "sha256": "e8dd891814d56ea2abbbb1c505b1531c38c38739b9d12b32198785270361ba4c"
+    },
+    {
+      "id": "andsake",
+      "theme": "日本酒と食のペアリング",
+      "style": "oil-painting",
+      "path": "images/ai-oil-andsake-20260912.webp",
+      "sourceGeneratedFile": "exec-91112994-30af-4b5e-ac94-165a8f71fcd2.png",
+      "prompt": "An inviting three-quarter overhead view of a Japanese sake pairing table: a plain ceramic sake carafe, two small glazed cups, a few seasonal small dishes with grilled vegetables and fish, warm natural wood, autumn leaf accent. Refined convivial food editorial composition without people, labels or bottles. Honey gold, cream, deep olive, subtle lacquer red.",
+      "eventIds": [
+        "andsake"
+      ],
+      "sha256": "47537d17a5a135e5f1b1e33e09aefab52b622e18a4c8a450b61cf86ecc2ef282"
+    },
+    {
+      "id": "creators",
+      "theme": "光とクリエイティブ",
+      "style": "oil-painting",
+      "path": "images/ai-oil-creators-20260912.webp",
+      "sourceGeneratedFile": "exec-1501e918-3d27-4b64-bb4d-567671169c74.png",
+      "prompt": "An original imagined immersive digital-art installation: suspended translucent geometric ribbons and simple luminous cubes casting cyan and violet reflections across a dark open plaza, two tiny faceless adult silhouettes for scale. Dramatic expansive perspective, painted light trails and bold palette-knife texture. No real installation, symbols, logos or specific architecture. Electric cyan, violet, midnight blue.",
+      "eventIds": [
+        "creators"
+      ],
+      "sha256": "41dcad191d0aebc213ac3bc917a7d12c9668e4cd2b613c26e4bd57b21b7dfad2"
+    },
+    {
+      "id": "toumyou",
+      "theme": "灯明の夜",
+      "style": "oil-painting",
+      "path": "images/ai-oil-toumyou-20260912.webp",
+      "sourceGeneratedFile": "exec-d25d613c-9561-4cfc-a901-60efe5bc6026.png",
+      "prompt": "A serene close-to-ground view of many small unmarked paper candle lanterns arranged along a gently curving stone path in an imaginary Japanese neighborhood at night. Tiny warm flames and irregular amber pools of light, dark walls fading into deep blue, a few autumn leaves. No overhead festival lanterns, no shrine landmark or exact real layout. Amber, navy, burnt sienna.",
+      "eventIds": [
         "toumyou"
-      ]
+      ],
+      "sha256": "4cbbc04e3ffa9c92bf425e9e74528549e7e8e9d9b78131368383508196344cf7"
     },
     {
-      "id": "art",
-      "theme": "アート・建築",
-      "path": "images/ai-art-20260912.webp",
-      "sourceGeneratedFile": "exec-49486ee1-87a2-47eb-9eb3-3092007b5f75.png",
-      "prompt": "An entirely imaginary architectural art space: monumental simple curved terracotta and cream walls, light falling through a circular opening, a few ORIGINAL plain geometric colored blocks and reflective spheres, autumn light and bold shadow. Do not reference any existing building, architect or artist. No real art reproduction, famous sculpture, branded installation, sign or lettering. Architectural editorial visualization.",
+      "id": "faf",
+      "theme": "建築を見つめる",
+      "style": "oil-painting",
+      "path": "images/ai-oil-faf-20260912.webp",
+      "sourceGeneratedFile": "exec-43c48781-c6c4-4843-b593-05bbd8fa9a60.png",
+      "prompt": "A contemplative upward-looking architectural study of an entirely imaginary modern civic interior: intersecting pale concrete planes, a curved stair, one tall slit window casting a sharp golden sunbeam and angular shadows. Monumental geometric composition and thick painterly texture. Do not depict or imitate any actual bank building or named architect. Sandstone cream, graphite gray, ochre sunlight.",
       "eventIds": [
-        "afaf",
-        "creators",
-        "faf",
-        "fan",
+        "faf"
+      ],
+      "sha256": "c0dd62aa3073f919d96024f3ba45cb9a900a9691605f237092344fcdf833dc6e"
+    },
+    {
+      "id": "fan",
+      "theme": "まちとアート",
+      "style": "oil-painting",
+      "path": "images/ai-oil-fan-20260912.webp",
+      "sourceGeneratedFile": "exec-bcfdf55e-026f-4ee1-b476-58d10e195e44.png",
+      "prompt": "A peaceful outdoor sculpture garden in autumn, a newly invented asymmetrical coral ceramic-like arch sculpture with two simple blue pebble forms, tall yellow-leaved trees, a single tiny faceless visitor walking away. Original forms only, no recognizable artwork. Wide off-center composition, fresh daylight, thick loose oil strokes. Coral, cobalt, leaf yellow and soft sage.",
+      "eventIds": [
+        "fan"
+      ],
+      "sha256": "d0a3e84abb7d47399eb38c4b6b7be6f1cb0ed45767dcc2ff171ed87333a96a7f"
+    },
+    {
+      "id": "sicf",
+      "theme": "若い創造力",
+      "style": "oil-painting",
+      "path": "images/ai-oil-sicf-20260912.webp",
+      "sourceGeneratedFile": "exec-eb237e3d-37da-409a-b194-a6fdaa7e0d6e.png",
+      "prompt": "A dynamic close-up of an imaginary emerging artist's workbench: freshly invented small sculptural objects made from painted folded paper, raw wood and colorful clay, a few brushes, linen cloth, angled daylight. Playful but sophisticated material study, no recognizable artwork, labels or human hands. Paint-rich pink, bright lemon, ultramarine, natural wood. Distinct tabletop studio composition.",
+      "eventIds": [
         "sicf"
-      ]
+      ],
+      "sha256": "54f07aef34d5d436b6f42985d7cc17432415c171d45a07708b5b8856ef292b3f"
     },
     {
-      "id": "music",
-      "theme": "音楽",
-      "path": "images/ai-music-20260912.webp",
-      "sourceGeneratedFile": "exec-b5c699e6-f759-463f-9ce7-f11a46e6d07f.png",
-      "prompt": "An entirely imaginary outdoor music experience at sunset, tall grasses, a small minimal unbranded stage far away, soft glowing amber and blue stage lights, a tiny anonymous crowd in silhouette from behind, distant sea and a violet-orange sky. No identifiable people, performer, venue, logos, banners or real festival structures. A vivid atmospheric cinematic concept, not a documentary photo.",
+      "id": "hakozaki",
+      "theme": "蚤の市の宝探し",
+      "style": "oil-painting",
+      "path": "images/ai-oil-hakozaki-20260912.webp",
+      "sourceGeneratedFile": "exec-7d01347c-3982-49cb-a329-9adb2ac337e0.png",
+      "prompt": "An enchanting antique flea-market stall under a pale canvas canopy, a vintage generic unbranded camera, amber glass bottles, an old brass clock with a blank unreadable face, folded indigo fabrics, warm morning dappled light. Close-up treasure-hunting composition, background stalls softly suggested. No shrine or signs, no pottery as primary subject. Dusty indigo, amber, linen cream.",
       "eventIds": [
-        "sunset",
-        "mct",
-        "synapse",
-        "sagafes"
-      ]
+        "hakozaki"
+      ],
+      "sha256": "da45b5f27d6b48ed590097f0806da2d59d97d07e59b825144874af7c276ecd75"
     },
     {
-      "id": "food",
-      "theme": "食とお酒",
-      "path": "images/ai-food-20260912.webp",
-      "sourceGeneratedFile": "exec-d64b765c-86c1-4254-800c-6de9bb8b1d51.png",
-      "prompt": "An original autumn food and drink editorial still life: a simple unbranded ceramic sake carafe and cups, a small plain beer glass, roasted chestnuts and a small imaginary chestnut dessert on neutral handmade plates. Rich natural texture, warm copper and amber light with cream and charcoal surfaces. No brand, packaging, labels, shop, actual sold product or text. The scene should look like a premium conceptual magazine food image.",
+      "id": "synapse",
+      "theme": "自然の中の音楽",
+      "style": "oil-painting",
+      "path": "images/ai-oil-synapse-20260912.webp",
+      "sourceGeneratedFile": "exec-f9e89f13-893e-4ace-a7d1-33a70149ee7c.png",
+      "prompt": "A wide tranquil woodland clearing at blue hour, three small simple triangular camping tents and a very modest distant unbranded sound stage suggested between trees, soft string-light bokeh, mist and textured deep green foliage. A few tiny unidentifiable silhouettes, no bonfire, no actual park layout. Forest green, misty cyan and soft warm light. Atmospheric oil painting, not sunset beach.",
       "eventIds": [
-        "andsake",
-        "saga-sake",
-        "oktober",
-        "waguri"
-      ]
+        "synapse"
+      ],
+      "sha256": "de6a322d53947f9ae52d8a09d1648ee39d61edbe883ef5ac1e025d678708c340"
     },
     {
-      "id": "market",
-      "theme": "まち歩き・工芸",
-      "path": "images/ai-market-20260912.webp",
-      "sourceGeneratedFile": "exec-d1080f8e-88fe-4216-bb93-7f8cc6fb8275.png",
-      "prompt": "An entirely imaginary autumn outdoor craft market still life, warm sun on a timber stall, original plain handmade ceramic bowls and cups with simple glazes, a few folded linen textiles, softly blurred generic canvas awnings and amber leaves in the background. No real shop, artwork, product brand, price sign, writing or identifiable people. High tactile detail, elegant warm atmosphere.",
-      "eventIds": [
-        "hakozaki",
-        "taketa",
-        "amakusa"
-      ]
-    },
-    {
-      "id": "sport",
-      "theme": "スポーツ",
-      "path": "images/ai-sport-20260912.webp",
-      "sourceGeneratedFile": "exec-3872f726-4884-43ff-92c4-015625fb234a.png",
-      "prompt": "An entirely imaginary group of recreational cyclists seen from behind on a curving countryside road through autumn hills, all in plain unbranded neutral cycling outfits and helmets, golden grasses, clear light, deep blue sky. No recognizable faces, real race, real course, bib numbers, sponsor markings, signage or identifiable landmark. Strong cinematic depth and a sense of movement.",
+      "id": "tour",
+      "theme": "九州を走る",
+      "style": "oil-painting",
+      "path": "images/ai-oil-tour-20260912.webp",
+      "sourceGeneratedFile": "exec-6a1947e1-6b5d-4687-a461-bc734ebc2c26.png",
+      "prompt": "A sweeping elevated side view of a small peloton of adult road cyclists following a graceful curved rural road between golden harvested fields and layered green hills, crisp autumn sunlight and motion-rich brushwork. Generic unbranded kits and bicycles, helmets, faces not discernible, no race numbers or actual route/landmark. Gold, meadow green, sky blue, a few vivid jerseys.",
       "eventIds": [
         "tour"
-      ]
+      ],
+      "sha256": "d1af06bb74acf6f66d2a6aa10e4cc6220e8958b6934226d29daa37c465b9e974"
+    },
+    {
+      "id": "saga-sake",
+      "theme": "一杯を味わう",
+      "style": "oil-painting",
+      "path": "images/ai-oil-saga-sake-20260912.webp",
+      "sourceGeneratedFile": "exec-fe846c3e-52ff-4149-88b4-7a1bef0aae24.png",
+      "prompt": "An intimate macro still-life of a plain dark ceramic sake carafe tilted above one white shallow tasting cup, a delicate clear stream being poured with supporting person out of frame, soft auburn backdrop and deep lacquer-red table. The cup and liquid are the focal point; no food platter, no labels, no hands. Thick expressive paint with luminous small highlights, burgundy, ivory and charcoal.",
+      "eventIds": [
+        "saga-sake"
+      ],
+      "sha256": "5463c382580d7e8ceb1416f3d76424253775d017f753b8728044548b3347c89d"
+    },
+    {
+      "id": "taketa",
+      "theme": "城下町の散歩",
+      "style": "oil-painting",
+      "path": "images/ai-oil-taketa-20260912.webp",
+      "sourceGeneratedFile": "exec-81bddd8a-d4dd-43ce-ae9a-bda2dbc97c60.png",
+      "prompt": "A gentle wide view down an imaginary old Japanese town street in clear autumn morning light, weathered wooden storefronts with no signage, a small roadside antique stall of wooden boxes and folded fabrics, a few distant faceless strolling figures. No real castle, identifiable building or exact town view. Warm cedar brown, pale blue, linen and persimmon orange, lyrical perspective.",
+      "eventIds": [
+        "taketa"
+      ],
+      "sha256": "04448cb99d8f5849a3f273337b36e571cb4fd481903110ce1955196fb278d78c"
+    },
+    {
+      "id": "sagafes",
+      "theme": "アートと音楽の祝祭",
+      "style": "oil-painting",
+      "path": "images/ai-oil-sagafes-20260912.webp",
+      "sourceGeneratedFile": "exec-5fce082f-e7be-4a53-ad0b-11b657019457.png",
+      "prompt": "A joyful imaginary outdoor art-and-music festival lawn in afternoon sunlight, original large colorful fabric mobiles suspended above simple open-air creative booths, tiny faceless visitors scattered in a green field, a small music performance suggested far away. Avoid specific venue, real artworks and signage. Broad energetic oil strokes, emerald lawn, coral, lemon yellow, sky blue.",
+      "eventIds": [
+        "sagafes"
+      ],
+      "sha256": "368d42077e678fcc3045b5a7e9ccd46ffe642f296637c549d80f170f112178b7"
+    },
+    {
+      "id": "oktober",
+      "theme": "秋の乾杯",
+      "style": "oil-painting",
+      "path": "images/ai-oil-oktober-20260912.webp",
+      "sourceGeneratedFile": "exec-e82a349f-49f7-4bc9-8ee6-051f7d356a61.png",
+      "prompt": "A richly textured festive beer-garden still-life at twilight: two plain glass mugs of amber beer with creamy foam, a rustic pretzel and grilled sausages on a wooden table, warm hanging bulbs dissolving into the background. No people, beer branding, lettering or distinctive venue. Close three-quarter framing, amber, chestnut, creamy white and dark green.",
+      "eventIds": [
+        "oktober"
+      ],
+      "sha256": "03c7bdcead0f06fe92cdf89224cf626dc0e506431fcef9794eb3e0d907aa293e"
+    },
+    {
+      "id": "waguri",
+      "theme": "和栗のごほうび",
+      "style": "oil-painting",
+      "path": "images/ai-oil-waguri-20260912.webp",
+      "sourceGeneratedFile": "exec-a149e236-8945-4da8-a423-7a6e284e9006.png",
+      "prompt": "A sumptuous close-up of an original generic chestnut Mont Blanc dessert with delicate golden cream strands on a simple matte ivory plate, a few whole chestnuts and a cut chestnut nearby, soft side window light, linen table. No packaging, branding or reproduction of any real shop's signature product. Thick painterly detail, chestnut brown, warm cream and muted copper.",
+      "eventIds": [
+        "waguri"
+      ],
+      "sha256": "6213cf209bd4d3d6b4a700d9cbd94735491264ca24200a9bf06e2662436a1835"
+    },
+    {
+      "id": "amakusa",
+      "theme": "うつわに会いに",
+      "style": "oil-painting",
+      "path": "images/ai-oil-amakusa-20260912.webp",
+      "sourceGeneratedFile": "exec-681ef583-b22d-4736-a5b1-7af944dddf26.png",
+      "prompt": "A quiet imagined coastal pottery workshop, a freshly thrown clay bowl on a simple wheel in the foreground and three differently shaped original glazed vessels on a sunlit windowsill, an abstract distant blue sea through the window. No artist, identifiable workshop or signature ceramic pattern. Tactile clay and thick oil-paint surface, sea blue, warm terracotta, chalk white.",
+      "eventIds": [
+        "amakusa"
+      ],
+      "sha256": "3302e881f0c50d2cb180f9978b098903bf13f01a6fa9564eb0d7cb36c068e021"
     }
   ],
   "removedExternalPhotoFiles": [
@@ -100,5 +255,13 @@
     "toumyou.webp",
     "tour.webp",
     "waguri.webp"
+  ],
+  "retiredGeneratedFiles": [
+    "ai-festival-20260912.webp",
+    "ai-art-20260912.webp",
+    "ai-music-20260912.webp",
+    "ai-food-20260912.webp",
+    "ai-market-20260912.webp",
+    "ai-sport-20260912.webp"
   ]
 }

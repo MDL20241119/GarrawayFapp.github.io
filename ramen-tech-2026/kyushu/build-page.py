@@ -1,17 +1,25 @@
 """Render the editorial page from dated event records and original AI image assets."""
 import html
+import hashlib
 import json
 from pathlib import Path
 from urllib.parse import urlencode, urlparse
 
 ROOT = Path(__file__).resolve().parent
-VERSION = '20260912k2'
+VERSION = '20260912k3'
 events = json.loads((ROOT / 'events.json').read_text())
 manifest = json.loads((ROOT / 'image-manifest.json').read_text())
 e = lambda value: html.escape(str(value), quote=True)
 by_id = {item['id']: item for item in events}
 assert len(by_id) == len(events)
 approved_assets = {item['path'] for item in manifest['assets']}
+assert len(approved_assets) == len(events) == 19
+assert len({item['image']['url'] for item in events}) == len(events)
+assert len({item['sha256'] for item in manifest['assets']}) == len(events)
+for asset in manifest['assets']:
+    assert asset['eventIds'] == [asset['id']]
+    assert by_id[asset['id']]['image']['url'] == asset['path']
+    assert hashlib.sha256((ROOT / asset['path']).read_bytes()).hexdigest() == asset['sha256']
 assert manifest['sourceImages'] == []
 assert {str(p.relative_to(ROOT)) for p in (ROOT / 'images').iterdir() if p.is_file()} == approved_assets
 for item in events:
@@ -29,8 +37,9 @@ for item in events:
     content = asset.read_bytes()
     assert len(content) > 100 and content[:4] == b'RIFF' and content[8:12] == b'WEBP', item['id']
 
-def source_link(item):
-    return f'<a href="{e(item["source"])}" target="_blank" rel="noopener noreferrer">{e(item["sourceName"])} ↗</a>'
+def source_link(item, prominent=False):
+    css = ' class="source-publisher"' if prominent else ''
+    return f'<a{css} href="{e(item["source"])}" target="_blank" rel="noopener noreferrer">{e(item["sourceName"])} ↗</a>'
 
 def supplementary_link(item):
     if not item.get('additionalSource'):
@@ -42,11 +51,13 @@ def cover(item, lead=False):
     priority = 'fetchpriority="high"' if lead else 'loading="eager"'
     return f'''<a class="{css}" href="#{e(item['id'])}" data-event="{e(item['id'])}" aria-label="{e(item['name'])}の見どころを見る">
 <img src="{e(item['image']['url'])}" alt="{e(item['image']['alt'])}" width="1536" height="1024" {priority}>
-<span class="cover-image-tag">AI生成イメージ<br>実際のイベント写真ではありません</span><span class="cover-arrow" aria-hidden="true">↗</span>
+<span class="cover-image-tag">油絵風・AI生成イメージ<br>実際のイベント写真ではありません</span><span class="cover-arrow" aria-hidden="true">↗</span>
 <div class="cover-copy"><span class="cover-label">{e(item['areaLabel'])} · {e(item['stamp'])}</span><h2>{e(item['hook'])}</h2><p>{e(item['name'])}</p></div></a>'''
 
 def card(item, index):
     source_label = '公式サイト ↗' if item['sourceKind'] == 'official' else '開催情報の掲載元 ↗'
+    source_kind = {'official':'主催者・公式', 'media':'メディア', 'tourism':'観光案内'}[item['sourceKind']]
+    supplementary = f'<p class="source-supplement">補足の掲載元{supplementary_link(item)}</p>' if item.get('additionalSource') else ''
     status = f'<p class="card-status">{e(item["status"])}</p>' if item.get('status') else ''
     return f'''<article class="event-card" id="{e(item['id'])}">
 <a class="card-media" href="{e(item['source'])}" target="_blank" rel="noopener noreferrer" data-event="{e(item['id'])}" aria-label="{e(item['name'])}の見どころ・行き方">
@@ -54,7 +65,7 @@ def card(item, index):
 <span class="date-stamp"><small>2026 / EVENT DATE</small>{e(item['stamp'])}</span><span class="photo-tag">{e(item['image']['label'])}</span></a>
 <div class="card-meta"><span>{e(item['areaLabel'])}</span><span class="card-category">{e(item['categoryLabel'])}</span></div>
 <h3 class="card-hook">{e(item['hook'])}</h3><p class="card-name">{e(item['name'])}</p><p class="card-venue">{e(item['venue'])}</p>{status}
-<p class="card-source"><span>情報出典：</span>{source_link(item)}{supplementary_link(item)}<small>開催情報の確認日：{e(item['checked'])}</small></p>
+<div class="card-source"><p class="source-heading">開催情報の掲載元 <span class="source-kind">{source_kind}</span></p>{source_link(item,True)}{supplementary}<small class="source-checked">開催情報の確認日：{e(item['checked'])}</small></div>
 <div class="card-action"><button class="detail-button" data-event="{e(item['id'])}" aria-label="{e(item['name'])}の見どころ・行き方を開く">見どころ・行き方 <span aria-hidden="true">↗</span></button><a href="{e(item['source'])}" target="_blank" rel="noopener noreferrer">{source_label}</a></div></article>'''
 
 def source_record(item):
@@ -85,8 +96,8 @@ page = f'''<!doctype html>
 <section aria-labelledby="page-title">
 <div class="intro"><h1 id="page-title">福岡に来たら、<br><span>九州まで遊ぼう。</span></h1><aside><p>ライブに、アートに、祭りに。<br>予定の前後に、忘れられない寄り道を。</p><div class="issue-date">09.21 <small>MON</small> — 10.21 <small>WED / 2026</small></div></aside></div>
 <aside class="editorial-notes" aria-label="画像と参照元について">
-<p><strong>画像について</strong>掲載画像はすべて、本特集用の<strong class="inline">AI生成イメージ</strong>です。実際の会場・出演者・作品・商品・景観を再現した写真ではありません。</p>
-<p><strong>情報の参考・出典</strong>福岡の企画選びの参考：<a href="https://www.fukuoka-now.com/ja/guides/fukuoka-autumn-guide/" target="_blank" rel="noopener noreferrer">Fukuoka Now「福岡秋のガイド2026」↗</a><br>開催情報は各掲載元へ。<a href="#sources">編集方針と出典一覧 ↓</a></p>
+<div class="reference-feature"><p class="source-heading">情報の参考・出典 / 福岡の企画選び</p><a class="reference-publisher" href="https://www.fukuoka-now.com/ja/guides/fukuoka-autumn-guide/" target="_blank" rel="noopener noreferrer">Fukuoka Now <span aria-hidden="true">↗</span><small>福岡秋のガイド2026</small></a><p>各イベントの開催情報は、カードの掲載元へ。<br><a href="#sources">編集方針と19件の出典一覧 ↓</a></p></div>
+<div class="image-policy"><strong>19のイベントに、19の油絵風イメージ。</strong><p>画像はイベントごとに新しく制作した<strong class="inline">AI生成イメージ</strong>です。外部サイトの写真を加工したものではなく、実際の会場・出演者・作品・商品・景観を再現した写真でもありません。情報の掲載元は、画像の提供元ではありません。</p></div>
 </aside>
 <div class="cover">{cover(by_id['nagasaki-kunchi'],True)}<div class="cover-stack">{cover(by_id['afaf'])}{cover(by_id['sunset'])}</div></div>
 <p class="photo-note cover-source">画像はテーマの雰囲気を表現したAI生成イメージです。実際の様子は各主催者・掲載元のサイトでご確認ください。</p>
@@ -104,7 +115,7 @@ page = f'''<!doctype html>
 <h2 id="sources-title">情報の出典と、画像について</h2>
 <p>Garraway Fが独自に編集する非公式ガイドです。RAMEN TECH主催者、掲載イベントの主催者、参照先との提携・公認を示すものではありません。</p>
 <p>福岡の企画選びには <a href="https://www.fukuoka-now.com/ja/guides/fukuoka-autumn-guide/" target="_blank" rel="noopener noreferrer">Fukuoka Now「福岡秋のガイド2026」</a> を参照しています。開催日などの情報源を各カード・詳細と下の一覧に表示。主催者公式情報とメディア・観光情報の掲載元を区別しています。紹介文は本特集のために編集しています。</p>
-<p><strong>掲載画像はすべてAI生成イメージです。</strong>外部サイトの写真・ロゴ・告知ビジュアルは使用していません。画像はテーマ別に共通使用しており、実際の会場・出演者・作品・商品・景観や当日の様子を再現・保証するものではありません。画像の制作・表示更新日：2026年9月12日。</p>
+<p><strong>掲載画像はすべてAI生成イメージです。</strong>外部サイトの写真・ロゴ・告知ビジュアルは使用していません。19件のイベントにそれぞれ異なる油絵風の画像を新規制作しています。同じイベントの紹介・カード・詳細では同じ画像を使用しますが、別のイベントへの使い回しはしていません。実際の会場・出演者・作品・商品・景観や当日の様子を再現・保証するものではありません。情報の掲載元は画像の提供元ではありません。画像の制作・表示更新日：2026年9月12日。</p>
 <p>開催情報の確認日：2026年9月11日。画像の更新日は、イベント情報の再確認日ではありません。すべてのイベントを網羅するものではなく、開催変更、料金、予約、残席、休館日は各主催者の最新案内でご確認ください。</p>
 <details class="source-list"><summary>{len(events)}件の開催情報・参照元一覧を開く</summary><ul>{credits}</ul></details>
 <p>この特集のイベントは、RAMEN TECHのマイ予定には直接追加されません。各開催案内で参加方法をご確認ください。</p>
