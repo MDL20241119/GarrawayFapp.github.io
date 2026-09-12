@@ -21,17 +21,18 @@
     "source": "https://nagasaki-kunchi.com/",
     "mapQuery": "長崎 諏訪神社",
     "image": {
-      "url": "images/nagasaki-kunchi.webp",
-      "originalUrl": "https://nagasaki-kunchi.com/wp/wp-content/uploads/2026/02/uwamachi.jpg",
-      "source": "https://nagasaki-kunchi.com/",
-      "alt": "長崎くんち・上町コッコデショの奉納（2016年開催の様子）",
-      "label": "2016年開催の様子",
-      "credit": "長崎伝統芸能振興会",
-      "license": null,
-      "licenseUrl": null,
-      "width": 640,
-      "height": 426
-    }
+      "url": "images/ai-festival-20260912.webp",
+      "alt": "祭り・灯りをテーマにしたAI生成イメージ。実際のイベントや会場の写真ではありません。",
+      "label": "AI生成イメージ｜実際のイベント写真ではありません",
+      "kind": "ai-generated",
+      "theme": "祭り・灯り",
+      "credit": "Garraway F編集｜AI生成イメージ",
+      "created": "2026-09-12",
+      "sourceImagesUsed": false
+    },
+    "checked": "2026-09-11",
+    "sourceName": "長崎くんち公式サイト",
+    "sourceKind": "official"
   },
   {
     "id": "afaf",
@@ -55,17 +56,18 @@
     "source": "https://artfair.asia/",
     "mapQuery": "福岡国際センター",
     "image": {
-      "url": "images/afaf.webp",
-      "originalUrl": "https://fan-week.jp/2026/wp/wp-content/uploads/2026/08/256d186ca077e0ed3eee7c21dada1614.jpg",
-      "source": "https://fan-week.jp/2026/programs/176/",
-      "alt": "AFAFの会場と展示ブース（過去開催の様子）",
-      "label": "過去開催の様子",
-      "credit": "FaN Week 2026／ART FAIR ASIA FUKUOKA",
-      "license": null,
-      "licenseUrl": null,
-      "width": 1440,
-      "height": 960
-    }
+      "url": "images/ai-art-20260912.webp",
+      "alt": "アート・建築をテーマにしたAI生成イメージ。実際のイベントや会場の写真ではありません。",
+      "label": "AI生成イメージ｜実際のイベント写真ではありません",
+      "kind": "ai-generated",
+      "theme": "アート・建築",
+      "credit": "Garraway F編集｜AI生成イメージ",
+      "created": "2026-09-12",
+      "sourceImagesUsed": false
+    },
+    "checked": "2026-09-11",
+    "sourceName": "ART FAIR ASIA FUKUOKA 公式サイト",
+    "sourceKind": "official"
   },
   {
     "id": "sunset",
@@ -89,17 +91,18 @@
     "source": "https://sunsetlive.jp/",
     "mapQuery": "INN THE PARK 福岡",
     "image": {
-      "url": "images/sunset.webp",
-      "originalUrl": "https://www.innthepark.jp/fukuoka/common/top2023_sp.jpg",
-      "source": "https://www.innthepark.jp/fukuoka/",
-      "alt": "INN THE PARK 福岡と博多湾（会場イメージ）",
-      "label": "会場イメージ",
-      "credit": "INN THE PARK 福岡",
-      "license": null,
-      "licenseUrl": null,
-      "width": 1440,
-      "height": 961
-    }
+      "url": "images/ai-music-20260912.webp",
+      "alt": "音楽をテーマにしたAI生成イメージ。実際のイベントや会場の写真ではありません。",
+      "label": "AI生成イメージ｜実際のイベント写真ではありません",
+      "kind": "ai-generated",
+      "theme": "音楽",
+      "credit": "Garraway F編集｜AI生成イメージ",
+      "created": "2026-09-12",
+      "sourceImagesUsed": false
+    },
+    "checked": "2026-09-11",
+    "sourceName": "INSPIRATION by SUNSETLIVE 公式サイト",
+    "sourceKind": "official"
   },
   {
     "id": "mct",
@@ -124,17 +127,19 @@
     "additionalSource": "https://www.fukuoka-now.com/ja/event/music-city-tenjin-26/",
     "mapQuery": "福岡市役所西側ふれあい広場",
     "image": {
-      "url": "images/mct.webp",
-      "originalUrl": "https://arne.media/uploads/2025/09/mct2024_day2-243-scaled.jpg",
-      "source": "https://arne.media/go-out/558807/",
-      "alt": "ステージと観客（2024年開催の様子）",
-      "label": "2024年開催の様子",
-      "credit": "ミュージックシティ天神運営委員会／ARNE",
-      "license": null,
-      "licenseUrl": null,
-      "width": 1440,
-      "height": 960
-    }
+      "url": "images/ai-music-20260912.webp",
+      "alt": "音楽をテーマにしたAI生成イメージ。実際のイベントや会場の写真ではありません。",
+      "label": "AI生成イメージ｜実際のイベント写真ではありません",
+      "kind": "ai-generated",
+      "theme": "音楽",
+      "credit": "Garraway F編集｜AI生成イメージ",
+      "created": "2026-09-12",
+      "sourceImagesUsed": false
+    },
+    "checked": "2026-09-11",
+    "sourceName": "MUSIC CITY TENJIN 公式サイト",
+    "sourceKind": "official",
+    "additionalSourceName": "Fukuoka Now｜補足の開催情報"
   },
   {
     "id": "andsake",
@@ -158,17 +163,18 @@
     "source": "https://andsake-fukuoka.com/",
     "mapQuery": "福岡国際センター",
     "image": {
-      "url": "images/andsake.webp",
-      "originalUrl": "https://www.crossroadfukuoka.jp/storage/tourism_attractions/11760/responsive_images/logvQqCCYTpKwummb3hAnv9i9WsaPAvW8J92C93O__1673_1115.jpg",
-      "source": "https://www.crossroadfukuoka.jp/event/11760",
-      "alt": "にぎわう酒蔵ブース（過去開催の様子）",
-      "label": "過去開催の様子",
-      "credit": "福岡県観光連盟「クロスロードふくおか」",
-      "license": null,
-      "licenseUrl": null,
-      "width": 1440,
-      "height": 960
-    }
+      "url": "images/ai-food-20260912.webp",
+      "alt": "食とお酒をテーマにしたAI生成イメージ。実際のイベントや会場の写真ではありません。",
+      "label": "AI生成イメージ｜実際のイベント写真ではありません",
+      "kind": "ai-generated",
+      "theme": "食とお酒",
+      "credit": "Garraway F編集｜AI生成イメージ",
+      "created": "2026-09-12",
+      "sourceImagesUsed": false
+    },
+    "checked": "2026-09-11",
+    "sourceName": "&SAKE FUKUOKA 公式サイト",
+    "sourceKind": "official"
   },
   {
     "id": "creators",
@@ -192,18 +198,18 @@
     "source": "https://the-creator.jp/about.html",
     "mapQuery": "UNITEDLAB 福岡",
     "image": {
-      "url": "images/creators.webp",
-      "originalUrl": "https://the-creator.jp/img/gallery/gallery1.jpg",
-      "source": "https://the-creator.jp/report-2025.html",
-      "alt": "インタラクティブ展示と来場者（2025年開催の様子）",
-      "label": "2025年開催の様子",
-      "credit": "The Creators",
-      "license": null,
-      "licenseUrl": null,
-      "width": 1024,
-      "height": 682,
-      "fit": "contain"
-    }
+      "url": "images/ai-art-20260912.webp",
+      "alt": "アート・建築をテーマにしたAI生成イメージ。実際のイベントや会場の写真ではありません。",
+      "label": "AI生成イメージ｜実際のイベント写真ではありません",
+      "kind": "ai-generated",
+      "theme": "アート・建築",
+      "credit": "Garraway F編集｜AI生成イメージ",
+      "created": "2026-09-12",
+      "sourceImagesUsed": false
+    },
+    "checked": "2026-09-11",
+    "sourceName": "The Creators 公式サイト",
+    "sourceKind": "official"
   },
   {
     "id": "toumyou",
@@ -227,17 +233,18 @@
     "source": "https://hakata-toumyou.com/outline.html",
     "mapQuery": "博多千年門",
     "image": {
-      "url": "images/toumyou.webp",
-      "originalUrl": "https://hakata-toumyou.com/img/gallery/2023reisen_04.jpg",
-      "source": "https://hakata-toumyou.com/event-area/gallery.html",
-      "alt": "櫛田神社の地上絵を描く灯明（2023年開催の様子）",
-      "label": "2023年開催の様子",
-      "credit": "博多灯明ウォッチング公式サイト",
-      "license": null,
-      "licenseUrl": null,
-      "width": 800,
-      "height": 600
-    }
+      "url": "images/ai-festival-20260912.webp",
+      "alt": "祭り・灯りをテーマにしたAI生成イメージ。実際のイベントや会場の写真ではありません。",
+      "label": "AI生成イメージ｜実際のイベント写真ではありません",
+      "kind": "ai-generated",
+      "theme": "祭り・灯り",
+      "credit": "Garraway F編集｜AI生成イメージ",
+      "created": "2026-09-12",
+      "sourceImagesUsed": false
+    },
+    "checked": "2026-09-11",
+    "sourceName": "博多灯明ウォッチング公式サイト",
+    "sourceKind": "official"
   },
   {
     "id": "faf",
@@ -261,18 +268,18 @@
     "source": "https://www.fafnpo.jp/architecture-festival",
     "mapQuery": "福岡銀行本店 FFGホール",
     "image": {
-      "url": "images/faf.webp",
-      "originalUrl": "https://static.wixstatic.com/media/fc39d8_ef717a21486c48fb8de6721c487a0a91~mv2.jpg",
-      "source": "https://www.fafnpo.jp/architecture-festival",
-      "alt": "福岡銀行本店（会場建築の写真）",
-      "label": "会場建築の写真",
-      "credit": "Photo: Yousuke Harigane／FAF",
-      "license": null,
-      "licenseUrl": null,
-      "width": 991,
-      "height": 1440,
-      "fit": "contain"
-    }
+      "url": "images/ai-art-20260912.webp",
+      "alt": "アート・建築をテーマにしたAI生成イメージ。実際のイベントや会場の写真ではありません。",
+      "label": "AI生成イメージ｜実際のイベント写真ではありません",
+      "kind": "ai-generated",
+      "theme": "アート・建築",
+      "credit": "Garraway F編集｜AI生成イメージ",
+      "created": "2026-09-12",
+      "sourceImagesUsed": false
+    },
+    "checked": "2026-09-11",
+    "sourceName": "FAF 建築文化祭 公式案内",
+    "sourceKind": "official"
   },
   {
     "id": "fan",
@@ -296,17 +303,18 @@
     "source": "https://fan-week.jp/2026/",
     "mapQuery": "Artist Cafe Fukuoka",
     "image": {
-      "url": "images/fan.webp",
-      "originalUrl": "https://fan-week.jp/2026/wp/wp-content/uploads/2026/07/b352a6501ef20671845d5ad6ea74fc42.jpg",
-      "source": "https://fan-week.jp/2026/programs/298/",
-      "alt": "牛嶋均の作品紹介写真（作品紹介写真）",
-      "label": "作品紹介写真",
-      "credit": "FaN Week 2026／牛嶋均",
-      "license": null,
-      "licenseUrl": null,
-      "width": 1440,
-      "height": 960
-    }
+      "url": "images/ai-art-20260912.webp",
+      "alt": "アート・建築をテーマにしたAI生成イメージ。実際のイベントや会場の写真ではありません。",
+      "label": "AI生成イメージ｜実際のイベント写真ではありません",
+      "kind": "ai-generated",
+      "theme": "アート・建築",
+      "credit": "Garraway F編集｜AI生成イメージ",
+      "created": "2026-09-12",
+      "sourceImagesUsed": false
+    },
+    "checked": "2026-09-11",
+    "sourceName": "FaN Week 2026 公式サイト",
+    "sourceKind": "official"
   },
   {
     "id": "sicf",
@@ -326,22 +334,22 @@
     "admission": "来場時間・参加条件は公式ページで確認。9/21に受賞者発表・授賞式。",
     "description": "若手作家のアートやデザインを間近で見られる、九州初開催のSICF。絵画、立体、写真、クラフトなど、ジャンルを越えた表現がワンビルに集まります。まだ知らなかった才能との出会いを、旅の始まりに。",
     "access": "地下鉄空港線・天神駅直結のONE FUKUOKA BLDG.へ。会場は6階です。",
-    "note": "この特集の対象期間に重なるのは9/21・22です。写真は開催前のため、会場または公式ビジュアルを紹介しています。",
+    "note": "この特集の対象期間に重なるのは9/21・22です。掲載画像はテーマを表現したAI生成イメージで、実際の会場や出展作品ではありません。",
     "source": "https://www.sicf.jp/sicf-fukuoka/",
     "mapQuery": "ONE FUKUOKA BLDG.",
     "image": {
-      "url": "images/sicf.webp",
-      "originalUrl": "https://www.sicf.jp/wp-content/uploads/2026/07/8dcaf83cbad2de48bc0289ee4860cd6d.jpg",
-      "source": "https://www.sicf.jp/sicf-fukuoka/",
-      "alt": "SICF Fukuoka（2026年公式ビジュアル）",
-      "label": "2026年公式ビジュアル",
-      "credit": "SICF／WACOAL ART CENTER",
-      "license": null,
-      "licenseUrl": null,
-      "width": 1200,
-      "height": 700,
-      "fit": "contain"
-    }
+      "url": "images/ai-art-20260912.webp",
+      "alt": "アート・建築をテーマにしたAI生成イメージ。実際のイベントや会場の写真ではありません。",
+      "label": "AI生成イメージ｜実際のイベント写真ではありません",
+      "kind": "ai-generated",
+      "theme": "アート・建築",
+      "credit": "Garraway F編集｜AI生成イメージ",
+      "created": "2026-09-12",
+      "sourceImagesUsed": false
+    },
+    "checked": "2026-09-11",
+    "sourceName": "SICF Fukuoka 公式サイト",
+    "sourceKind": "official"
   },
   {
     "id": "hakozaki",
@@ -366,17 +374,18 @@
     "sourceLabel": "開催案内・主催者リンクを見る",
     "mapQuery": "筥崎宮",
     "image": {
-      "url": "images/hakozaki.webp",
-      "originalUrl": "https://www.fukuoka-now.com/wp-content/uploads/2026/05/fn_hakozaki-shrine-flea-market_2026_cl-001.jpg",
-      "source": "https://www.fukuoka-now.com/ja/event/hakozaki-shrine-flea-market-oct-26/",
-      "alt": "筥崎宮蚤の市・過去開催の様子",
-      "label": "過去開催の様子",
-      "credit": "出典：Fukuoka Now",
-      "license": null,
-      "licenseUrl": null,
-      "width": 1440,
-      "height": 998
-    }
+      "url": "images/ai-market-20260912.webp",
+      "alt": "まち歩き・工芸をテーマにしたAI生成イメージ。実際のイベントや会場の写真ではありません。",
+      "label": "AI生成イメージ｜実際のイベント写真ではありません",
+      "kind": "ai-generated",
+      "theme": "まち歩き・工芸",
+      "credit": "Garraway F編集｜AI生成イメージ",
+      "created": "2026-09-12",
+      "sourceImagesUsed": false
+    },
+    "checked": "2026-09-11",
+    "sourceName": "Fukuoka Now｜筥崎宮蚤の市 開催紹介",
+    "sourceKind": "media"
   },
   {
     "id": "synapse",
@@ -396,22 +405,23 @@
     "admission": "有料イベント。券種・開催時間・滞在条件は主催者で確認。",
     "description": "音楽、アート、ウェルネス、食。いろいろな楽しみ方が交わるフェスが、2026年は海の中道へ。街の予定を少しゆるめて、自然の中で人やカルチャーに出会う時間を。",
     "access": "博多・天神から海の中道方面へ。一般の公園入口から会場まで距離があるため、主催者のアクセス・送迎案内を確認してください。",
-    "note": "写真は旧会場での過去開催の様子です。2026年は海の中道のINN THE PARK 福岡で開催。参加券、ヨガの予約、宿泊の条件は開催案内で確認してください。",
+    "note": "2026年は海の中道のINN THE PARK 福岡で開催。参加券、ヨガの予約、宿泊の条件は開催案内で確認してください。",
     "source": "https://www.fukuoka-now.com/ja/event/synapse-festival-2026/",
     "sourceLabel": "開催案内・主催者リンクを見る",
     "mapQuery": "INN THE PARK 福岡",
     "image": {
-      "url": "images/synapse.webp",
-      "originalUrl": "https://www.fukuoka-now.com/wp-content/uploads/2026/08/fn_synapse-festival_2026_cl-002.jpg",
-      "source": "https://www.fukuoka-now.com/ja/event/synapse-festival-2026/",
-      "alt": "SYNAPSE FESTIVAL・過去開催の様子（2026年は会場変更）",
-      "label": "過去開催の様子（旧会場）",
-      "credit": "出典：Fukuoka Now",
-      "license": null,
-      "licenseUrl": null,
-      "width": 1400,
-      "height": 933
-    }
+      "url": "images/ai-music-20260912.webp",
+      "alt": "音楽をテーマにしたAI生成イメージ。実際のイベントや会場の写真ではありません。",
+      "label": "AI生成イメージ｜実際のイベント写真ではありません",
+      "kind": "ai-generated",
+      "theme": "音楽",
+      "credit": "Garraway F編集｜AI生成イメージ",
+      "created": "2026-09-12",
+      "sourceImagesUsed": false
+    },
+    "checked": "2026-09-11",
+    "sourceName": "Fukuoka Now｜SYNAPSE FESTIVAL 開催紹介",
+    "sourceKind": "media"
   },
   {
     "id": "tour",
@@ -440,16 +450,14 @@
     "source": "https://tourdekyushu.asia/",
     "mapQuery": "天神中央公園",
     "image": {
-      "url": "images/tour.webp",
-      "originalUrl": "https://tourdekyushu.asia/tdk-2025/manager/wp-content/themes/tourdekyushu/assets/img/gallery/kumamoto/gallery3_1.jpg",
-      "source": "https://tourdekyushu.asia/tdk-2025/gallery/",
-      "alt": "熊本ステージを駆ける選手（2025年大会の様子）",
-      "label": "2025年大会の様子",
-      "credit": "マイナビ ツール・ド・九州2025 公式フォトギャラリー",
-      "license": null,
-      "licenseUrl": null,
-      "width": 1200,
-      "height": 799
+      "url": "images/ai-sport-20260912.webp",
+      "alt": "スポーツをテーマにしたAI生成イメージ。実際のイベントや会場の写真ではありません。",
+      "label": "AI生成イメージ｜実際のイベント写真ではありません",
+      "kind": "ai-generated",
+      "theme": "スポーツ",
+      "credit": "Garraway F編集｜AI生成イメージ",
+      "created": "2026-09-12",
+      "sourceImagesUsed": false
     },
     "areaDates": {
       "nagasaki": [
@@ -470,7 +478,10 @@
       "miyazaki": [
         "2026-10-12"
       ]
-    }
+    },
+    "checked": "2026-09-11",
+    "sourceName": "ツール・ド・九州 公式サイト",
+    "sourceKind": "official"
   },
   {
     "id": "saga-sake",
@@ -494,17 +505,18 @@
     "source": "https://tourdekyushu.asia/event_saga/4899/",
     "mapQuery": "唐津市ふるさと会館アルピノ",
     "image": {
-      "url": "images/saga-sake.webp",
-      "originalUrl": "https://cdn-mapple.net/Normal/%E4%BD%90%E8%B3%80%E7%9C%8C/41000189_00000.jpg",
-      "source": "https://www.mapple.net/spot/41000189/",
-      "alt": "会場「唐津市ふるさと会館アルピノ」の外観",
-      "label": "会場の外観",
-      "credit": "出典：まっぷるウェブ",
-      "license": null,
-      "licenseUrl": null,
-      "width": 640,
-      "height": 480
-    }
+      "url": "images/ai-food-20260912.webp",
+      "alt": "食とお酒をテーマにしたAI生成イメージ。実際のイベントや会場の写真ではありません。",
+      "label": "AI生成イメージ｜実際のイベント写真ではありません",
+      "kind": "ai-generated",
+      "theme": "食とお酒",
+      "credit": "Garraway F編集｜AI生成イメージ",
+      "created": "2026-09-12",
+      "sourceImagesUsed": false
+    },
+    "checked": "2026-09-11",
+    "sourceName": "ツール・ド・九州 佐賀応援イベント案内",
+    "sourceKind": "official"
   },
   {
     "id": "taketa",
@@ -528,17 +540,18 @@
     "source": "https://tourdekyushu.asia/event_oita/4705/",
     "mapQuery": "竹田市 下本町通り",
     "image": {
-      "url": "images/taketa.webp",
-      "originalUrl": "https://www.betsudaikohsan.co.jp/up/blog/15b6699750ffe5a8fd55c97ca6963987e7614cd4.jpg",
-      "source": "https://www.betsudaikohsan.co.jp/oita-chintai/oita-area/detail/id_168/",
-      "alt": "竹田城下町の風景（開催エリアのイメージ）",
-      "label": "竹田城下町の風景",
-      "credit": "出典：別大興産「大分のエリア情報」",
-      "license": null,
-      "licenseUrl": null,
-      "width": 700,
-      "height": 467
-    }
+      "url": "images/ai-market-20260912.webp",
+      "alt": "まち歩き・工芸をテーマにしたAI生成イメージ。実際のイベントや会場の写真ではありません。",
+      "label": "AI生成イメージ｜実際のイベント写真ではありません",
+      "kind": "ai-generated",
+      "theme": "まち歩き・工芸",
+      "credit": "Garraway F編集｜AI生成イメージ",
+      "created": "2026-09-12",
+      "sourceImagesUsed": false
+    },
+    "checked": "2026-09-11",
+    "sourceName": "ツール・ド・九州 大分応援イベント案内",
+    "sourceKind": "official"
   },
   {
     "id": "sagafes",
@@ -562,17 +575,18 @@
     "source": "https://sagasaiko-art.com/fes/",
     "mapQuery": "佐賀県立博物館",
     "image": {
-      "url": "images/sagafes.webp",
-      "originalUrl": "https://sagasaiko-art.com/cms/wp-content/themes/saiko-1/assets/img/10th/about-7.jpg",
-      "source": "https://sagasaiko-art.com/fes/",
-      "alt": "ライブペインティング（過去開催の様子）",
-      "label": "過去開催の様子",
-      "credit": "佐賀さいこうフェス公式サイト",
-      "license": null,
-      "licenseUrl": null,
-      "width": 900,
-      "height": 900
-    }
+      "url": "images/ai-music-20260912.webp",
+      "alt": "音楽をテーマにしたAI生成イメージ。実際のイベントや会場の写真ではありません。",
+      "label": "AI生成イメージ｜実際のイベント写真ではありません",
+      "kind": "ai-generated",
+      "theme": "音楽",
+      "credit": "Garraway F編集｜AI生成イメージ",
+      "created": "2026-09-12",
+      "sourceImagesUsed": false
+    },
+    "checked": "2026-09-11",
+    "sourceName": "佐賀さいこうフェス 公式サイト",
+    "sourceKind": "official"
   },
   {
     "id": "oktober",
@@ -598,17 +612,19 @@
     "status": "2026年の詳細発表待ち",
     "mapQuery": "冷泉公園 福岡",
     "image": {
-      "url": "images/oktober.webp",
-      "originalUrl": "https://tenjinsite.jp/upload/topic_photo/700x525_img_tid72193_5.jpg",
-      "source": "https://tenjinsite.jp/topics/topics/72193",
-      "alt": "青と白のビアテント（過去開催の様子）",
-      "label": "過去開催の様子",
-      "credit": "天神サイト",
-      "license": null,
-      "licenseUrl": null,
-      "width": 700,
-      "height": 466
-    }
+      "url": "images/ai-food-20260912.webp",
+      "alt": "食とお酒をテーマにしたAI生成イメージ。実際のイベントや会場の写真ではありません。",
+      "label": "AI生成イメージ｜実際のイベント写真ではありません",
+      "kind": "ai-generated",
+      "theme": "食とお酒",
+      "credit": "Garraway F編集｜AI生成イメージ",
+      "created": "2026-09-12",
+      "sourceImagesUsed": false
+    },
+    "checked": "2026-09-11",
+    "sourceName": "福岡オクトーバーフェスト公式サイト",
+    "sourceKind": "official",
+    "additionalSourceName": "Fukuoka Now｜補足の開催情報"
   },
   {
     "id": "waguri",
@@ -632,17 +648,18 @@
     "source": "https://yamagawaguri.com/",
     "mapQuery": "山鹿市 さくら湯",
     "image": {
-      "url": "images/waguri.webp",
-      "originalUrl": "https://yamagawaguri.com/wp/wp-content/uploads/2022/08/6a56a77f4016195a12e2334f602a0947-980x618.jpg",
-      "source": "https://yamagawaguri.com/shop/392",
-      "alt": "参加店「栗と空」の公式掲載スイーツ写真",
-      "label": "参加店のスイーツ写真",
-      "credit": "山鹿和栗スイーツフェア実行委員会／栗と空",
-      "license": null,
-      "licenseUrl": null,
-      "width": 980,
-      "height": 618
-    }
+      "url": "images/ai-food-20260912.webp",
+      "alt": "食とお酒をテーマにしたAI生成イメージ。実際のイベントや会場の写真ではありません。",
+      "label": "AI生成イメージ｜実際のイベント写真ではありません",
+      "kind": "ai-generated",
+      "theme": "食とお酒",
+      "credit": "Garraway F編集｜AI生成イメージ",
+      "created": "2026-09-12",
+      "sourceImagesUsed": false
+    },
+    "checked": "2026-09-11",
+    "sourceName": "やまが和栗スイーツフェア 公式サイト",
+    "sourceKind": "official"
   },
   {
     "id": "amakusa",
@@ -666,16 +683,18 @@
     "source": "https://kumamoto.guide/events/detail/7599",
     "mapQuery": "高浜焼寿芳窯",
     "image": {
-      "url": "images/amakusa.webp",
-      "originalUrl": "https://cdn.shopify.com/s/files/1/0676/8518/7867/files/page-museum2.jpg?v=1738849768",
-      "source": "https://takahamayaki.jp/pages/museum",
-      "alt": "参加窯・高浜焼の上田資料館に展示された器",
-      "label": "高浜焼・上田資料館の器",
-      "credit": "高浜焼 寿芳窯／上田資料館",
-      "license": null,
-      "licenseUrl": null,
-      "width": 1200,
-      "height": 801
-    }
+      "url": "images/ai-market-20260912.webp",
+      "alt": "まち歩き・工芸をテーマにしたAI生成イメージ。実際のイベントや会場の写真ではありません。",
+      "label": "AI生成イメージ｜実際のイベント写真ではありません",
+      "kind": "ai-generated",
+      "theme": "まち歩き・工芸",
+      "credit": "Garraway F編集｜AI生成イメージ",
+      "created": "2026-09-12",
+      "sourceImagesUsed": false
+    },
+    "checked": "2026-09-11",
+    "sourceName": "熊本県公式観光サイト｜天草西海岸秋の窯元めぐり",
+    "sourceKind": "tourism",
+    "sourceLabel": "観光案内・参加方法を見る"
   }
 ]
