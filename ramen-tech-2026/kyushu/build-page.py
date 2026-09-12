@@ -6,7 +6,7 @@ from pathlib import Path
 from urllib.parse import urlencode, urlparse
 
 ROOT = Path(__file__).resolve().parent
-VERSION = '20260912k3'
+VERSION = '20260912k4'
 events = json.loads((ROOT / 'events.json').read_text())
 manifest = json.loads((ROOT / 'image-manifest.json').read_text())
 e = lambda value: html.escape(str(value), quote=True)
@@ -51,7 +51,7 @@ def cover(item, lead=False):
     priority = 'fetchpriority="high"' if lead else 'loading="eager"'
     return f'''<a class="{css}" href="#{e(item['id'])}" data-event="{e(item['id'])}" aria-label="{e(item['name'])}の見どころを見る">
 <img src="{e(item['image']['url'])}" alt="{e(item['image']['alt'])}" width="1536" height="1024" {priority}>
-<span class="cover-image-tag">油絵風・AI生成イメージ<br>実際のイベント写真ではありません</span><span class="cover-arrow" aria-hidden="true">↗</span>
+<span class="cover-arrow" aria-hidden="true">↗</span>
 <div class="cover-copy"><span class="cover-label">{e(item['areaLabel'])} · {e(item['stamp'])}</span><h2>{e(item['hook'])}</h2><p>{e(item['name'])}</p></div></a>'''
 
 def card(item, index):
@@ -62,7 +62,7 @@ def card(item, index):
     return f'''<article class="event-card" id="{e(item['id'])}">
 <a class="card-media" href="{e(item['source'])}" target="_blank" rel="noopener noreferrer" data-event="{e(item['id'])}" aria-label="{e(item['name'])}の見どころ・行き方">
 <img src="{e(item['image']['url'])}" alt="{e(item['image']['alt'])}" loading="lazy" decoding="async" width="1536" height="1024">
-<span class="date-stamp"><small>2026 / EVENT DATE</small>{e(item['stamp'])}</span><span class="photo-tag">{e(item['image']['label'])}</span></a>
+<span class="date-stamp"><small>2026 / EVENT DATE</small>{e(item['stamp'])}</span></a>
 <div class="card-meta"><span>{e(item['areaLabel'])}</span><span class="card-category">{e(item['categoryLabel'])}</span></div>
 <h3 class="card-hook">{e(item['hook'])}</h3><p class="card-name">{e(item['name'])}</p><p class="card-venue">{e(item['venue'])}</p>{status}
 <div class="card-source"><p class="source-heading">開催情報の掲載元 <span class="source-kind">{source_kind}</span></p>{source_link(item,True)}{supplementary}<small class="source-checked">開催情報の確認日：{e(item['checked'])}</small></div>
@@ -97,10 +97,9 @@ page = f'''<!doctype html>
 <div class="intro"><h1 id="page-title">福岡に来たら、<br><span>九州まで遊ぼう。</span></h1><aside><p>ライブに、アートに、祭りに。<br>予定の前後に、忘れられない寄り道を。</p><div class="issue-date">09.21 <small>MON</small> — 10.21 <small>WED / 2026</small></div></aside></div>
 <aside class="editorial-notes" aria-label="画像と参照元について">
 <div class="reference-feature"><p class="source-heading">情報の参考・出典 / 福岡の企画選び</p><a class="reference-publisher" href="https://www.fukuoka-now.com/ja/guides/fukuoka-autumn-guide/" target="_blank" rel="noopener noreferrer">Fukuoka Now <span aria-hidden="true">↗</span><small>福岡秋のガイド2026</small></a><p>各イベントの開催情報は、カードの掲載元へ。<br><a href="#sources">編集方針と19件の出典一覧 ↓</a></p></div>
-<div class="image-policy"><strong>19のイベントに、19の油絵風イメージ。</strong><p>画像はイベントごとに新しく制作した<strong class="inline">AI生成イメージ</strong>です。外部サイトの写真を加工したものではなく、実際の会場・出演者・作品・商品・景観を再現した写真でもありません。情報の掲載元は、画像の提供元ではありません。</p></div>
+<div class="image-policy" id="image-policy"><strong>掲載画像について</strong><p><strong class="inline">掲載画像はすべてAI生成の油絵風イメージです。実際のイベント写真ではありません。</strong><br>イベントごとに異なる画像を制作しています。情報の掲載元は、画像の提供元ではありません。</p></div>
 </aside>
 <div class="cover">{cover(by_id['nagasaki-kunchi'],True)}<div class="cover-stack">{cover(by_id['afaf'])}{cover(by_id['sunset'])}</div></div>
-<p class="photo-note cover-source">画像はテーマの雰囲気を表現したAI生成イメージです。実際の様子は各主催者・掲載元のサイトでご確認ください。</p>
 <div class="period-note"><p>RAMEN TECH本会期は10/7〜11。前後10日に、Garraway Fの関連期間に合わせた9/21〜26も加えて紹介。掲載イベントの全会期は、各カード・詳細に表示しています。</p><a href="#discover">秋の寄り道を見つける ↓</a></div>
 </section>
 <section id="discover" aria-labelledby="discover-title">
@@ -112,17 +111,16 @@ page = f'''<!doctype html>
 </div></div><div class="cards" id="event-grid">{cards}</div><div class="empty" id="empty" hidden><h3>この条件のイベントは、まだ掲載がありません。</h3><p>エリアや期間を変えて、次の寄り道を探してみてください。</p></div></section>
 <section class="closing" aria-labelledby="closing-title"><div><p class="section-kicker">MAKE IT A TRIP.</p><h2 id="closing-title">出会いのあとにも、<br>旅は続く。</h2><p>RAMEN TECHの予定と往復の移動を、トリッププランナーで。</p></div><a href="../#plan">マイ予定・トリッププランナーへ ↗</a></section>
 <section class="credits" id="sources" aria-labelledby="sources-title">
-<h2 id="sources-title">情報の出典と、画像について</h2>
+<h2 id="sources-title">情報の出典と編集方針</h2>
 <p>Garraway Fが独自に編集する非公式ガイドです。RAMEN TECH主催者、掲載イベントの主催者、参照先との提携・公認を示すものではありません。</p>
 <p>福岡の企画選びには <a href="https://www.fukuoka-now.com/ja/guides/fukuoka-autumn-guide/" target="_blank" rel="noopener noreferrer">Fukuoka Now「福岡秋のガイド2026」</a> を参照しています。開催日などの情報源を各カード・詳細と下の一覧に表示。主催者公式情報とメディア・観光情報の掲載元を区別しています。紹介文は本特集のために編集しています。</p>
-<p><strong>掲載画像はすべてAI生成イメージです。</strong>外部サイトの写真・ロゴ・告知ビジュアルは使用していません。19件のイベントにそれぞれ異なる油絵風の画像を新規制作しています。同じイベントの紹介・カード・詳細では同じ画像を使用しますが、別のイベントへの使い回しはしていません。実際の会場・出演者・作品・商品・景観や当日の様子を再現・保証するものではありません。情報の掲載元は画像の提供元ではありません。画像の制作・表示更新日：2026年9月12日。</p>
 <p>開催情報の確認日：2026年9月11日。画像の更新日は、イベント情報の再確認日ではありません。すべてのイベントを網羅するものではなく、開催変更、料金、予約、残席、休館日は各主催者の最新案内でご確認ください。</p>
 <details class="source-list"><summary>{len(events)}件の開催情報・参照元一覧を開く</summary><ul>{credits}</ul></details>
 <p>この特集のイベントは、RAMEN TECHのマイ予定には直接追加されません。各開催案内で参加方法をご確認ください。</p>
 </section>
 <footer class="site-footer"><span>RAMEN TECH 2026 非公式回遊ガイド｜Garraway F<br>開催情報：2026.09.11確認 ／ 画像・表示更新：2026.09.12</span><a href="../">RAMEN TECH回遊ガイドへ戻る ↗</a></footer>
 </main>
-<dialog id="event-dialog" aria-labelledby="dialog-title"><button type="button" class="dialog-close" id="close-dialog" aria-label="閉じる">×</button><div id="dialog-inner"></div></dialog>
+<dialog id="event-dialog" aria-labelledby="dialog-title" aria-describedby="image-policy"><button type="button" class="dialog-close" id="close-dialog" aria-label="閉じる">×</button><div id="dialog-inner"></div></dialog>
 <script type="application/json" id="event-data">{data}</script>
 <noscript><p class="wrap">各イベントの出典リンクから開催情報をご覧ください。絞り込みと詳細表示にはJavaScriptを使用します。</p></noscript>
 </body></html>'''

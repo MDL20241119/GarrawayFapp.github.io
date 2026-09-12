@@ -57,7 +57,7 @@ class ComplianceTests(unittest.TestCase):
             self.assertEqual(im['style'], 'oil-painting')
             self.assertIn(im['url'], allowed)
             self.assertIn('AI生成', im['label'])
-            self.assertIn('写真ではありません', im['alt'])
+            self.assertIn('油絵風イメージ', im['alt'])
             self.assertNotIn('source', im)
             self.assertNotIn('originalUrl', im)
         for old in self.manifest['removedExternalPhotoFiles'] + self.manifest['retiredGeneratedFiles']:
@@ -68,10 +68,13 @@ class ComplianceTests(unittest.TestCase):
         self.assertEqual(len(images), 22)
         for im in images:
             self.assertTrue(im['src'].startswith('images/ai-'))
-            self.assertIn('AI生成', im['alt'])
+            self.assertIn('油絵風イメージ', im['alt'])
             self.assertTrue((FEATURE / im['src']).is_file())
-        self.assertEqual(self.page.count('class="cover-image-tag"'), 3)
-        self.assertEqual(self.page.count('class="photo-tag"'), 19)
+        self.assertNotIn('class="cover-image-tag"', self.page)
+        self.assertNotIn('class="photo-tag"', self.page)
+        self.assertEqual(self.page.count('id="image-policy"'), 1)
+        self.assertEqual(self.page.count('実際のイベント写真ではありません。'), 1)
+        self.assertLess(self.page.index('id="image-policy"'), self.page.index('class="cover"'))
 
     def test_sources_are_clear_and_not_false_endorsement(self):
         self.assertEqual(self.page.count('class="card-source"'), 19)
@@ -97,13 +100,15 @@ class ComplianceTests(unittest.TestCase):
     def test_dialog_and_entry_use_new_assets(self):
         js = (FEATURE / 'kyushu.js').read_text()
         entry = (ROOT / 'classic-ui.js').read_text()
-        self.assertIn('class="image-disclosure"', js)
+        self.assertNotIn('class="image-disclosure"', js)
+        self.assertNotIn('class="dialog-credit"', js)
+        self.assertIn('aria-describedby="image-policy"', self.page)
         self.assertIn('class="dialog-sources"', js)
         self.assertNotIn('e.image.source', js)
         self.assertIn('images/ai-oil-nagasaki-kunchi-20260912.webp', entry)
-        self.assertIn('kyushu-entry-image-label', entry)
+        self.assertNotIn('kyushu-entry-image-label', entry)
         self.assertNotIn('images/nagasaki-kunchi.webp', entry)
-        self.assertIn('20260912k3', self.page)
+        self.assertIn('20260912k4', self.page)
         embedded = re.search(r'<script type="application/json" id="event-data">(.*?)</script>', self.page, re.S)
         self.assertEqual(len(json.loads(embedded.group(1))), 19)
 
