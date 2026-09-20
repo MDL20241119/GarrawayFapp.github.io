@@ -1,31 +1,31 @@
 {
-  "attemptedAt": "2026-09-20T07:42:44+09:00",
-  "lastSuccessAt": "2026-09-20T07:42:44+09:00",
+  "attemptedAt": "2026-09-21T08:03:04+09:00",
+  "lastSuccessAt": "2026-09-21T08:03:04+09:00",
   "schedule": "毎朝6:00（日本時間）／失敗時6:35再試行",
   "sources": {
     "members": {
       "url": "https://members.ramentech.jp/",
       "ok": true,
       "count": 73,
-      "lastSuccessAt": "2026-09-20T07:42:44+09:00"
+      "lastSuccessAt": "2026-09-21T08:03:04+09:00"
     },
     "schedule": {
       "url": "https://ramentech2026.aishain.com/api/schedule",
       "ok": true,
-      "count": 145,
-      "lastSuccessAt": "2026-09-20T07:42:44+09:00"
+      "count": 146,
+      "lastSuccessAt": "2026-09-21T08:03:04+09:00"
     }
   },
   "changes": [
     {
-      "id": "slot-f9a1b971-5907-4bff-9849-8601532aa5b7",
-      "title": "Fukuoka Research Club (フリクラ）vol.13 【練習試合】ゆるっと〜大名路上考現学：古地図×街歩き×AIで探る街の地層と未来",
+      "id": "slot-64183ef4-0fdb-4b32-a10b-75192468dd33",
+      "title": "CHANOYU WITHOUT BORDERS",
       "type": "new"
     }
   ],
   "status": "success",
-  "catalogVersion": "2026-09-20T07:42:44+09:00",
-  "catalogCount": 182,
+  "catalogVersion": "2026-09-21T08:03:04+09:00",
+  "catalogCount": 183,
   "venueCount": 59,
   "scope": "公式登録・公式時間割の公開構造化データを更新。個別主催者サイトの本文とGarraway F独自企画は自動上書きしません。"
 }
