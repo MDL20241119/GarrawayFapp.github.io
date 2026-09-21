@@ -1,31 +1,71 @@
 {
-  "attemptedAt": "2026-09-21T08:03:04+09:00",
-  "lastSuccessAt": "2026-09-21T08:03:04+09:00",
+  "attemptedAt": "2026-09-22T08:53:10+09:00",
+  "lastSuccessAt": "2026-09-22T08:53:10+09:00",
   "schedule": "毎朝6:00（日本時間）／失敗時6:35再試行",
   "sources": {
     "members": {
       "url": "https://members.ramentech.jp/",
       "ok": true,
-      "count": 73,
-      "lastSuccessAt": "2026-09-21T08:03:04+09:00"
+      "count": 79,
+      "lastSuccessAt": "2026-09-22T08:53:10+09:00"
     },
     "schedule": {
       "url": "https://ramentech2026.aishain.com/api/schedule",
       "ok": true,
-      "count": 146,
-      "lastSuccessAt": "2026-09-21T08:03:04+09:00"
+      "count": 148,
+      "lastSuccessAt": "2026-09-22T08:53:10+09:00"
     }
   },
   "changes": [
     {
       "id": "slot-64183ef4-0fdb-4b32-a10b-75192468dd33",
       "title": "CHANOYU WITHOUT BORDERS",
+      "type": "changed"
+    },
+    {
+      "id": "event-auto-ac79e55cf936c7",
+      "title": "Life gooes on. 女性起業家おしごと展",
+      "type": "new"
+    },
+    {
+      "id": "event-auto-efdb0d135bec9c",
+      "title": "衛星データ×環境イベント「GOSAT Climate Tech Pitch 2026」〜宇宙の視点で、地球の未来を描く。〜",
+      "type": "new"
+    },
+    {
+      "id": "event-auto-ad6841522a37be",
+      "title": "【参加無料／先着20名限定】大学生のためのGOSATデータ・クライメートテック入門",
+      "type": "new"
+    },
+    {
+      "id": "event-auto-19997cde841681",
+      "title": "南九州 MEET UP！～地域×共創でイノベーションエコシステムをつくる実践知～",
+      "type": "new"
+    },
+    {
+      "id": "event-auto-5ffd1712236c22",
+      "title": "選ばれる地域企業へ。「活躍人材」を惹きつける採用と組織のつくり方 ― 人が集まり、活躍する会社は何が違うのか ―",
+      "type": "new"
+    },
+    {
+      "id": "event-auto-358715ff9850e7",
+      "title": "呈茶席（matcha and Japanese sweets.）",
+      "type": "new"
+    },
+    {
+      "id": "slot-2764a1f0-ac99-42f2-a8f5-0437dc0a035d",
+      "title": "NEDO量子キャラバン in 福岡",
+      "type": "new"
+    },
+    {
+      "id": "slot-d34b017d-701a-4524-a475-ce440d00bd7b",
+      "title": "インスタントラーメンTECH〜一夜限りのスナック",
       "type": "new"
     }
   ],
   "status": "success",
-  "catalogVersion": "2026-09-21T08:03:04+09:00",
-  "catalogCount": 183,
-  "venueCount": 59,
+  "catalogVersion": "2026-09-22T08:53:10+09:00",
+  "catalogCount": 191,
+  "venueCount": 63,
   "scope": "公式登録・公式時間割の公開構造化データを更新。個別主催者サイトの本文とGarraway F独自企画は自動上書きしません。"
 }
