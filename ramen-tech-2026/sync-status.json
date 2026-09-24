@@ -1,7 +1,7 @@
 {
   "attemptedAt": "2026-09-24T18:47:17+09:00",
   "lastSuccessAt": "2026-09-24T18:47:17+09:00",
-  "schedule": "毎時07分に取得開始（日本時間）／配信には時間差があります",
+  "schedule": "毎朝6:00に取得開始（日本時間）／配信には時間差があります",
   "sources": {
     "members": {
       "url": "https://members.ramentech.jp/",

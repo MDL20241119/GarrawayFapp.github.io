@@ -28,5 +28,20 @@ class ReconciliationTests(unittest.TestCase):
         other=copy.deepcopy(self.catalog['events'][0]);other.update(id='unrelated-event',title='GENKI COFFEE MEETUP')
         self.catalog['events'].append(other);reconcile_local(self.catalog)
         self.assertNotIn('duplicateOf',other)
+    def test_reviewed_identity_survives_daily_updates_and_preserves_conflicts(self):
+        from ramen_sync import update_catalog
+        old_id='slot-members-founders-padel';current_id='event-auto-6d7aca132617f6'
+        member=dict(key='colive-fukuoka/founders-padel',slug='founders-padel',title='Founders Padel',dates=['2026-10-09'],start='10:24',end='12:00',location='Padel Fukuoka',url='https://entrytickets.be/colive-fukuoka/founders-padel',tags=[],free=False,active=True,ticket='',description='')
+        schedule={**member,'key':'members-founders-padel','start':'09:30','end':'11:30','address':''}
+        feeds={'members':[member],'schedule':{'records':[schedule],'venues':[]}}
+        first,_=update_catalog(self.catalog,feeds,'2026-09-25T06:00:00+09:00');reconcile_local(first)
+        by_id={e['id']:e for e in first['events']}
+        self.assertEqual(by_id[old_id]['duplicateOf'],current_id)
+        self.assertTrue(by_id[current_id]['calendarBlocked'])
+        schedule.update(start='10:24',end='12:00')
+        second,_=update_catalog(first,feeds,'2026-09-26T06:00:00+09:00');reconcile_local(second)
+        current=next(e for e in second['events'] if e['id']==current_id)
+        self.assertFalse(current.get('calendarBlocked',False))
+        self.assertEqual(len(first['events']),len(second['events']))
 
 if __name__=='__main__':unittest.main()

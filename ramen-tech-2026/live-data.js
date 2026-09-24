@@ -1,6 +1,6 @@
 'use strict';
 (()=>{
-  const INTERVAL=5*60*1000, MAX_AGE=3*60*60*1000;
+  const INTERVAL=5*60*1000, MAX_AGE=30*60*60*1000;
   const stamp=value=>Date.parse(value||'');
   function healthFor(status,now=Date.now()){
     const checked=stamp(status?.lastSuccessAt);
@@ -23,7 +23,7 @@
   if(typeof module==='object'&&module.exports)module.exports={healthFor,validatePair};
   if(typeof document==='undefined'||!window.GuideApp||window.GUIDE_CONFIG?.preview)return;
   const box=document.createElement('aside');box.id='live-data';box.className='live-data';box.setAttribute('aria-label','スケジュールの更新状況');
-  box.innerHTML='<div class="live-data-head"><strong>公式スケジュールを毎時確認</strong><button type="button" id="live-check">最新データを確認 ↻</button></div><p id="live-health" class="live-data-status" role="status" aria-live="polite">更新状況を確認中</p><p id="live-date"></p><p id="live-message">閲覧中も5分ごとに確認します。</p><details><summary>確認した公式サイト・更新内容</summary><div id="live-sources"></div><p>公式登録・公式タイムテーブルを毎時取得。配信には時間差があります。個別主催者ページの補足は別途確認し、開催情報が食い違う場合は要確認と表示します。外部カレンダーに書き出した予定は自動更新されません。</p><div id="live-changes" class="live-data-updates"></div><p><a href="https://www.ramentech.jp/#program" target="_blank" rel="noopener noreferrer">公式イベント一覧 ↗</a>　<a href="https://ramentech2026.aishain.com/" target="_blank" rel="noopener noreferrer">公式タイムテーブル ↗</a></p></details>';
+  box.innerHTML='<div class="live-data-head"><strong>公式スケジュールを毎朝6時に確認</strong><button type="button" id="live-check">最新データを確認 ↻</button></div><p id="live-health" class="live-data-status" role="status" aria-live="polite">更新状況を確認中</p><p id="live-date"></p><p id="live-message">閲覧中も5分ごとに確認します。</p><details><summary>確認した公式サイト・更新内容</summary><div id="live-sources"></div><p>公式登録・公式タイムテーブルを毎朝6時に取得。配信には時間差があります。個別主催者ページの補足は別途確認し、開催情報が食い違う場合は要確認と表示します。外部カレンダーに書き出した予定は自動更新されません。</p><div id="live-changes" class="live-data-updates"></div><p><a href="https://www.ramentech.jp/#program" target="_blank" rel="noopener noreferrer">公式イベント一覧 ↗</a>　<a href="https://ramentech2026.aishain.com/" target="_blank" rel="noopener noreferrer">公式タイムテーブル ↗</a></p></details>';
   const anchor=document.querySelector('#screen-explore .search-area');if(!anchor)return;anchor.before(box);
   const el=id=>document.getElementById(id);
   const format=value=>Number.isFinite(stamp(value))?new Intl.DateTimeFormat('ja-JP',{timeZone:'Asia/Tokyo',month:'numeric',day:'numeric',hour:'2-digit',minute:'2-digit',hourCycle:'h23'}).format(new Date(value))+'（日本時間）':'確認記録なし';

@@ -10,6 +10,7 @@ from datetime import date, datetime, timedelta, timezone
 from pathlib import Path
 from urllib.parse import urlparse, parse_qs
 from urllib.request import Request, urlopen
+from ramen_reconcile import PUBLIC_ALIASES
 
 SOURCES = {'members': 'https://members.ramentech.jp/', 'schedule': 'https://ramentech2026.aishain.com/api/schedule'}
 TIMETABLE = 'https://ramentech2026.aishain.com/'
@@ -136,7 +137,7 @@ def category(title, tags):
     return 'ビジネス・共創'
 
 # Facility identity is separate from a room. Match specific floors/rooms first.
-ALIASES = [('presentationfoyer','one6'),('tenjinchikumokubiru','auto-venue-3550c030341d'),('チクモク','auto-venue-3550c030341d'),('食堂エスニコ','auto-venue-c793d36f4982'),('candlecup','auto-venue-cc57c2553749'),('ohoriterrace','auto-venue-8e2f57a8aba0'),('gsacademy','auto-venue-37cbc51bdb6f'),('ジーズ福岡','auto-venue-37cbc51bdb6f'),('awabar','awabar'),('博多舟','boat'),('ohoripark','ohori'),('weworktenjin','wework-tenjin'),('fukuokadaimyogardencitypark','gardenpark'),('福岡大名ガーデンシティパーク','gardenpark'),('未定','tbd'),('onefukuokabldg4','tsutaya'),('garraway','garraway'),('ギャラウェイ','garraway'),('cic','cic'),
+ALIASES = [('dialogueroom','daimyo'),('presentationfoyer','one6'),('tenjinchikumokubiru','auto-venue-3550c030341d'),('チクモク','auto-venue-3550c030341d'),('食堂エスニコ','auto-venue-c793d36f4982'),('candlecup','auto-venue-cc57c2553749'),('ohoriterrace','auto-venue-8e2f57a8aba0'),('gsacademy','auto-venue-37cbc51bdb6f'),('ジーズ福岡','auto-venue-37cbc51bdb6f'),('awabar','awabar'),('博多舟','boat'),('ohoripark','ohori'),('weworktenjin','wework-tenjin'),('fukuokadaimyogardencitypark','gardenpark'),('福岡大名ガーデンシティパーク','gardenpark'),('未定','tbd'),('onefukuokabldg4','tsutaya'),('garraway','garraway'),('ギャラウェイ','garraway'),('cic','cic'),
  ('fukuokagrowthnext','fgn'),('awabar','awabar'),('horizonstage','daimyo'),('frontierstage','daimyo'),('openpitchstage','daimyo'),
  ('大名カンファレンス','daimyo'),('daimyoconference','daimyo'),('recコーヒー','rec'),('reccoffee','rec'),
  ('ワンビルスカイロビー','one6'),('terracehall','one6'),('terraceroom','one6'),('presentationroom','one6'),('skylobby','one6'),
@@ -188,12 +189,13 @@ def update_catalog(original, feeds, now):
         if 'editorialReview' not in sync:
             sync['editorialReview']=e.get('status')=='check' and any(not n.startswith((NOTE,'時刻の表記不一致：','会場表記不一致：')) for n in e.get('notes',[]))
             sync['manualBlock']=bool(e.get('calendarBlocked') and sync['editorialReview'])
-        for key in sync.get('memberKeys',[]):mapping[('members',key)]=e['id']
-        for key in sync.get('scheduleKeys',[]):mapping[('schedule',key)]=e['id']
-        if e['id'].startswith('slot-'):mapping[('schedule',e['id'][5:])]=e['id']
+        ident=PUBLIC_ALIASES.get(e['id'],e['id'])
+        for key in sync.get('memberKeys',[]):mapping[('members',key)]=ident
+        for key in sync.get('scheduleKeys',[]):mapping[('schedule',key)]=ident
+        if e['id'].startswith('slot-'):mapping[('schedule',e['id'][5:])]=ident
         for u in e.get('alsoSources',[]):
             sid=parse_qs(urlparse(u).query).get('session',[''])[0]
-            if sid:mapping[('schedule',sid)]=e['id']
+            if sid:mapping[('schedule',sid)]=ident
     def touched(e, source, raw):
         sync=e.setdefault('sync',{}); field='memberKeys' if source=='members' else 'scheduleKeys'
         sync[field]=sorted(set(sync.get(field,[])+[raw['key']]))
@@ -342,8 +344,8 @@ def install_ui(site):
     if 'auto-update.js' not in text:
         text=text.replace('</head>','<link rel="stylesheet" href="auto-update.css?v=1"><script src="sync-status.js?v=1" defer></script><script src="auto-update.js?v=1" defer></script></head>')
     text=text.replace('情報確認：<span data-updated>','公式データ取得：<span data-updated>')
-    text=text.replace('このガイドは保存時点の情報です。','公開登録・時間割を毎時自動取得。')
-    text=text.replace('情報はスナップショットで、常時自動同期ではありません。','公開登録・公式時間割は毎時07分（日本時間）に取得を開始します。GitHubの混雑で遅延する場合があります。個別主催者ページの補足・独自企画は別途確認が必要です。')
+    text=text.replace('このガイドは保存時点の情報です。','公開登録・時間割を毎朝1回自動取得。')
+    text=text.replace('情報はスナップショットで、常時自動同期ではありません。','公開登録・公式時間割は毎朝6:00（日本時間）に取得を開始します。GitHubの混雑で遅延する場合があります。個別主催者ページの補足・独自企画は別途確認が必要です。')
     p.write_text(text)
     p=site/'app.js';text=p.read_text()
     text=text.replace("function statusLabel(e){", "function statusLabel(e){if(e.status==='cancelled')return '<span class=\"label warn\">中止表記</span>';") if "e.status==='cancelled'" not in text else text
@@ -356,7 +358,7 @@ def main():
     site=Path(args.site);now=datetime.now(JST).isoformat(timespec='seconds');day=now[:10]
     raw=(site/'catalog.js').read_text();old=json.loads(raw.split('=',1)[1].strip().rstrip(';'))
     statuspath=site/'sync-status.json';previous=json.loads(statuspath.read_text()) if statuspath.exists() else {}
-    report={'attemptedAt':now,'lastSuccessAt':previous.get('lastSuccessAt'),'schedule':'毎時07分に取得開始（日本時間）／配信には時間差があります',
+    report={'attemptedAt':now,'lastSuccessAt':previous.get('lastSuccessAt'),'schedule':'毎朝6:00に取得開始（日本時間）／配信には時間差があります',
             'sources':{},'changes':[],'status':'pending','catalogVersion':old['meta'].get('catalogVersion','initial')}
     feeds={}
     for source,url in SOURCES.items():
@@ -379,7 +381,7 @@ def main():
             reconcile_local(c);validate(c)
             from ramen_geo import apply_geo
             if 'schedule' in feeds: apply_geo(c,feeds['schedule']['venues'],now)
-            c['meta']['notice']='公開登録・公式時間割を毎時自動取得。独自企画・個別主催者による補足は確認日を別記。未公表企画の完全性は保証しません。'
+            c['meta']['notice']='公開登録・公式時間割を毎朝1回自動取得。独自企画・個別主催者による補足は確認日を別記。未公表企画の完全性は保証しません。'
             c['meta']['catalogVersion']=now;c['meta']['fetchedAt']=now
             if len(feeds)==2:c['meta']['checkedAt']=day
             encoded='window.RAMEN_CATALOG='+json.dumps(c,ensure_ascii=False,separators=(',',':'))+';\n'
@@ -416,4 +418,3 @@ def main():
     return 0  # The workflow publishes health, then fails visibly for partial/failed results.
 
 if __name__=='__main__':sys.exit(main())
-
