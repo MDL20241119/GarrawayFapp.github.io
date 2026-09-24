@@ -1,6 +1,8 @@
 'use strict';
 const assert=require('node:assert/strict'), fs=require('node:fs');
-const {healthFor,validatePair}=require('../live-data.js');
+const testModule={exports:{}};
+require('node:vm').runInNewContext(fs.readFileSync(require('node:path').join(__dirname,'../live-data.js'),'utf8'),{module:testModule});
+const {healthFor,validatePair}=testModule.exports;
 const now=Date.parse('2026-09-24T12:00:00+09:00');
 assert.equal(healthFor({status:'success',lastSuccessAt:'2026-09-24T11:00:00+09:00'},now),'公式データ取得済み');
 assert.equal(healthFor({status:'success',lastSuccessAt:'2026-09-24T08:00:00+09:00'},now),'更新が遅れています');
