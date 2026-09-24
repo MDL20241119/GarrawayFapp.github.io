@@ -1,14 +1,16 @@
-name: Daily RAMEN event refresh
+name: Hourly RAMEN event refresh
 on:
   schedule:
-    - cron: '0 21 * * *'  # 06:00 Asia/Tokyo on the following calendar day
-    - cron: '35 21 * * *' # 06:35 retry if today's refresh or publication failed
+    - cron: '7 * * * *' # hourly; GitHub scheduling and publication may be delayed
   workflow_dispatch:
   push:
     branches: [main]
     paths:
       - '.github/workflows/ramen-daily-update.yml'
       - 'tools/ramen_sync.py'
+      - 'tools/ramen_reconcile.py'
+      - 'ramen-tech-2026/live-data.js'
+      - 'ramen-tech-2026/scripts/prepare-live-guide.py'
       - 'tools/test_ramen_sync.py'
       - 'tools/ramen_verify_daily.py'
       - 'ramen-tech-2026/auto-update.js'
@@ -28,29 +30,9 @@ jobs:
       - uses: actions/checkout@v4
         with:
           ref: main
-      - name: Decide whether the recovery run is needed
+      - name: Enable the hourly refresh
         id: gate
-        env:
-          EVENT_SCHEDULE: ${{ github.event.schedule }}
-        run: |
-          python3 - <<'PY'
-          import datetime, json, os, pathlib, urllib.request
-          from zoneinfo import ZoneInfo
-          needed=True
-          if os.environ.get('EVENT_SCHEDULE')=='35 21 * * *':
-              try:
-                  current=json.loads(pathlib.Path('ramen-tech-2026/sync-status.json').read_text())
-                  today=datetime.datetime.now(ZoneInfo('Asia/Tokyo')).date().isoformat()
-                  recent=current.get('status')=='success' and (current.get('lastSuccessAt') or '').startswith(today)
-                  url='https://mobilitydlab.com/GarrawayFapp.github.io/ramen-tech-2026/sync-status.json?recovery='+today
-                  with urllib.request.urlopen(url,timeout=20) as r: live=json.load(r)
-                  needed=not(recent and live.get('attemptedAt')==current.get('attemptedAt'))
-              except Exception as exc:
-                  print('Recovery required:',str(exc))
-          with open(os.environ['GITHUB_OUTPUT'],'a') as f:f.write('run='+str(needed).lower()+'\n')
-          if not needed:
-              with open(os.environ['GITHUB_STEP_SUMMARY'],'a') as f:f.write('Today\'s refresh is already successful and published. Recovery skipped.\n')
-          PY
+        run: echo 'run=true' >> "$GITHUB_OUTPUT"
       - name: Install checksum-verified initial implementation once
         if: steps.gate.outputs.run == 'true'
         run: |
@@ -72,6 +54,8 @@ jobs:
         if: steps.gate.outputs.run == 'true'
         run: |
           python3 tools/test_ramen_sync.py
+          python3 tools/test_ramen_reconcile.py
+          node ramen-tech-2026/tests/live-data.test.cjs
           node --check ramen-tech-2026/auto-update.js
       - name: Fetch and validate public sources
         if: steps.gate.outputs.run == 'true'
@@ -98,9 +82,9 @@ jobs:
         run: |
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          git add tools/ramen_sync.py tools/test_ramen_sync.py ramen-tech-2026/index.html ramen-tech-2026/app.js ramen-tech-2026/catalog.js ramen-tech-2026/sync-status.json ramen-tech-2026/sync-status.js ramen-tech-2026/auto-update.js ramen-tech-2026/auto-update.css
+          git add ramen-tech-2026/catalog.json tools/ramen_sync.py tools/test_ramen_sync.py ramen-tech-2026/index.html ramen-tech-2026/app.js ramen-tech-2026/catalog.js ramen-tech-2026/sync-status.json ramen-tech-2026/sync-status.js ramen-tech-2026/auto-update.js ramen-tech-2026/auto-update.css
           if git diff --cached --quiet; then exit 0; fi
-          git commit -m 'Refresh RAMEN official event data and checked-at status (daily JST)'
+          git commit -m 'Refresh RAMEN official event data and checked-at status (hourly JST)'
           for attempt in 1 2 3; do
             git pull --rebase origin main
             if git push origin HEAD:main; then exit 0; fi
@@ -131,3 +115,4 @@ jobs:
         run: |
           echo 'One or more official feeds could not be safely refreshed. Prior data was retained; see the published source status and job summary.'
           exit 1
+

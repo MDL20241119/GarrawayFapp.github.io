@@ -16,7 +16,7 @@ TIMETABLE = 'https://ramentech2026.aishain.com/'
 JST = timezone(timedelta(hours=9))
 NOTE = '[自動確認] '
 MANUAL = {'coffee-7', 'coffee-8', 'coffee-9', 'welcome-7', 'connect-8', 'next-9'}
-PLACEHOLDERS = {'tbd', 'private', 'city', 'kyushu-venues'}
+PLACEHOLDERS = {'tbd', 'private', 'city', 'kyushu-venues', 'v-9c4fea060c'}
 # Explicitly reviewed duplicates from the original September 9 catalog.
 OMIT = {'members-the-gathering-2', 'ed382dc8-4d5a-44d1-9f71-4ade86019b91'}
 
@@ -136,7 +136,7 @@ def category(title, tags):
     return 'ビジネス・共創'
 
 # Facility identity is separate from a room. Match specific floors/rooms first.
-ALIASES = [('awabar','awabar'),('博多舟','boat'),('ohoripark','ohori'),('weworktenjin','wework-tenjin'),('fukuokadaimyogardencitypark','gardenpark'),('福岡大名ガーデンシティパーク','gardenpark'),('未定','tbd'),('onefukuokabldg4','tsutaya'),('garraway','garraway'),('ギャラウェイ','garraway'),('cic','cic'),
+ALIASES = [('ohoriterrace','auto-venue-8e2f57a8aba0'),('gsacademy','auto-venue-37cbc51bdb6f'),('ジーズ福岡','auto-venue-37cbc51bdb6f'),('awabar','awabar'),('博多舟','boat'),('ohoripark','ohori'),('weworktenjin','wework-tenjin'),('fukuokadaimyogardencitypark','gardenpark'),('福岡大名ガーデンシティパーク','gardenpark'),('未定','tbd'),('onefukuokabldg4','tsutaya'),('garraway','garraway'),('ギャラウェイ','garraway'),('cic','cic'),
  ('fukuokagrowthnext','fgn'),('awabar','awabar'),('horizonstage','daimyo'),('frontierstage','daimyo'),('openpitchstage','daimyo'),
  ('大名カンファレンス','daimyo'),('daimyoconference','daimyo'),('recコーヒー','rec'),('reccoffee','rec'),
  ('ワンビルスカイロビー','one6'),('terracehall','one6'),('terraceroom','one6'),('presentationroom','one6'),('skylobby','one6'),
@@ -342,8 +342,8 @@ def install_ui(site):
     if 'auto-update.js' not in text:
         text=text.replace('</head>','<link rel="stylesheet" href="auto-update.css?v=1"><script src="sync-status.js?v=1" defer></script><script src="auto-update.js?v=1" defer></script></head>')
     text=text.replace('情報確認：<span data-updated>','公式データ取得：<span data-updated>')
-    text=text.replace('このガイドは保存時点の情報です。','公開登録・時間割を毎朝自動取得。')
-    text=text.replace('情報はスナップショットで、常時自動同期ではありません。','公開登録・公式時間割は毎朝6:00（日本時間）に取得を開始します。GitHubの混雑で遅延する場合があります。個別主催者ページの補足・独自企画は別途確認が必要です。')
+    text=text.replace('このガイドは保存時点の情報です。','公開登録・時間割を毎時自動取得。')
+    text=text.replace('情報はスナップショットで、常時自動同期ではありません。','公開登録・公式時間割は毎時07分（日本時間）に取得を開始します。GitHubの混雑で遅延する場合があります。個別主催者ページの補足・独自企画は別途確認が必要です。')
     p.write_text(text)
     p=site/'app.js';text=p.read_text()
     text=text.replace("function statusLabel(e){", "function statusLabel(e){if(e.status==='cancelled')return '<span class=\"label warn\">中止表記</span>';") if "e.status==='cancelled'" not in text else text
@@ -356,7 +356,7 @@ def main():
     site=Path(args.site);now=datetime.now(JST).isoformat(timespec='seconds');day=now[:10]
     raw=(site/'catalog.js').read_text();old=json.loads(raw.split('=',1)[1].strip().rstrip(';'))
     statuspath=site/'sync-status.json';previous=json.loads(statuspath.read_text()) if statuspath.exists() else {}
-    report={'attemptedAt':now,'lastSuccessAt':previous.get('lastSuccessAt'),'schedule':'毎朝6:00（日本時間）／失敗時6:35再試行',
+    report={'attemptedAt':now,'lastSuccessAt':previous.get('lastSuccessAt'),'schedule':'毎時07分に取得開始（日本時間）／配信には時間差があります',
             'sources':{},'changes':[],'status':'pending','catalogVersion':old['meta'].get('catalogVersion','initial')}
     feeds={}
     for source,url in SOURCES.items():
@@ -374,10 +374,12 @@ def main():
                                        'error':type(exc).__name__+': '+str(exc)[:240]}
     if feeds:
         try:
-            c,actions=update_catalog(old,feeds,now);validate(c)
+            c,actions=update_catalog(old,feeds,now)
+            from ramen_reconcile import reconcile_local
+            reconcile_local(c);validate(c)
             from ramen_geo import apply_geo
             if 'schedule' in feeds: apply_geo(c,feeds['schedule']['venues'],now)
-            c['meta']['notice']='公開登録・公式時間割を毎朝自動取得。独自企画・個別主催者による補足は確認日を別記。未公表企画の完全性は保証しません。'
+            c['meta']['notice']='公開登録・公式時間割を毎時自動取得。独自企画・個別主催者による補足は確認日を別記。未公表企画の完全性は保証しません。'
             c['meta']['catalogVersion']=now;c['meta']['fetchedAt']=now
             if len(feeds)==2:c['meta']['checkedAt']=day
             encoded='window.RAMEN_CATALOG='+json.dumps(c,ensure_ascii=False,separators=(',',':'))+';\n'
@@ -389,6 +391,9 @@ def main():
         except Exception as exc:
             report['status']='failed';report['validationError']=type(exc).__name__+': '+str(exc)[:300]
     else:report['status']='failed'
+    # JSON is data-only; browsers never execute remotely fetched JavaScript.
+    snapshot=json.loads((site/'catalog.js').read_text().split('=',1)[1].strip().rstrip(';'))
+    tempjson=site/'catalog.json.tmp';tempjson.write_text(json.dumps(snapshot,ensure_ascii=False,separators=(',',':'))+'\n');tempjson.replace(site/'catalog.json')
     # Status is published even when every feed fails; never fake a successful check.
     report['scope']='公式登録・公式時間割の公開構造化データを更新。個別主催者サイトの本文とGarraway F独自企画は自動上書きしません。'
     statuspath.write_text(json.dumps(report,ensure_ascii=False,indent=2)+'\n')
@@ -411,3 +416,4 @@ def main():
     return 0  # The workflow publishes health, then fails visibly for partial/failed results.
 
 if __name__=='__main__':sys.exit(main())
+
