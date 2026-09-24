@@ -3,21 +3,6 @@ on:
   schedule:
     - cron: '0 21 * * *' # 06:00 JST daily; scheduling and publication may be delayed
   workflow_dispatch:
-  push:
-    branches: [main]
-    paths:
-      - '.github/workflows/ramen-daily-update.yml'
-      - 'tools/ramen_sync.py'
-      - 'tools/ramen_reconcile.py'
-      - 'ramen-tech-2026/live-data.js'
-      - 'ramen-tech-2026/catalog-identity.js'
-      - 'ramen-tech-2026/tests/live-data.test.cjs'
-      - 'tools/test_ramen_reconcile.py'
-      - 'ramen-tech-2026/scripts/prepare-live-guide.py'
-      - 'tools/test_ramen_sync.py'
-      - 'tools/ramen_verify_daily.py'
-      - 'ramen-tech-2026/auto-update.js'
-      - 'ramen-tech-2026/auto-update.css'
 permissions:
   contents: write
   pages: write

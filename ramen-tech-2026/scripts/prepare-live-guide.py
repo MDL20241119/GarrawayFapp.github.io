@@ -12,7 +12,7 @@ def prepare(root):
     js = js.replace('D.events.flatMap(e=>e.dates.filter(d=>matches(e,d))', 'D.events.filter(e=>!e.duplicateOf).flatMap(e=>e.dates.filter(d=>matches(e,d))')
     js = js.replace('if(!e.dates.includes(g.from.day)', 'if(e.duplicateOf||!e.dates.includes(g.from.day)')
     js = js.replace('時刻情報が不一致', '開催情報を要確認')
-    js = js.replace('確認時刻：${esc(sourceDate)}', "公式データ取得：${esc(e.autoCheckedAt||'自動取得対象外')}<br>補足情報の個別確認：${esc(e.checkedAt||'未確認')}")
+    js = js.replace('確認時点：${esc(sourceDate)}', "公式データ取得：${esc(e.autoCheckedAt||'自動取得対象外')}<br>補足情報の個別確認：${esc(e.checkedAt||'未確認')}")
     js = js.replace("raw.candidates.filter(id=>typeof id==='string'&&EV.has(id))", "raw.candidates.filter(id=>typeof id==='string'&&EV.has(id)).map(id=>EV.get(id).duplicateOf||id)")
     js = js.replace("m.view=raw.view==='table'?'table':'timeline';return m;", "m.view=raw.view==='table'?'table':'timeline';m.mergedEntries=Array.isArray(raw.mergedEntries)?raw.mergedEntries.slice(0,600):[];return window.RamenIdentity.mergeModel(m,D.events);")
     js = js.replace('function add(id,day,opts={}){const e=', 'function add(id,day,opts={}){id=window.RamenIdentity.canonicalId(D.events,id);const e=')
@@ -34,6 +34,7 @@ def prepare(root):
         html=re.sub(re.escape(name)+r'(?:\?v=[^"\s]+)?',name+'?v='+version,html)
     (root/'index.html').write_text(html)
     assert 'live-data.js?v=' in html and 'filter(e=>!e.duplicateOf).flatMap' in js
+    assert 'catalog-identity.js?v=' in html and '補足情報の個別確認：' in js
 
 if __name__=='__main__':
     parser=argparse.ArgumentParser();parser.add_argument('--site',required=True);args=parser.parse_args();prepare(Path(args.site))
