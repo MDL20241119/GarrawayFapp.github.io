@@ -269,7 +269,7 @@
     }
   ],
   "status": "success",
-  "catalogVersion": "2026-09-24T19:07:15+09:00",
+  "catalogVersion": "2026-09-24T19:14:56+09:00",
   "catalogCount": 199,
   "venueCount": 63,
   "scope": "公式登録・公式時間割の公開構造化データを更新。個別主催者サイトの本文とGarraway F独自企画は自動上書きしません。"
