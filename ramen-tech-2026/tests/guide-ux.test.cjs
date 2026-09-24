@@ -1,6 +1,7 @@
 'use strict';
 // Exercise the assembled controller, real catalog and DOM event handlers without a browser.
-const assert=require('node:assert/strict'),fs=require('node:fs'),path=require('node:path'),vm=require('node:vm');
+(async()=>{
+const assert=(await import('node:assert/strict')).default,fs=await import('node:fs'),path=await import('node:path'),vm=await import('node:vm');
 const root=path.resolve(process.argv[2]||path.join(__dirname,'..'));
 const elements=new Map(),listeners=new Map(),stored=new Map();
 function el(id){if(!elements.has(id))elements.set(id,{innerHTML:'',textContent:'',value:'',hidden:false,open:false,dataset:{},classList:{add(){},remove(){}},setAttribute(){},removeAttribute(){},addEventListener(){},scrollIntoView(){},focus(){},querySelector(){return el('nested')},querySelectorAll(){return []},showModal(){this.open=true},close(){this.open=false}});return elements.get(id);}
@@ -62,3 +63,5 @@ assert(html.indexOf('guide-ux.css')>html.indexOf('live-data.css'),'interface sty
 assert.match(html,/classic-ui\.js\?v=20260912k4-/);
 for(const id of ['filter-summary','time-context','context-garraway','candidate-toggle','event-list'])assert(html.includes('id="'+id+'"'));
 console.log('Controller checks passed: filters, grouping, candidates, registration, undo, alias migration and isolated test navigation.');
+
+})().catch(error=>{console.error(error);process.exitCode=1;});
