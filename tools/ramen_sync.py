@@ -11,6 +11,7 @@ from pathlib import Path
 from urllib.parse import urlparse, parse_qs
 from urllib.request import Request, urlopen
 from ramen_reconcile import PUBLIC_ALIASES
+from ramen_reviews import SCHEDULE_LINKS, correct_source_links, apply_time_reviews
 
 SOURCES = {'members': 'https://members.ramentech.jp/', 'schedule': 'https://ramentech2026.aishain.com/api/schedule'}
 TIMETABLE = 'https://ramentech2026.aishain.com/'
@@ -179,7 +180,7 @@ def fresh_event(ident, raw, venue, origin, kind):
                 category=category(raw['title'],raw.get('tags',[])))
 
 def update_catalog(original, feeds, now):
-    c=copy.deepcopy(original); events={e['id']:e for e in c['events']}; venues={v['id']:v for v in c['venues']}
+    c=correct_source_links(copy.deepcopy(original)); events={e['id']:e for e in c['events']}; venues={v['id']:v for v in c['venues']}
     seen={'members':set(),'schedule':set()}; mapping={}; member_for={}; member_venues={}; schedule_for={}; review_notes={}; actions=[]
     before={e['id']:copy.deepcopy(e) for e in c['events']}
     for e in events.values():
@@ -236,7 +237,7 @@ def update_catalog(original, feeds, now):
         touched(e,'members',r);member_for[ident]=r;member_venues[ident]=e['venue']
     for r in feeds.get('schedule',{}).get('records',[]):
         if r['key'] in OMIT: continue
-        ident=mapping.get(('schedule',r['key']))
+        ident=SCHEDULE_LINKS.get(r['key']) or mapping.get(('schedule',r['key']))
         if not ident and r['key'].startswith('members-') and 'event-'+r['key'][8:] in events:
             ident='event-'+r['key'][8:]
         if not ident:
@@ -378,6 +379,7 @@ def main():
         try:
             c,actions=update_catalog(old,feeds,now)
             from ramen_reconcile import reconcile_local
+            apply_time_reviews(c,now)
             reconcile_local(c);validate(c)
             from ramen_geo import apply_geo
             if 'schedule' in feeds: apply_geo(c,feeds['schedule']['venues'],now)

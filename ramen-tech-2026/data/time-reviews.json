@@ -1,0 +1,53 @@
+{
+  "reviews": [
+    {
+      "eventId": "event-auto-6d7aca132617f6",
+      "dates": [
+        "2026-10-09"
+      ],
+      "start": "10:00",
+      "end": "12:00",
+      "source": "https://entrytickets.be/colive-fukuoka/founders-padel",
+      "checkedAt": "2026-09-25T05:25:40+09:00",
+      "note": "主催者ページ本文のEvent Detailsに記載された10:00〜12:00を採用。登録欄の10:24開始・時間割の9:30開始を修正しました。",
+      "acceptedHashes": {
+        "members:colive-fukuoka/founders-padel": "7c0b30f56581d2dd4c93243fb76b38061a84f3999e2dbacee24c134532f0d6de",
+        "schedule:members-founders-padel": "71407f86ad7289cb6d3950e53ac952fb92da4e02cd188a476f70f4ffe8e16502"
+      }
+    },
+    {
+      "eventId": "event-nomikai",
+      "dates": [
+        "2026-10-08"
+      ],
+      "start": "19:00",
+      "end": "23:00",
+      "source": "https://entrytickets.be/tadano/nomikai",
+      "checkedAt": "2026-09-25T05:25:40+09:00",
+      "note": "主催者の参加ページで10/8 19:00〜23:00を確認。古い時間割の18:30〜22:00を修正しました。",
+      "acceptedHashes": {
+        "members:tadano/nomikai": "11fe5603bb2c51b026b747633d96a054ae8624b75f178c8acf9f494594c4fb42",
+        "schedule:3070baef-9dd3-442d-880e-4dbed79e7c83": "2efca8fb7a9f73163bf76e349c30d3ac26b553ae1b7fa796e51870916c8917c0"
+      }
+    },
+    {
+      "eventId": "event-auto-04eac30ce8f5da",
+      "dates": [
+        "2026-10-07"
+      ],
+      "start": "13:00",
+      "end": "20:35",
+      "source": "https://www.parks-startup.jp/parks-deep-tech-arena-2026/",
+      "checkedAt": "2026-09-25T05:25:40+09:00",
+      "note": "主催者公式プログラムの13:00〜20:35を採用。懇親会は18:35〜20:35です。",
+      "acceptedHashes": {
+        "members:parksplatform/parks-deep-tech-arena": "e80342579d474bbddeae2f3d6da1efafac2d0561c62e6d29829a06523a8a152a",
+        "schedule:4873a7f8-7bcd-4901-a5c3-ff5c5524635f": "b0597a672ce9c9478c66bc77c9d2731195793ca6cd194ef3b83828538a37e11c"
+      },
+      "supersededNotes": [
+        "主催者公式プログラム（9/24確認）は13:00–20:35。登録の13:00–19:00、時間割の12:00–18:00と差異があるため、来場前に主催者案内を確認してください。"
+      ],
+      "clearsTimingReview": true
+    }
+  ]
+}

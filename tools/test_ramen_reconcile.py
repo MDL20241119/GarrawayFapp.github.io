@@ -31,6 +31,11 @@ class ReconciliationTests(unittest.TestCase):
     def test_reviewed_identity_survives_daily_updates_and_preserves_conflicts(self):
         from ramen_sync import update_catalog
         old_id='slot-members-founders-padel';current_id='event-auto-6d7aca132617f6'
+        # This tests feed agreement without a separate organizer timing review.
+        for event in self.catalog['events']:
+            if event['id'] in (old_id,current_id):
+                event['notes']=[n for n in event.get('notes',[]) if not n.startswith('[主催者確認]')]
+                event.pop('timeReview',None)
         member=dict(key='colive-fukuoka/founders-padel',slug='founders-padel',title='Founders Padel',dates=['2026-10-09'],start='10:24',end='12:00',location='Padel Fukuoka',url='https://entrytickets.be/colive-fukuoka/founders-padel',tags=[],free=False,active=True,ticket='',description='')
         schedule={**member,'key':'members-founders-padel','start':'09:30','end':'11:30','address':''}
         feeds={'members':[member],'schedule':{'records':[schedule],'venues':[]}}

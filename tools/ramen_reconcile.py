@@ -79,7 +79,7 @@ def reconcile_local(catalog):
             if not current.get(field) and old.get(field):
                 current[field] = copy.deepcopy(old[field])
         current['tags'] = list(dict.fromkeys(current.get('tags', []) + old.get('tags', [])))
-        current['notes'] = list(dict.fromkeys(current.get('notes', []) + [n for n in old.get('notes', []) if not n.startswith('[自動確認]')]))
+        current['notes'] = list(dict.fromkeys(current.get('notes', []) + [n for n in old.get('notes', []) if not n.startswith(('[自動確認]', '[主催者確認]'))]))
         if not current.get('room') and old.get('room'):
             current['room'] = old['room']
         for field in (*PUBLIC_FIELDS, 'notes', 'status', 'fee'):

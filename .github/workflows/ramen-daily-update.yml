@@ -43,6 +43,7 @@ jobs:
         run: |
           python3 tools/test_ramen_sync.py
           python3 tools/test_ramen_reconcile.py
+          python3 tools/test_ramen_reviews.py
           node ramen-tech-2026/tests/live-data.test.cjs
           node --check ramen-tech-2026/auto-update.js
       - name: Fetch and validate public sources
