@@ -67,12 +67,14 @@ jobs:
               page=context.new_page(); page.set_default_timeout(15000)
               page.on('pageerror',lambda e:report['errors'].append(str(e)))
               page.goto(base,wait_until='networkidle'); page.wait_for_function('!!window.RamenGuide')
-              assert page.evaluate('RAMEN_CATALOG.events.length')==127
-              assert page.locator('#stat-venues').inner_text()=='47'
+              expected_catalog=json.loads(pathlib.Path('ramen-tech-2026/catalog.js').read_text().split('=',1)[1].strip().rstrip(';'))
+              assert page.evaluate('RAMEN_CATALOG.events.length')==len(expected_catalog['events'])
+              assert page.evaluate('RAMEN_CATALOG.meta.catalogVersion')==expected_catalog['meta']['catalogVersion']
+              assert page.locator('#stat-venues').inner_text()==str(expected_catalog['meta']['venueCount'])
               assert page.locator('.mascot-disclaimer').inner_text()=='非公式キャラ'
               assert page.locator('.mascot').evaluate('(img)=>img.complete&&img.naturalWidth>0')
               assert page.locator('.event-card').count()==18
-              report['checks'].append('127 records, 47 named venues, mascot and nonofficial badge rendered')
+              report['checks'].append('Published catalog counts/version, named venues, mascot and nonofficial badge rendered')
               for q in ['ＡＩ','ギャラウェイ','交流 天神','NVIDIA']:
                   page.locator('#search').fill(q); page.wait_for_timeout(250)
                   count=page.evaluate('RamenGuide.filtered().length')
