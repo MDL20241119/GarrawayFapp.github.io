@@ -11,6 +11,10 @@ LOCAL_LINKS = {
     'next-9': ('event-auto-52e0a9ccd23300', 'slot-10e5cfc3-fa2f-443b-a2c5-889663bad4f9'),
 }
 PUBLIC_FIELDS = ('title', 'dates', 'start', 'end', 'slots', 'venue', 'url', 'autoCheckedAt')
+PUBLIC_ALIASES = {
+    'event-opening-party-1': 'event-auto-a9c0fbcac6e01a',
+    'slot-2764a1f0-ac99-42f2-a8f5-0437dc0a035d': 'event-auto-13137f63c4f92c',
+}
 
 def reconcile_local(catalog):
     events = {e['id']: e for e in catalog['events']}
@@ -49,6 +53,20 @@ def reconcile_local(catalog):
                         event['calendarBlocked'] = True
                     else:
                         event.pop('calendarBlocked', None)
+    for old_id, current_id in PUBLIC_ALIASES.items():
+        old, current = events.get(old_id), events.get(current_id)
+        if not old or not current:
+            continue
+        for field in (*PUBLIC_FIELDS, 'notes', 'status', 'fee'):
+            if field in current:
+                old[field] = copy.deepcopy(current[field])
+            elif field == 'slots':
+                old.pop(field, None)
+        old['duplicateOf'] = current_id
+        if current.get('calendarBlocked'):
+            old['calendarBlocked'] = True
+        else:
+            old.pop('calendarBlocked', None)
     visible = [e for e in catalog['events'] if not e.get('duplicateOf')]
     catalog['meta']['displayEventCount'] = len(visible)
     catalog['meta']['duplicateAliases'] = len(catalog['events']) - len(visible)

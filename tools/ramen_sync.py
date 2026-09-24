@@ -136,7 +136,7 @@ def category(title, tags):
     return 'ビジネス・共創'
 
 # Facility identity is separate from a room. Match specific floors/rooms first.
-ALIASES = [('ohoriterrace','auto-venue-8e2f57a8aba0'),('gsacademy','auto-venue-37cbc51bdb6f'),('ジーズ福岡','auto-venue-37cbc51bdb6f'),('awabar','awabar'),('博多舟','boat'),('ohoripark','ohori'),('weworktenjin','wework-tenjin'),('fukuokadaimyogardencitypark','gardenpark'),('福岡大名ガーデンシティパーク','gardenpark'),('未定','tbd'),('onefukuokabldg4','tsutaya'),('garraway','garraway'),('ギャラウェイ','garraway'),('cic','cic'),
+ALIASES = [('presentationfoyer','one6'),('tenjinchikumokubiru','auto-venue-3550c030341d'),('チクモク','auto-venue-3550c030341d'),('食堂エスニコ','auto-venue-c793d36f4982'),('candlecup','auto-venue-cc57c2553749'),('ohoriterrace','auto-venue-8e2f57a8aba0'),('gsacademy','auto-venue-37cbc51bdb6f'),('ジーズ福岡','auto-venue-37cbc51bdb6f'),('awabar','awabar'),('博多舟','boat'),('ohoripark','ohori'),('weworktenjin','wework-tenjin'),('fukuokadaimyogardencitypark','gardenpark'),('福岡大名ガーデンシティパーク','gardenpark'),('未定','tbd'),('onefukuokabldg4','tsutaya'),('garraway','garraway'),('ギャラウェイ','garraway'),('cic','cic'),
  ('fukuokagrowthnext','fgn'),('awabar','awabar'),('horizonstage','daimyo'),('frontierstage','daimyo'),('openpitchstage','daimyo'),
  ('大名カンファレンス','daimyo'),('daimyoconference','daimyo'),('recコーヒー','rec'),('reccoffee','rec'),
  ('ワンビルスカイロビー','one6'),('terracehall','one6'),('terraceroom','one6'),('presentationroom','one6'),('skylobby','one6'),
@@ -216,7 +216,7 @@ def update_catalog(original, feeds, now):
             e.update(title=r['title'],dates=r['dates'],url=r['url'] or e.get('url',''),tags=r['tags'])
             # Keep explicit previously reviewed room/facility aliases unless location changed.
             previous=e.get('sync',{}).get('memberLocation')
-            if new or (previous is not None and previous!=r['location']):e['venue']=venue
+            if new or (previous is not None and previous!=r['location']) or (e['venue'].startswith('auto-venue-') and venue!=e['venue']):e['venue']=venue
             if r['start'] and r['end']:
                 e['start'],e['end']=r['start'],r['end'];e.pop('slots',None)
             elif oldhash and oldhash!=digest(r):
