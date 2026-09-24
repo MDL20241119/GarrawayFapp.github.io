@@ -1,7 +1,9 @@
 'use strict';
-const assert=require('node:assert/strict'), fs=require('node:fs');
+(async()=>{
+const {default:assert}=await import('node:assert/strict');
+const fs=await import('node:fs'), path=await import('node:path'), vm=await import('node:vm');
 const testModule={exports:{}};
-require('node:vm').runInNewContext(fs.readFileSync(require('node:path').join(__dirname,'../live-data.js'),'utf8'),{module:testModule});
+vm.runInNewContext(fs.readFileSync(path.join(__dirname,'../live-data.js'),'utf8'),{module:testModule});
 const {healthFor,validatePair}=testModule.exports;
 const now=Date.parse('2026-09-24T12:00:00+09:00');
 assert.equal(healthFor({status:'success',lastSuccessAt:'2026-09-24T11:00:00+09:00'},now),'公式データ取得済み');
@@ -9,7 +11,7 @@ assert.equal(healthFor({status:'success',lastSuccessAt:'2026-09-24T08:00:00+09:0
 assert.equal(healthFor({status:'partial',lastSuccessAt:'2026-09-24T11:00:00+09:00'},now),'一部の取得に失敗');
 assert.equal(healthFor({status:'success'},now),'確認記録なし');
 assert.equal(healthFor({status:'success',lastSuccessAt:'2027-01-01'},now),'確認記録なし');
-const raw=fs.readFileSync(require('node:path').join(__dirname,'../catalog.js'),'utf8');
+const raw=fs.readFileSync(path.join(__dirname,'../catalog.js'),'utf8');
 const catalog=JSON.parse(raw.slice(raw.indexOf('=')+1).trim().replace(/;$/,''));
 const s={catalogVersion:catalog.meta.catalogVersion};
 assert.equal(validatePair(s,catalog),catalog);
@@ -17,3 +19,5 @@ assert.throws(()=>validatePair({...s,catalogVersion:'different'},catalog));
 const duplicate=structuredClone(catalog);duplicate.events.push(duplicate.events[0]);assert.throws(()=>validatePair(s,duplicate));
 const bad=structuredClone(catalog);bad.events[0].venue='missing';assert.throws(()=>validatePair(s,bad));
 console.log('Freshness, failed/partial sources, publication race and invalid catalog checks passed');
+
+})().catch(error=>{console.error(error);process.exitCode=1;});
