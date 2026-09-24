@@ -1,12 +1,13 @@
 """Connect the production v3 guide to the dated JSON snapshot after bundle assembly."""
-import argparse, json, re
+import argparse, hashlib, json, re
 from pathlib import Path
 
 def prepare(root):
     catalog = json.loads((root/'catalog.js').read_text().split('=',1)[1].strip().rstrip(';'))
     (root/'catalog.json').write_text(json.dumps(catalog,ensure_ascii=False,separators=(',',':'))+'\n')
     version = re.sub(r'\D','',catalog['meta'].get('catalogVersion',''))[:14] or '20260924'
-    js = (root/'guide.js').read_text()
+    source = root/'guide-source.js'
+    js = (source if source.exists() else root/'guide.js').read_text()
     js = js.replace('const allDays=', 'let allDays=')
     js = js.replace('if(e.parent&&EV.has(e.parent))', 'if(!e.duplicateOf&&e.parent&&EV.has(e.parent))')
     js = js.replace('D.events.flatMap(e=>e.dates.filter(d=>matches(e,d))', 'D.events.filter(e=>!e.duplicateOf).flatMap(e=>e.dates.filter(d=>matches(e,d))')
@@ -26,12 +27,22 @@ def prepare(root):
     js=js.replace(old,new)
     (root/'guide.js').write_text(js)
     html=(root/'index.html').read_text()
+    shell=root/'guide-shell.html'
+    if shell.exists():
+        html=html.split('<body>',1)[0]+'<body>'+shell.read_text().split('<body>',1)[1]
     if 'catalog-identity.js' not in html:
         html=re.sub(r'(<script\s+src="guide\.js)', '<script src="catalog-identity.js" defer></script>\\1', html)
     if 'live-data.js' not in html:
         html=html.replace('</head>','<link rel="stylesheet" href="live-data.css"><script src="sync-status.js" defer></script><script src="live-data.js" defer></script></head>')
-    for name in ['catalog.js','catalog-identity.js','guide.js','sync-status.js','live-data.js','live-data.css']:
+    if shell.exists() and 'guide-ux.css' not in html:
+        html=html.replace('</head>','<link rel="stylesheet" href="guide-ux.css"></head>')
+    # Interface changes must invalidate caches even when the catalog is unchanged.
+    ui_assets=['guide-source.js','guide-shell.html','guide-ux.css','classic-ui.js','live-data.js']
+    digest=hashlib.sha256(''.join((root/name).read_text() for name in ui_assets if (root/name).exists()).encode()).hexdigest()[:10]
+    version+='-'+digest
+    for name in ['catalog.js','catalog-identity.js','guide.js','sync-status.js','live-data.js','live-data.css','guide-ux.css']:
         html=re.sub(re.escape(name)+r'(?:\?v=[^"\s]+)?',name+'?v='+version,html)
+    html=re.sub(r'classic-ui\.js(?:\?v=[^"\s]+)?','classic-ui.js?v=20260912k4-'+digest,html)
     (root/'index.html').write_text(html)
     assert 'live-data.js?v=' in html and 'filter(e=>!e.duplicateOf).flatMap' in js
     assert 'catalog-identity.js?v=' in html and '補足情報の個別確認：' in js

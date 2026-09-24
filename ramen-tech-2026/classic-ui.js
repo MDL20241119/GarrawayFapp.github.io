@@ -11,7 +11,7 @@
   const kyushuStyle=document.createElement('link');kyushuStyle.rel='stylesheet';kyushuStyle.href='kyushu-entry.css?v=20260912k4';document.head.appendChild(kyushuStyle);
   document.querySelectorAll('.desktop-nav,.mobile-nav').forEach(nav=>{if(nav.querySelector('.kyushu-nav'))return;const link=document.createElement('a');link.className='kyushu-nav';link.href='kyushu/';link.innerHTML=nav.classList.contains('mobile-nav')?'<span aria-hidden="true">↗</span>九州の秋':'九州の秋 ↗';nav.appendChild(link);});
   const kyushuEntry=document.createElement('a');kyushuEntry.className='kyushu-entry';kyushuEntry.href='kyushu/';kyushuEntry.innerHTML='<span class="kyushu-entry-visual"><img src="kyushu/images/ai-oil-nagasaki-kunchi-20260912.webp" alt="祭りの太鼓を描いた油絵風イメージ。" width="230" height="164" loading="lazy"></span><div><small>KYUSHU AUTUMN 2026 / 非公式特集</small><strong>福岡に来たら、九州まで遊ぼう。</strong><p>9/21〜10/21の音楽・アート・祭り・食の寄り道へ。</p></div><span aria-hidden="true">↗</span>';ticker.after(kyushuEntry);
-  const title=document.createElement('div');title.className='classic-search-heading';title.id='classic-search';title.innerHTML='<div><p class="eyebrow">01 / FIND YOUR NEXT.</p><h2>次は、どこ行く？</h2></div><p>日付・会場・時間帯で、迷わず探す。<br>検索結果から、そのままマイ予定へ。</p>';document.querySelector('.search-area').before(title);
+  const title=document.createElement('div');title.className='classic-search-heading';title.id='classic-search';title.innerHTML='<div><p class="eyebrow">01 / FIND YOUR NEXT.</p><h2>次は、どこ行く？</h2></div><p>参加日を選んで、行きたいイベントをマイ予定へ。</p>';document.querySelector('.search-area').before(title);
   const meta=document.querySelector('meta[name="theme-color"]');if(meta)meta.content='#1892F5';
   const style=document.createElement('style');style.textContent='.plan-fallback-map{margin-top:22px}.fallback-osm{height:320px;background:#eef1ec}.fallback-osm iframe{display:block;width:100%;height:100%;border:0}@media(max-width:800px){.plan-map-aside{order:-1}.plan-fallback-map{margin-top:18px}.fallback-osm{height:280px}}';document.head.appendChild(style);
   const jump=()=>{if(document.querySelector('#screen-explore')?.hidden)return;window.scrollTo({top:Math.max(0,window.scrollY+title.getBoundingClientRect().top-(document.querySelector('.site-header')?.getBoundingClientRect().height||65)-12),behavior:'instant'});};
@@ -43,7 +43,8 @@
   const watchPlan=new MutationObserver(()=>requestAnimationFrame(fallbackMap));
   ['plan-empty','plan-content'].forEach(id=>{const el=document.getElementById(id);if(el)watchPlan.observe(el,{childList:true,subtree:true});});
   document.addEventListener('click',ev=>{const b=ev.target.closest('button,a');if(!b)return;if(b.hasAttribute('data-classic-search')){ev.preventDefault();window.GuideApp?.displayScreen('explore',{scroll:false});requestAnimationFrame(jump);}else if(b.dataset.screen==='explore'&&b.closest('nav')){requestAnimationFrame(jump);}else if(b.dataset.screen==='plan'){setTimeout(()=>{fallbackMap();ensureRoadMap();},0);}});
-  if(initialHash==='#schedule'||(new URLSearchParams(location.search).has('q')&&!new URLSearchParams(location.search).has('event'))){requestAnimationFrame(jump);}
+  if((initialHash==='#schedule'||initialHash==='#explore')||(new URLSearchParams(location.search).has('q')&&!new URLSearchParams(location.search).has('event'))){requestAnimationFrame(jump);}
   setTimeout(()=>{fallbackMap();ensureRoadMap();},0);
   if(!document.querySelector('script[src^="access-planner.js"]')){const access=document.createElement('script');access.src='access-planner.js?v=20260911f1';access.defer=true;document.head.appendChild(access);}
 })();
+

@@ -105,3 +105,10 @@ Run the meaningful arithmetic/data checks with `node ramen-tech-2026/tests/acces
 - スカイマーク: https://www.skymark.co.jp/ja/news/detail/__icsFiles/afieldfile/2026/03/09/timetable_2026summerUpdate.pdf
 - Peach: https://www.flypeach.com/application/files/5117/8304/1614/20260706_S26_20260329-20261024_dom_JP.pdf
 
+
+
+## Maintained guide interface
+
+The production assembly runs `scripts/prepare-live-guide.py` after unpacking the legacy v3 bundle. Edit `guide-source.js`, `guide-shell.html`, and `guide-ux.css` for interface changes. The assembler preserves the deployed head integrations, applies identity and live-catalog safety hooks, and versions UI assets by content hash. `classic-ui.js` retains the branded introduction; `#explore` lands at the finder.
+
+Run `node tests/guide-ux.test.cjs <assembled-guide-directory>` and `node tests/live-data.test.cjs` before publishing. `tests/responsive.html` exercises the real page at 320/390/768/1200px in a separate `ui-test=1` storage area, without changing the normal saved itinerary. This test route is not linked from the product.
