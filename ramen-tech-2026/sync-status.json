@@ -1,35 +1,265 @@
 {
-  "attemptedAt": "2026-09-24T18:47:17+09:00",
-  "lastSuccessAt": "2026-09-24T18:47:17+09:00",
+  "attemptedAt": "2026-09-24T19:07:15+09:00",
+  "lastSuccessAt": "2026-09-24T19:07:15+09:00",
   "schedule": "毎朝6:00に取得開始（日本時間）／配信には時間差があります",
   "sources": {
     "members": {
       "url": "https://members.ramentech.jp/",
       "ok": true,
       "count": 84,
-      "lastSuccessAt": "2026-09-24T18:47:17+09:00"
+      "lastSuccessAt": "2026-09-24T19:07:15+09:00"
     },
     "schedule": {
       "url": "https://ramentech2026.aishain.com/api/schedule",
       "ok": true,
       "count": 153,
-      "lastSuccessAt": "2026-09-24T18:47:17+09:00"
+      "lastSuccessAt": "2026-09-24T19:07:15+09:00"
     }
   },
   "changes": [
     {
-      "id": "event-auto-ac79e55cf936c7",
-      "title": "Life gooes on. 女性起業家おしごと展",
+      "id": "event-cic-open-campus-exhibition",
+      "title": "CIC Open Campus & Exhibition",
       "type": "changed"
     },
     {
-      "id": "event-auto-13137f63c4f92c",
+      "id": "event-cic-welcome-meetup",
+      "title": "CIC Welcome Meetup大公開",
+      "type": "changed"
+    },
+    {
+      "id": "event-the-gathering",
+      "title": "THE GATHERING",
+      "type": "changed"
+    },
+    {
+      "id": "event-global-connect-sparkday-feattaiwans",
+      "title": "GLOBAL CONNECT ⚡️（SPARK）DAY feat.Taiwan/Singapore",
+      "type": "changed"
+    },
+    {
+      "id": "event-2026vol2",
+      "title": "スタートアップと地域間連携が共創する、持続可能なイノベーション2026.Vol.2",
+      "type": "changed"
+    },
+    {
+      "id": "event-tokyotibfukuoka-pitchmeet-up",
+      "title": "TOKYO（TIB）×FUKUOKA　PITCH＆MEET UP",
+      "type": "changed"
+    },
+    {
+      "id": "event-opening-party-1",
+      "title": "RAMEN TECH 2026 Opening Party",
+      "type": "changed"
+    },
+    {
+      "id": "event-map-in-fukuoka-powered-by",
+      "title": "MAP in FUKUOKA powered by クラウドワークス",
+      "type": "changed"
+    },
+    {
+      "id": "event-startupkyushu-2026",
+      "title": "STARTUP KYUSHU 2026【セッション／BBQ交流会／キャンプ泊】",
+      "type": "changed"
+    },
+    {
+      "id": "event-cross-border-open-innovation-day",
+      "title": "Cross-border Open Innovation Day",
+      "type": "changed"
+    },
+    {
+      "id": "event-lpcic-vclp",
+      "title": "LPミートアップ@CIC VCへの投資って、実際どう？投資責任者に聞く、LPのメリット・デメリット",
+      "type": "changed"
+    },
+    {
+      "id": "event-nomikai",
+      "title": "ただの飲み会",
+      "type": "changed"
+    },
+    {
+      "id": "event-4km",
+      "title": "朝の大濠公園でのランニング（4km）　supported by NEULO",
+      "type": "changed"
+    },
+    {
+      "id": "event-ai",
+      "title": "生成AI時代、地域の中小企業はどう変わる？",
+      "type": "changed"
+    },
+    {
+      "id": "event-kumamoto-city",
+      "title": "二度の震災を経験した熊本市の新たな挑戦 スタートアップとともに未来を創る「くまもと課題解決ファンド」始動",
+      "type": "changed"
+    },
+    {
+      "id": "event-locatravel-shirahama",
+      "title": "【ろかとらべる×和歌山県白浜町】スタートアップ×行政/人流データで挑む観光DX",
+      "type": "changed"
+    },
+    {
+      "id": "event-fukuokai-hackathon2026",
+      "title": "FukuokAI 学生Hackathon2026",
+      "type": "changed"
+    },
+    {
+      "id": "event-capturing-a-persons-mind-with-cogni",
+      "title": "Own your intelligence with Cognitive AI Twin",
+      "type": "changed"
+    },
+    {
+      "id": "slot-01f3d946-f4b3-4b1f-8fca-6c2463c5d53f",
+      "title": "「投資家から見た、スタートアップの海外展開 — 東京・ソウル・サンフランシスコ、3都市のキャピタルリストが語る」",
+      "type": "changed"
+    },
+    {
+      "id": "slot-32abb078-d46a-43cc-ab38-339712e43299",
+      "title": "泥臭く語るUIデザイン会｜ホワイトボードチャレンジ【RAMEN TECH 2026】",
+      "type": "changed"
+    },
+    {
+      "id": "event-auto-062aa0733617de",
+      "title": "test",
+      "type": "changed"
+    },
+    {
+      "id": "event-auto-04eac30ce8f5da",
+      "title": "PARKS Deep Tech Arena",
+      "type": "changed"
+    },
+    {
+      "id": "event-auto-8f5afd81da4e47",
+      "title": "OEC Startup Founders Meetup",
+      "type": "changed"
+    },
+    {
+      "id": "event-auto-a6cfec39f63557",
+      "title": "福岡から世界へ。熱狂の渦を起こそう! ～「越境」から考える、AI時代の人間に、必要なものはなにか？～",
+      "type": "changed"
+    },
+    {
+      "id": "event-auto-90f18bf279ff83",
+      "title": "スタートアップ・VC・CVCのための AI利活用・AI企業への出資における法務・コンプライアンス",
+      "type": "changed"
+    },
+    {
+      "id": "event-auto-a51579550a0f01",
+      "title": "泥臭く語るUIデザイン会｜ホワイトボードチャレンジ【RAMEN TECH 2026】",
+      "type": "changed"
+    },
+    {
+      "id": "slot-4873a7f8-7bcd-4901-a5c3-ff5c5524635f",
+      "title": "PARKS Deep Tech Arena",
+      "type": "changed"
+    },
+    {
+      "id": "slot-6dd77578-6a52-405d-86b8-edd22470d8db",
+      "title": "【参加無料／先着20名限定】大学生のためのGOSATデータ・クライメートテック入門",
+      "type": "changed"
+    },
+    {
+      "id": "event-auto-7bd3ec9d852008",
+      "title": "GENKI COFFEE MEETUP",
+      "type": "changed"
+    },
+    {
+      "id": "event-auto-892814984038a9",
+      "title": "WELCOME KYUSYU! PRE-MEETUP OPEN BAR",
+      "type": "changed"
+    },
+    {
+      "id": "event-auto-808f774ad30b19",
+      "title": "CONNECT NIGHT",
+      "type": "changed"
+    },
+    {
+      "id": "event-auto-52e0a9ccd23300",
+      "title": "NEXT CHALLENGE NIGHT",
+      "type": "changed"
+    },
+    {
+      "id": "slot-5242948f-6d0c-48e5-9c37-69abcd19bd36",
+      "title": "【CGFM】つくる人のための、強みと価値を見つめ直すワークショップ【RAMEN TECH 2026】",
+      "type": "changed"
+    },
+    {
+      "id": "slot-ecf1679b-0b2b-43d7-aa6a-0f757452f600",
+      "title": "衛星データ×環境イベント「GOSAT Climate Tech Pitch 2026」〜宇宙の視点で、地球の未来を描く。〜",
+      "type": "changed"
+    },
+    {
+      "id": "event-auto-49680bc454c757",
+      "title": "OEC Startup Founders Meetup",
+      "type": "changed"
+    },
+    {
+      "id": "event-auto-d1d5566cf63aa0",
+      "title": "GENKI COFFEE MEETUP",
+      "type": "changed"
+    },
+    {
+      "id": "event-auto-d34e29e3a5f3c2",
+      "title": "Japanese Footgear Startup \"NEULO\" TRY On Event",
+      "type": "changed"
+    },
+    {
+      "id": "event-auto-06eda404ca50b7",
+      "title": "GENKI COFFEE MEETUP",
+      "type": "changed"
+    },
+    {
+      "id": "event-auto-6f66e40ec2ce2d",
+      "title": "チャリチャリで巡る！RAMEN TECH ろからりー",
+      "type": "changed"
+    },
+    {
+      "id": "slot-members-insight-seekers-hackathon-final",
+      "title": "Insight Seekers Hackathon 最終成果発表会｜presented by Nu Source",
+      "type": "changed"
+    },
+    {
+      "id": "slot-22c1a9b1-067c-46a9-965e-a64bf2696d40",
+      "title": "選ばれる地域企業へ。「活躍人材」を惹きつける採用と組織のつくり方 ― 人が集まり、活躍する会社は何が違うのか ―",
+      "type": "changed"
+    },
+    {
+      "id": "slot-d1175f61-2138-4b4f-bde3-afe5f954d561",
+      "title": "南九州 MEET UP！～地域×共創でイノベーションエコシステムをつくる実践知～",
+      "type": "changed"
+    },
+    {
+      "id": "slot-64183ef4-0fdb-4b32-a10b-75192468dd33",
+      "title": "Chanoyu Without Borders（matcha and Japanese sweets.）",
+      "type": "changed"
+    },
+    {
+      "id": "event-auto-19997cde841681",
+      "title": "南九州 MEET UP！～地域×共創でイノベーションエコシステムをつくる実践知～",
+      "type": "changed"
+    },
+    {
+      "id": "event-auto-5ffd1712236c22",
+      "title": "選ばれる地域企業へ。「活躍人材」を惹きつける採用と組織のつくり方 ― 人が集まり、活躍する会社は何が違うのか ―",
+      "type": "changed"
+    },
+    {
+      "id": "slot-2764a1f0-ac99-42f2-a8f5-0437dc0a035d",
       "title": "NEDO量子キャラバン in 福岡",
       "type": "changed"
     },
     {
-      "id": "event-auto-83a8d808732e63",
-      "title": "未来を救う器をこの手でつくる🍜まちあるき＋ものづくりワークショップ",
+      "id": "slot-members-founders-padel",
+      "title": "Founders Padel",
+      "type": "changed"
+    },
+    {
+      "id": "event-auto-2bbf4672ebd193",
+      "title": "日本の課題、あなたなら、どう解く？｜HANAMII × RAMEN TECH 2026 — 未来をすくう、器たれ / Slurp Up the ...",
+      "type": "changed"
+    },
+    {
+      "id": "event-auto-6d7aca132617f6",
+      "title": "Founders Padel",
       "type": "changed"
     },
     {
@@ -39,8 +269,8 @@
     }
   ],
   "status": "success",
-  "catalogVersion": "2026-09-24T18:47:17+09:00",
+  "catalogVersion": "2026-09-24T19:07:15+09:00",
   "catalogCount": 199,
-  "venueCount": 65,
+  "venueCount": 63,
   "scope": "公式登録・公式時間割の公開構造化データを更新。個別主催者サイトの本文とGarraway F独自企画は自動上書きしません。"
 }
