@@ -1,19 +1,19 @@
 {
-  "attemptedAt": "2026-09-25T08:45:45+09:00",
-  "lastSuccessAt": "2026-09-25T08:45:45+09:00",
+  "attemptedAt": "2026-09-26T08:48:51+09:00",
+  "lastSuccessAt": "2026-09-26T08:48:51+09:00",
   "schedule": "毎朝6:00に取得開始（日本時間）／配信には時間差があります",
   "sources": {
     "members": {
       "url": "https://members.ramentech.jp/",
       "ok": true,
-      "count": 84,
-      "lastSuccessAt": "2026-09-25T08:45:45+09:00"
+      "count": 90,
+      "lastSuccessAt": "2026-09-26T08:48:51+09:00"
     },
     "schedule": {
       "url": "https://ramentech2026.aishain.com/api/schedule",
       "ok": true,
-      "count": 153,
-      "lastSuccessAt": "2026-09-25T08:45:45+09:00"
+      "count": 157,
+      "lastSuccessAt": "2026-09-26T08:48:51+09:00"
     }
   },
   "changes": [
@@ -28,13 +28,23 @@
       "type": "changed"
     },
     {
-      "id": "slot-32abb078-d46a-43cc-ab38-339712e43299",
-      "title": "泥臭く語るUIデザイン会｜ホワイトボードチャレンジ【RAMEN TECH 2026】",
+      "id": "slot-gogo-2026-f7557679",
+      "title": "企業が語る、次の挑戦。 CVCリバースピッチ Supported by SBI",
       "type": "changed"
     },
     {
-      "id": "event-auto-062aa0733617de",
-      "title": "test",
+      "id": "slot-gogo-2026-d84bf4dc",
+      "title": "スペシャルセッション 「地域企業の挑戦が未来をつくる」",
+      "type": "changed"
+    },
+    {
+      "id": "slot-gogo-2026-56e35b07",
+      "title": "第1部 基調講演 「世界を変えるAI、その先の未来をNVIDIAが語る」",
+      "type": "changed"
+    },
+    {
+      "id": "slot-32abb078-d46a-43cc-ab38-339712e43299",
+      "title": "泥臭く語るUIデザイン会｜ホワイトボードチャレンジ【RAMEN TECH 2026】",
       "type": "changed"
     },
     {
@@ -55,11 +65,6 @@
     {
       "id": "slot-6dd77578-6a52-405d-86b8-edd22470d8db",
       "title": "【参加無料／先着20名限定】大学生のためのGOSATデータ・クライメートテック入門",
-      "type": "changed"
-    },
-    {
-      "id": "event-auto-24c4d721f75f66",
-      "title": "Design Boost After Talk Party【登壇者と語るBrandingの裏側】",
       "type": "changed"
     },
     {
@@ -85,6 +90,11 @@
     {
       "id": "slot-22c1a9b1-067c-46a9-965e-a64bf2696d40",
       "title": "選ばれる地域企業へ。「活躍人材」を惹きつける採用と組織のつくり方 ― 人が集まり、活躍する会社は何が違うのか ―",
+      "type": "changed"
+    },
+    {
+      "id": "slot-0cc8acac-e69c-4d3e-9222-7b373b15e715",
+      "title": "GIRAFFES JAPANステージ｜ジブンらしさをアップデート。",
       "type": "changed"
     },
     {
@@ -114,13 +124,48 @@
     },
     {
       "id": "event-auto-b1dc22dc1b217b",
-      "title": "FGN member's meetup ～ラーメンテック前夜祭!～",
+      "title": "FGN member's meetup ～ラーメンテック前夜祭！～",
+      "type": "changed"
+    },
+    {
+      "id": "event-auto-8857383c15627d",
+      "title": "【福岡エンタメIP Gathering】福岡から、世界を驚かせる次のエンタメは生まれるのか。",
+      "type": "new"
+    },
+    {
+      "id": "event-auto-8c5380161ecb33",
+      "title": "TOTONOI RITCH in HAKATA",
+      "type": "new"
+    },
+    {
+      "id": "event-auto-ca0033f9688512",
+      "title": "福岡エコシステムの引力〜投資家たちが語る「なぜ今、福岡なのか」〜",
+      "type": "new"
+    },
+    {
+      "id": "event-auto-1fba1482f90453",
+      "title": "東京 x 福岡 オープンイノベーションの現場から",
+      "type": "new"
+    },
+    {
+      "id": "event-auto-dfefdc05906f59",
+      "title": "福岡スタートアップ支援拠点ツアー",
+      "type": "new"
+    },
+    {
+      "id": "event-auto-60d4704288afd6",
+      "title": "【参加無料】エアロケットを飛ばそう！",
+      "type": "new"
+    },
+    {
+      "id": "slot-0b9801f9-d66d-4ae4-a2d1-ae2d75b450d8",
+      "title": "福岡エンタメIP Gathering",
       "type": "new"
     }
   ],
   "status": "success",
-  "catalogVersion": "2026-09-25T08:45:45+09:00",
-  "catalogCount": 200,
-  "venueCount": 63,
+  "catalogVersion": "2026-09-26T08:48:51+09:00",
+  "catalogCount": 207,
+  "venueCount": 64,
   "scope": "公式登録・公式時間割の公開構造化データを更新。個別主催者サイトの本文とGarraway F独自企画は自動上書きしません。"
 }
