@@ -1,19 +1,19 @@
 {
-  "attemptedAt": "2026-10-01T09:20:45+09:00",
-  "lastSuccessAt": "2026-10-01T09:20:45+09:00",
+  "attemptedAt": "2026-10-02T09:30:50+09:00",
+  "lastSuccessAt": "2026-10-02T09:30:50+09:00",
   "schedule": "毎朝6:00に取得開始（日本時間）／配信には時間差があります",
   "sources": {
     "members": {
       "url": "https://members.ramentech.jp/",
       "ok": true,
-      "count": 103,
-      "lastSuccessAt": "2026-10-01T09:20:45+09:00"
+      "count": 108,
+      "lastSuccessAt": "2026-10-02T09:30:50+09:00"
     },
     "schedule": {
       "url": "https://ramentech2026.aishain.com/api/schedule",
       "ok": true,
-      "count": 176,
-      "lastSuccessAt": "2026-10-01T09:20:45+09:00"
+      "count": 187,
+      "lastSuccessAt": "2026-10-02T09:30:50+09:00"
     }
   },
   "changes": [
@@ -28,18 +28,13 @@
       "type": "changed"
     },
     {
-      "id": "event-local-shout",
-      "title": "LOCAL SHOUT!",
+      "id": "event-fukuokai-hackathon2026",
+      "title": "FukuokAI 学生Hackathon2026",
       "type": "changed"
     },
     {
-      "id": "slot-4424a41c-85d4-46d5-8141-98ce064d39c5",
-      "title": "SHE SAILS: When East Meets West Day 1 — Discover New Perspectives",
-      "type": "changed"
-    },
-    {
-      "id": "slot-8e068889-9564-4585-a237-6db479b5937c",
-      "title": "SHE SAILS: When East Meets West. Day 2 — Put Reflection into Practice",
+      "id": "event-capturing-a-persons-mind-with-cogni",
+      "title": "Own your intelligence with Cognitive AI Twin",
       "type": "changed"
     },
     {
@@ -58,38 +53,13 @@
       "type": "changed"
     },
     {
-      "id": "slot-3d2c7cf3-a576-4798-8852-2493b8a00ed8",
-      "title": "COFFEE MEETUP｜朝のコーヒーミートアップ",
-      "type": "changed"
-    },
-    {
-      "id": "slot-f7ecd6ad-9115-45e5-8149-f6fdd21f5a92",
-      "title": "COFFEE MEETUP｜朝のコーヒーミートアップ",
-      "type": "changed"
-    },
-    {
       "id": "slot-4873a7f8-7bcd-4901-a5c3-ff5c5524635f",
       "title": "PARKS Deep Tech Arena",
       "type": "changed"
     },
     {
-      "id": "slot-892041fd-22fc-4f05-a18c-4c1023dae69b",
-      "title": "WELCOME KYUSHU! PRE-MEETUP OPEN BAR",
-      "type": "changed"
-    },
-    {
       "id": "slot-6dd77578-6a52-405d-86b8-edd22470d8db",
       "title": "【参加無料／先着20名限定】大学生のためのGOSATデータ・クライメートテック入門",
-      "type": "changed"
-    },
-    {
-      "id": "slot-10e5cfc3-fa2f-443b-a2c5-889663bad4f9",
-      "title": "NEXT CHALLENGE NIGHT｜次の挑戦を語る夜",
-      "type": "changed"
-    },
-    {
-      "id": "slot-89b77644-050f-4b4a-80de-5962e63efc6f",
-      "title": "CONNECT NIGHT｜出会いをつなぐ夜",
       "type": "changed"
     },
     {
@@ -110,6 +80,11 @@
     {
       "id": "slot-members-insight-seekers-hackathon-final",
       "title": "Insight Seekers Hackathon 最終成果発表会｜presented by Nu Source",
+      "type": "changed"
+    },
+    {
+      "id": "event-auto-26bdedb2b629c3",
+      "title": "食がつなぐ、地域のウェルネスと持続可能な食料生産を支えるイノベーション",
       "type": "changed"
     },
     {
@@ -143,49 +118,89 @@
       "type": "changed"
     },
     {
-      "id": "event-auto-2f5f848a164144",
-      "title": "AI時代になぜ人が必要なのか | Why people are still necessary in the age of AI",
-      "type": "changed"
-    },
-    {
-      "id": "event-auto-0f252778bc00cb",
-      "title": "大学生起業チャレンジプログラム　最終発表会",
-      "type": "changed"
-    },
-    {
       "id": "event-auto-0cd71ae3e4f10f",
-      "title": "\"WeWork HAKATA\" Yoga・Sound&Voice Journey -ヨガ・サウンド&ボイスジャーニー",
-      "type": "new"
+      "title": "\"WeWork HAKATA\" Yoga・Sound & Voice Journey",
+      "type": "changed"
     },
     {
       "id": "event-auto-7ed45dbad3be72",
       "title": "採用の攻めと守り~変化する採用市場への対応と、企業を守る採用実務の基本~",
+      "type": "changed"
+    },
+    {
+      "id": "event-auto-504947bd6176f4",
+      "title": "YOGA RUN & BEER at THE PARK LOUNGE by WeWork",
       "type": "new"
     },
     {
-      "id": "event-auto-e22c58a32676b1",
-      "title": "倒産寸前から世界No.1へ。 ドキュメンタリー『Re Startup』から学ぶ起業の「リアル」",
+      "id": "event-auto-e70779d150680f",
+      "title": "FUKUOKA CITY Global Business Matching Night",
       "type": "new"
     },
     {
-      "id": "event-auto-2f9f1e8843079b",
-      "title": "サツマイモテック ― さつまいもで地域をおこす",
+      "id": "event-auto-3dee9066afa4b4",
+      "title": "朝サウナに入った後好きなサウナ施設について語り合おう",
       "type": "new"
     },
     {
-      "id": "slot-8a605453-031e-4924-9578-4d66c056ea31",
-      "title": "日韓ビジネスコネクト福岡2026 ―ピッチ&商談イベント―（Korea-Japan Innovation Connect Fukuoka 2026 : Business Meeting & Pitch day）",
+      "id": "event-auto-8979acf02c8073",
+      "title": "宇宙ビジネスは、ロケットだけじゃない。 ～福岡の暮らし・食・サービス産業だから狙える 新しい事業機会の可能性を考える～",
       "type": "new"
     },
     {
-      "id": "slot-59179406-b380-4976-9f46-82ccfbed43b1",
-      "title": "YOKABAN",
+      "id": "slot-6a30c6a7-71ad-42a3-97e6-0f2f67a32f11",
+      "title": "Ramen Tech Run（大濠公園 朝の交流ラン）",
+      "type": "new"
+    },
+    {
+      "id": "slot-members-httpsentryticketsbesaunayoganf",
+      "title": "朝サウナ後の交流会",
+      "type": "new"
+    },
+    {
+      "id": "slot-4871ea30-4b65-40ca-9a8f-1e298e532a8b",
+      "title": "THEインディー展",
+      "type": "new"
+    },
+    {
+      "id": "slot-3cf305fd-b6f7-44ec-b113-467a720902cb",
+      "title": "Lunch Meetup with NIKKE",
+      "type": "new"
+    },
+    {
+      "id": "slot-5cd791b7-0985-41e7-a864-ca005b4266c8",
+      "title": "飛び出せ！九州発、共創イノベーション～大学×金融×大手事業者で、スタートアップ、アトツギ企業の新結合、成長支援に向けて",
+      "type": "new"
+    },
+    {
+      "id": "slot-dbacdf64-d09f-4fa7-9ba7-888abb5576f1",
+      "title": "Colive Fukuoka Closing Day",
+      "type": "new"
+    },
+    {
+      "id": "slot-de672d39-c07a-46c8-ace1-9fdcaf75f069",
+      "title": "ビーガン豚骨風ラーメン 無料試食ブース",
+      "type": "new"
+    },
+    {
+      "id": "slot-6d2bdafd-47c8-41f3-8f38-799e604c5451",
+      "title": "【自衛官×アスリート】成長企業に必要なバイタリティ人材とは",
+      "type": "new"
+    },
+    {
+      "id": "slot-3cb5a7a4-a12b-4e7b-b196-4af9df669d90",
+      "title": "出会いが地域を動かす ― 延べ6万人が集う都市型フェスNoMapsの巻き込み方",
+      "type": "new"
+    },
+    {
+      "id": "slot-0b241471-848d-40ca-96a4-001ccc938936",
+      "title": "Yoga・Sound & Voice Journey",
       "type": "new"
     }
   ],
   "status": "success",
-  "catalogVersion": "2026-10-01T09:20:45+09:00",
-  "catalogCount": 228,
-  "venueCount": 67,
+  "catalogVersion": "2026-10-02T09:30:50+09:00",
+  "catalogCount": 242,
+  "venueCount": 71,
   "scope": "公式登録・公式時間割の公開構造化データを更新。個別主催者サイトの本文とGarraway F独自企画は自動上書きしません。"
 }
