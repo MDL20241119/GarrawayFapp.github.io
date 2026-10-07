@@ -1,30 +1,120 @@
 {
-  "attemptedAt": "2026-10-06T10:39:50+09:00",
-  "lastSuccessAt": "2026-10-06T10:39:50+09:00",
+  "attemptedAt": "2026-10-07T09:21:31+09:00",
+  "lastSuccessAt": "2026-10-07T09:21:31+09:00",
   "schedule": "毎朝6:00に取得開始（日本時間）／配信には時間差があります",
   "sources": {
     "members": {
       "url": "https://members.ramentech.jp/",
       "ok": true,
-      "count": 133,
-      "lastSuccessAt": "2026-10-06T10:39:50+09:00"
+      "count": 134,
+      "lastSuccessAt": "2026-10-07T09:21:31+09:00"
     },
     "schedule": {
       "url": "https://ramentech2026.aishain.com/api/schedule",
       "ok": true,
-      "count": 266,
-      "lastSuccessAt": "2026-10-06T10:39:50+09:00"
+      "count": 270,
+      "lastSuccessAt": "2026-10-07T09:21:31+09:00"
     }
   },
   "changes": [
+    {
+      "id": "event-antb-fukuoka",
+      "title": "Asia New Travel Bootcamp (ANTB Fukuoka)",
+      "type": "changed"
+    },
+    {
+      "id": "event-fukuoka-sunset-beach-sauna",
+      "title": "FUKUOKA SUNSET BEACH SAUNA",
+      "type": "changed"
+    },
+    {
+      "id": "event-founders-lounge",
+      "title": "Founder's Lounge",
+      "type": "changed"
+    },
+    {
+      "id": "event-2026vol2",
+      "title": "スタートアップと地域間連携が共創する、持続可能なイノベーション2026.Vol.2",
+      "type": "changed"
+    },
     {
       "id": "event-opening-party-1",
       "title": "RAMEN TECH 2026 Opening Party",
       "type": "changed"
     },
     {
+      "id": "event-a-vibe-nocoding-workshop-fukuoka-ed",
+      "title": "A Vibe NoCoding Workshop (Fukuoka Edition) Free Coffee included!",
+      "type": "changed"
+    },
+    {
       "id": "event-nomikai",
       "title": "ただの飲み会",
+      "type": "changed"
+    },
+    {
+      "id": "event-fukuokai-hackathon2026",
+      "title": "FukuokAI 学生Hackathon2026",
+      "type": "changed"
+    },
+    {
+      "id": "slot-d8d0ae89-e4a6-406f-b547-9e16340b63e8",
+      "title": "MAP in FUKUOKA DAY1 オープニング",
+      "type": "changed"
+    },
+    {
+      "id": "slot-ca99dc0e-6f52-40e0-91a8-798cf1b3f30f",
+      "title": "MAP in FUKUOKA DAY2 オープニング",
+      "type": "changed"
+    },
+    {
+      "id": "slot-43b1adbb-06ad-45d6-8c8f-50d1d6c5c13c",
+      "title": "セッション①創業から連続承継、その背景とリアル",
+      "type": "changed"
+    },
+    {
+      "id": "slot-3ea7f7f0-e674-4a3e-b891-01b080631c88",
+      "title": "MAP in FUKUOKA <Day2> M&Aバイサイドピッチ",
+      "type": "changed"
+    },
+    {
+      "id": "slot-8a0db0aa-8576-4bdb-bbfb-a7e891d70c64",
+      "title": "セッション② ※完全オフレコ リジョブ・バチェラーデート、Charmap起業家が語るM&A、連続起業",
+      "type": "changed"
+    },
+    {
+      "id": "slot-04eeb4c7-692a-4efd-934c-7714351d5619",
+      "title": "セッション⑤家業を継ぐ、産業を変える 〜承継とM&A〜",
+      "type": "changed"
+    },
+    {
+      "id": "slot-c09c056b-60b6-4ab1-a477-c5dd0f0bc565",
+      "title": "MAP in FUKUOKA <Day2> 休憩・ネットワーキング",
+      "type": "changed"
+    },
+    {
+      "id": "slot-bc5ff701-4ad4-45c8-9874-87825b157133",
+      "title": "セッション③ ※完全オフレコ地方からアジアまで - M&Aによる地域拡大は企業価値向上につながるか",
+      "type": "changed"
+    },
+    {
+      "id": "slot-aa6dbb42-fa80-4463-adda-9755cfce2927",
+      "title": "セッション⑥地方創生と事業承継、地域の担い手をつくる",
+      "type": "changed"
+    },
+    {
+      "id": "slot-e828aea6-1a09-4fcc-93f3-7a2448ebf973",
+      "title": "ネットワーキング",
+      "type": "changed"
+    },
+    {
+      "id": "slot-3fa6c142-f5ee-4368-9088-f08a11ed5cde",
+      "title": "MAP in FUKUOKA M&Aバイサイドピッチ",
+      "type": "changed"
+    },
+    {
+      "id": "slot-0d7e4913-f77a-451e-a721-b2fd49647ab7",
+      "title": "ネットワーキング by MAP BAR",
       "type": "changed"
     },
     {
@@ -74,7 +164,7 @@
     },
     {
       "id": "slot-22c1a9b1-067c-46a9-965e-a64bf2696d40",
-      "title": "選ばれる地域企業へ。「活躍人材」を惹きつける採用と組織のつくり方 ― 人が集まり、活躍する会社は何が違うのか ―",
+      "title": "選ばれる地域企業へ。「活躍人材」を惹きつける採用と組織のつくり方 ― 人が集まり、活躍する会社は何が違うのか ― hosted by LoLLL",
       "type": "changed"
     },
     {
@@ -85,11 +175,6 @@
     {
       "id": "slot-64183ef4-0fdb-4b32-a10b-75192468dd33",
       "title": "Chanoyu Without Borders（matcha and Japanese sweets.）",
-      "type": "changed"
-    },
-    {
-      "id": "event-auto-5ffd1712236c22",
-      "title": "選ばれる地域企業へ。「活躍人材」を惹きつける採用と組織のつくり方 ― 人が集まり、活躍する会社は何が違うのか ― hosted by LoLLL",
       "type": "changed"
     },
     {
@@ -108,329 +193,44 @@
       "type": "changed"
     },
     {
-      "id": "event-auto-b1dc22dc1b217b",
-      "title": "FGN member's meetup ～ラーメンテック前夜祭！～",
+      "id": "event-auto-da9b940a70da9c",
+      "title": "ビールとクワダテ ☓ RehacQ九州コラボ企画 250回記念公開収録",
       "type": "changed"
-    },
-    {
-      "id": "event-auto-1fba1482f90453",
-      "title": "東京 x 福岡 オープンイノベーションの現場から",
-      "type": "changed"
-    },
-    {
-      "id": "event-auto-7ed45dbad3be72",
-      "title": "採用の攻めと守り~変化する採用市場への対応と、企業を守る採用実務の基本~",
-      "type": "changed"
-    },
-    {
-      "id": "event-auto-504947bd6176f4",
-      "title": "YOGA RUN & BEER at THE PARK LOUNGE by WeWork",
-      "type": "changed"
-    },
-    {
-      "id": "slot-0ce87154-c4f2-470c-a9d5-8b51be6a393c",
-      "title": "あやなすらーめん 〜耳で味わう、音声案内所〜「朝」",
-      "type": "changed"
-    },
-    {
-      "id": "slot-afc1b48a-6902-485c-8d8d-802474e7c214",
-      "title": "あやなすらーめん 〜耳で味わう、音声案内所〜「夕」",
-      "type": "changed"
-    },
-    {
-      "id": "event-auto-35b69fbc8015da",
-      "title": "Pitch Night + Networking by Hoppin' （South Korea）",
-      "type": "new"
-    },
-    {
-      "id": "event-auto-51e3505155fc0d",
-      "title": "DAY1はココ！Welcome Bar",
-      "type": "new"
-    },
-    {
-      "id": "event-auto-5a508714791a5e",
-      "title": "Persona x PocketSign | Who’s Human in an AI World?",
-      "type": "new"
-    },
-    {
-      "id": "event-auto-31b72e8074164d",
-      "title": "[INPIT] 女性起業家　IP THRIVE｜IPと起業の可能性。",
-      "type": "new"
-    },
-    {
-      "id": "event-auto-1215b8947095a0",
-      "title": "ifLinkオオギリを使って アイディア発想しよう!!",
-      "type": "new"
-    },
-    {
-      "id": "event-auto-fbc3f0c9c115a4",
-      "title": "Global Morning Pitch by Colive Fukuoka",
-      "type": "new"
     },
     {
       "id": "event-auto-ceebeae14c731e",
       "title": "Build With, Not For: Community Design Across Cultures",
-      "type": "new"
-    },
-    {
-      "id": "event-auto-5ba08d52cd3d36",
-      "title": "Osaka Night by FUTRWORKS",
-      "type": "new"
-    },
-    {
-      "id": "event-auto-212131804e03f8",
-      "title": "HORIZONTAL HOUSE 2ND ANNIVERSARY",
-      "type": "new"
-    },
-    {
-      "id": "event-auto-c9899f62703a5f",
-      "title": "「あなたが主役」KBC長岡大雅アナウンサーと1対1で雑談ラジオを収録するイベント",
-      "type": "new"
-    },
-    {
-      "id": "event-auto-ffc841d47f5e5a",
-      "title": "オープンデータから見る福岡の商業と観光の現在地",
-      "type": "new"
-    },
-    {
-      "id": "event-auto-2d03ccc3721de4",
-      "title": "ONE SESSIONS",
-      "type": "new"
-    },
-    {
-      "id": "event-auto-2acb2aecd4b71f",
-      "title": "安全保障とスタートアップ～防衛テックエコシステムを考える～",
-      "type": "new"
+      "type": "changed"
     },
     {
       "id": "event-auto-6077bc7de3ca42",
       "title": "Salsa & Bachata Night",
+      "type": "changed"
+    },
+    {
+      "id": "event-auto-82a1e91843b16d",
+      "title": "Fukuoka Research Club (フリクラ）vol.13 【練習試合】ゆるっと〜大名路上考現学：古地図×街歩き×AIで探る街の地層と未来",
       "type": "new"
     },
     {
-      "id": "event-auto-a39e65499031fb",
-      "title": "The Creators 2026",
+      "id": "slot-76d3cce0-ec10-46b3-9378-a279fdff5be9",
+      "title": "MAP in FUKUOKA <Day2> いきなりネットワーキングランチ",
       "type": "new"
     },
     {
-      "id": "event-auto-05310d01e99173",
-      "title": "アートワークショップ in 石村萬盛堂本店",
+      "id": "slot-11ed4cac-0a38-407b-bf75-6770e92e81cc",
+      "title": "MAP in FUKUOKA <Day1> いきなりネットワーキングランチ",
       "type": "new"
     },
     {
-      "id": "slot-c31bf953-0a4a-4695-bc42-39900485de10",
-      "title": "あやなすらーめん 〜耳で味わう、音声案内所〜「朝」",
-      "type": "new"
-    },
-    {
-      "id": "slot-ecbfba52-9e88-45c6-899a-c0d2ad71454e",
-      "title": "あやなすらーめん 〜耳で味わう、音声案内所〜「朝」",
-      "type": "new"
-    },
-    {
-      "id": "slot-d2793106-65b3-4207-a23a-9e8c1a228af9",
-      "title": "あやなすらーめん 〜耳で味わう、音声案内所〜「朝」",
-      "type": "new"
-    },
-    {
-      "id": "slot-d2dfa20a-f2b3-4b5f-8964-b11241e2b613",
-      "title": "あやなすらーめん 〜耳で味わう、音声案内所〜「朝」",
-      "type": "new"
-    },
-    {
-      "id": "slot-25ef58ce-f45d-418e-98a0-868758272d23",
-      "title": "AI MORNING MEET-UP FUKUOKA",
-      "type": "new"
-    },
-    {
-      "id": "slot-afad39af-53e5-46ca-beda-cbc48495dbb8",
-      "title": "あやなすらーめん 〜耳で味わう、音声案内所〜「昼」",
-      "type": "new"
-    },
-    {
-      "id": "slot-7bde9320-cddf-4b3f-8741-34ea0a935766",
-      "title": "あやなすらーめん 〜耳で味わう、音声案内所〜「昼」",
-      "type": "new"
-    },
-    {
-      "id": "slot-8f000d14-f5d5-421b-ac74-aae5197f4e64",
-      "title": "あやなすらーめん 〜耳で味わう、音声案内所〜「昼」",
-      "type": "new"
-    },
-    {
-      "id": "slot-58368e13-f95b-4294-91cc-e52dbdec7c47",
-      "title": "あやなすらーめん 〜耳で味わう、音声案内所〜「昼」",
-      "type": "new"
-    },
-    {
-      "id": "slot-afbdadbb-252e-4473-b2dc-6557bc9180a4",
-      "title": "マルラオイルで作るオリジナルロールオンアロマ",
-      "type": "new"
-    },
-    {
-      "id": "slot-1eaf793b-a4da-4555-a38f-669f4139c78b",
-      "title": "うちにはニュースなんてない、から始める広報PR ― 明日から動けるPR実践ワークショップ",
-      "type": "new"
-    },
-    {
-      "id": "slot-deeptecharena2026-pitch-01",
-      "title": "Deep Tech Arena 2026｜Pitch①",
-      "type": "new"
-    },
-    {
-      "id": "slot-deeptecharena2026-pitch-02",
-      "title": "Deep Tech Arena 2026｜Pitch②",
-      "type": "new"
-    },
-    {
-      "id": "slot-deeptecharena2026-pitch-03",
-      "title": "Deep Tech Arena 2026｜Pitch③",
-      "type": "new"
-    },
-    {
-      "id": "slot-deeptecharena2026-pitch-04",
-      "title": "Deep Tech Arena 2026｜Pitch④",
-      "type": "new"
-    },
-    {
-      "id": "slot-f53c4893-5a8f-41e0-90ba-ee405c86455c",
-      "title": "仕事に効く、美文字体験",
-      "type": "new"
-    },
-    {
-      "id": "slot-deeptecharena2026-persol",
-      "title": "PERSOL特別セッション｜大学シーズの事業化を支えるCXO人材と新たなキャリアの可能性",
-      "type": "new"
-    },
-    {
-      "id": "slot-deeptecharena2026-iaps",
-      "title": "IAPS Content｜PARKSのグローバル展開と台湾アクセラレーターIAPS",
-      "type": "new"
-    },
-    {
-      "id": "slot-deeptecharena2026-poster",
-      "title": "Deep Tech Arena 2026｜ポスターセッション",
-      "type": "new"
-    },
-    {
-      "id": "slot-d413ca94-3820-498b-b7a2-e6d755b2b24e",
-      "title": "願いからはじめる、わたしの次の一歩",
-      "type": "new"
-    },
-    {
-      "id": "slot-deeptecharena2026-pitch-05",
-      "title": "Deep Tech Arena 2026｜Pitch⑤",
-      "type": "new"
-    },
-    {
-      "id": "slot-deeptecharena2026-pitch-06",
-      "title": "Deep Tech Arena 2026｜Pitch⑥",
-      "type": "new"
-    },
-    {
-      "id": "slot-217bd94b-ed60-4de7-99f7-1b7f9cf2d407",
-      "title": "あやなすらーめん 〜耳で味わう、音声案内所〜「夕方」",
-      "type": "new"
-    },
-    {
-      "id": "slot-39968854-112e-48be-aca0-ac81638c85c2",
-      "title": "あやなすらーめん 〜耳で味わう、音声案内所〜「夕」",
-      "type": "new"
-    },
-    {
-      "id": "slot-0a410f5d-5663-4b80-9d50-30238be95242",
-      "title": "あやなすらーめん 〜耳で味わう、音声案内所〜「夕」",
-      "type": "new"
-    },
-    {
-      "id": "slot-bd20bf86-f858-421d-a39c-e0a0936a6fd4",
-      "title": "あやなすらーめん 〜耳で味わう、音声案内所〜「夕」",
-      "type": "new"
-    },
-    {
-      "id": "slot-83f6174f-36ee-497f-b258-005739a93070",
-      "title": "あやなすらーめん 〜耳で味わう、音声案内所〜「夕」",
-      "type": "new"
-    },
-    {
-      "id": "slot-ea506038-38ca-4e96-8dd7-29ac68921131",
-      "title": "やってみたい！を形にする「小さなしごと」づくり体験",
-      "type": "new"
-    },
-    {
-      "id": "slot-deeptecharena2026-pitch-07",
-      "title": "Deep Tech Arena 2026｜Pitch⑦",
-      "type": "new"
-    },
-    {
-      "id": "slot-members-ramentech2026",
-      "title": "空港の数字から見える「福岡ならでは」の買い方・食べ方",
-      "type": "new"
-    },
-    {
-      "id": "slot-deeptecharena2026-pitch-08",
-      "title": "Deep Tech Arena 2026｜Pitch⑧",
-      "type": "new"
-    },
-    {
-      "id": "slot-1bb7a6db-6c38-45a6-9160-ad1d47467d2e",
-      "title": "あやなすらーめん 〜耳で味わう、音声案内所〜「夜」",
-      "type": "new"
-    },
-    {
-      "id": "slot-e1ed79e4-70a1-45af-8f66-d0c23d1bce57",
-      "title": "あやなすらーめん 〜耳で味わう、音声案内所〜「夜」",
-      "type": "new"
-    },
-    {
-      "id": "slot-4d27b0bc-4c80-4771-b33a-2cf8c8595781",
-      "title": "あやなすらーめん 〜耳で味わう、音声案内所〜「夜」",
-      "type": "new"
-    },
-    {
-      "id": "slot-a15da2e5-2611-4136-88b6-296e018a2c32",
-      "title": "あやなすらーめん 〜耳で味わう、音声案内所〜「夜」",
-      "type": "new"
-    },
-    {
-      "id": "slot-44aa8f8f-f681-4185-a1d0-b74540de5682",
-      "title": "あやなすらーめん 〜耳で味わう、音声案内所〜「夜」",
-      "type": "new"
-    },
-    {
-      "id": "slot-members-osaka-night",
-      "title": "Osaka Night in Fukuoka – Presented by FUTRWORKS!",
-      "type": "new"
-    },
-    {
-      "id": "slot-f032dfd3-e8c4-491c-bf38-fcfe2569f717",
-      "title": "あやなすらーめん 〜耳で味わう、音声案内所〜「深夜」",
-      "type": "new"
-    },
-    {
-      "id": "slot-d18457a1-d9e5-4391-b00c-57f9396f0ea8",
-      "title": "あやなすらーめん 〜耳で味わう、音声案内所〜「深夜」",
-      "type": "new"
-    },
-    {
-      "id": "slot-86627358-5ed0-43b3-897d-d862a00e8f6d",
-      "title": "あやなすらーめん 〜耳で味わう、音声案内所〜「深夜」",
-      "type": "new"
-    },
-    {
-      "id": "slot-f76147f0-5c10-4b2b-a76f-df413dde6dbc",
-      "title": "あやなすらーめん 〜耳で味わう、音声案内所〜「深夜」",
-      "type": "new"
-    },
-    {
-      "id": "slot-189e02b1-eb9b-4de0-9848-c695d6c7b6ed",
-      "title": "あやなすらーめん 〜耳で味わう、音声案内所〜「深夜」",
+      "id": "slot-203693f9-fb5c-407c-b2ab-547f49b86e8a",
+      "title": "MAP in FUKUOKA <Day1> セッション④AIスタートアップのM&A/IPOトレンド",
       "type": "new"
     }
   ],
   "status": "success",
-  "catalogVersion": "2026-10-06T10:39:50+09:00",
-  "catalogCount": 329,
+  "catalogVersion": "2026-10-07T09:21:31+09:00",
+  "catalogCount": 333,
   "venueCount": 96,
   "scope": "公式登録・公式時間割の公開構造化データを更新。個別主催者サイトの本文とGarraway F独自企画は自動上書きしません。"
 }
