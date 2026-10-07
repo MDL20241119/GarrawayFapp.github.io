@@ -53,7 +53,8 @@ const bad=app.getState();Object.values(bad.entries)[0].end='00:01';Object.values
 click({action:'export'});
 assert.match(el('#export-summary').innerHTML,/保存前に、1件確認/);
 assert.match(el('#export-summary').innerHTML,/この予定を確認する/);
-assert.match(el('#export-summary').innerHTML,new RegExp(pair[0].title.replace(/[.*+?^${}()|[\]\\]/g,'\\$&').slice(0,20)));
+const escapedTitle=String(pair[0].title).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+assert(el('#export-summary').innerHTML.includes('<strong>'+escapedTitle+'</strong>'),'export summary preserves the full HTML-escaped event title');
 assert.equal(app.exportICS(),false,'unresolved times still block calendar export');
 assert(stored.has('ramen-guide-ui-test-v3'));
 assert(!stored.has('ramen-guide-v3'),'test storage remains isolated');
