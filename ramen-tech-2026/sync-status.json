@@ -1,80 +1,50 @@
 {
-  "attemptedAt": "2026-10-09T09:58:02+09:00",
-  "lastSuccessAt": "2026-10-09T09:58:02+09:00",
+  "attemptedAt": "2026-10-10T09:29:21+09:00",
+  "lastSuccessAt": "2026-10-10T09:29:21+09:00",
   "schedule": "毎朝6:00に取得開始（日本時間）／配信には時間差があります",
   "sources": {
     "members": {
       "url": "https://members.ramentech.jp/",
       "ok": true,
-      "count": 138,
-      "lastSuccessAt": "2026-10-09T09:58:02+09:00"
+      "count": 136,
+      "lastSuccessAt": "2026-10-10T09:29:21+09:00"
     },
     "schedule": {
       "url": "https://ramentech2026.aishain.com/api/schedule",
       "ok": true,
       "count": 282,
-      "lastSuccessAt": "2026-10-09T09:58:02+09:00"
+      "lastSuccessAt": "2026-10-10T09:29:21+09:00"
     }
   },
   "changes": [
+    {
+      "id": "event-cic-open-campus-exhibition",
+      "title": "CIC Open Campus & Exhibition",
+      "type": "changed"
+    },
+    {
+      "id": "event-cic-welcome-meetup",
+      "title": "CIC Welcome Meetup大公開",
+      "type": "changed"
+    },
+    {
+      "id": "event-the-gathering",
+      "title": "THE GATHERING",
+      "type": "changed"
+    },
     {
       "id": "event-opening-party-1",
       "title": "RAMEN TECH 2026 Opening Party",
       "type": "changed"
     },
     {
-      "id": "event-startupkyushu-2026",
-      "title": "STARTUP KYUSHU 2026【セッション／BBQ交流会／キャンプ泊】",
+      "id": "event-aan-grand-events",
+      "title": "AAN Grand Events",
       "type": "changed"
     },
     {
-      "id": "event-ramen-tech-global-summit-2026",
-      "title": "RAMEN TECH Global Summit 2026",
-      "type": "changed"
-    },
-    {
-      "id": "event-global-connect-sparkday-feataankore",
-      "title": "GLOBAL CONNECT ⚡️（SPARK）DAY feat.AAN/Korea",
-      "type": "changed"
-    },
-    {
-      "id": "event-thursday-gathering-88",
-      "title": "Thursday Gathering #88",
-      "type": "changed"
-    },
-    {
-      "id": "event-japan-korea-deep-tech-pitch-arena",
-      "title": "Japan × Korea Deep Tech Pitch Arena",
-      "type": "changed"
-    },
-    {
-      "id": "event-kibow-social-impact-meetup-in-ramen",
-      "title": "KIBOW Social Impact Meetup in 福岡 〜社会課題で、事業をつくる人へ。〜（RAMEN TECH 2026 リンクイベント）",
-      "type": "changed"
-    },
-    {
-      "id": "event-cross-border-open-innovation-day",
-      "title": "Cross-border Open Innovation Day",
-      "type": "changed"
-    },
-    {
-      "id": "event-parks-global-youth-innovation-showc",
-      "title": "PARKS Global Youth Innovation Showcase",
-      "type": "changed"
-    },
-    {
-      "id": "event-lpcic-vclp",
-      "title": "LPミートアップ@CIC VCへの投資って、実際どう？投資責任者に聞く、LPのメリット・デメリット",
-      "type": "changed"
-    },
-    {
-      "id": "event-founders-lounge-3",
-      "title": "Founder's Lounge",
-      "type": "changed"
-    },
-    {
-      "id": "event-design-boost-in-ramen-tech-2026-wha",
-      "title": "Design Boost in RAMEN TECH 2026 【Branding, Then What? ブランディングの、その先へ。】",
+      "id": "event-map-in-fukuoka-powered-by",
+      "title": "MAP in FUKUOKA powered by クラウドワークス",
       "type": "changed"
     },
     {
@@ -83,23 +53,53 @@
       "type": "changed"
     },
     {
-      "id": "event-party-night",
-      "title": "新規事業ワイガヤ Party Night ― 西中洲のスナックで、新規事業の話をする",
+      "id": "event-4km",
+      "title": "Morning Run 4km  ＠Oohori Park　10/9（Fri）、10/10 （Sat）　supported by NEULO",
       "type": "changed"
     },
     {
-      "id": "event-capturing-a-persons-mind-with-cogni",
-      "title": "Own your intelligence with Cognitive AI Twin",
+      "id": "event-local-shout",
+      "title": "LOCAL SHOUT!",
       "type": "changed"
     },
     {
-      "id": "slot-gogo-2026-57a267f3",
-      "title": "キューテック贈呈式・採択者スピーチ・交流会",
+      "id": "event-ffg",
+      "title": "FFGみらいの会議",
       "type": "changed"
     },
     {
-      "id": "slot-gogo-2026-e1f203d6",
-      "title": "Good Local 九州 地域共創セッション",
+      "id": "event-startupgo",
+      "title": "StartupGo!Go! The Pitch",
+      "type": "changed"
+    },
+    {
+      "id": "event-ai",
+      "title": "生成AI時代、地域の中小企業はどう変わる？",
+      "type": "changed"
+    },
+    {
+      "id": "event-kumamoto-city",
+      "title": "二度の震災を経験した熊本市の新たな挑戦 スタートアップとともに未来を創る「くまもと課題解決ファンド」始動",
+      "type": "changed"
+    },
+    {
+      "id": "event-locatravel-shirahama",
+      "title": "【ろかとらべる×和歌山県白浜町】スタートアップ×行政/人流データで挑む観光DX",
+      "type": "changed"
+    },
+    {
+      "id": "event-founders-lounge-4",
+      "title": "Founder's Lounge",
+      "type": "changed"
+    },
+    {
+      "id": "event-myojowaraku-community-fes",
+      "title": "MYOJOWARAKU COMMUNITY FES",
+      "type": "changed"
+    },
+    {
+      "id": "slot-gogo-2026-28b61c82",
+      "title": "熊本復興アトツギセッション",
       "type": "changed"
     },
     {
@@ -118,13 +118,18 @@
       "type": "changed"
     },
     {
-      "id": "event-auto-a6cfec39f63557",
-      "title": "福岡から世界へ。熱狂の渦を起こそう! ～「越境」から考える、AI時代の人間に、必要なものはなにか？～",
+      "id": "event-auto-9b8e41c1d4245d",
+      "title": "自治体サミット in 福岡 〜いっしょに、やってみんね〜",
       "type": "changed"
     },
     {
-      "id": "event-auto-90f18bf279ff83",
-      "title": "スタートアップ・VC・CVCのための AI利活用・AI企業への出資における法務・コンプライアンス",
+      "id": "event-auto-a51579550a0f01",
+      "title": "泥臭く語るUIデザイン会｜ホワイトボードチャレンジ【RAMEN TECH 2026】",
+      "type": "changed"
+    },
+    {
+      "id": "slot-3d2c7cf3-a576-4798-8852-2493b8a00ed8",
+      "title": "GENKI COFFEE MEETUP",
       "type": "changed"
     },
     {
@@ -148,13 +153,18 @@
       "type": "changed"
     },
     {
-      "id": "event-auto-808f774ad30b19",
+      "id": "slot-89b77644-050f-4b4a-80de-5962e63efc6f",
       "title": "CONNECT NIGHT",
       "type": "changed"
     },
     {
-      "id": "event-auto-24c4d721f75f66",
-      "title": "Design Boost After Talk Party【登壇者と語るBrandingの裏側】",
+      "id": "event-auto-52e0a9ccd23300",
+      "title": "NEXT CHALLENGE NIGHT",
+      "type": "changed"
+    },
+    {
+      "id": "event-auto-05e53c07004113",
+      "title": "awabash ~新規事業を頑張る人のBar~｜presented by Nu Source",
       "type": "changed"
     },
     {
@@ -173,8 +183,18 @@
       "type": "changed"
     },
     {
-      "id": "event-auto-d1d5566cf63aa0",
+      "id": "event-auto-ed16eb079caf31",
+      "title": "生成AI in Fukuoka Vol.5AI時代、これからのキャリアをどうつくる？",
+      "type": "changed"
+    },
+    {
+      "id": "event-auto-06eda404ca50b7",
       "title": "GENKI COFFEE MEETUP",
+      "type": "changed"
+    },
+    {
+      "id": "event-auto-6f66e40ec2ce2d",
+      "title": "チャリチャリで巡る！RAMEN TECH ろからりー",
       "type": "changed"
     },
     {
@@ -188,8 +208,8 @@
       "type": "changed"
     },
     {
-      "id": "event-auto-93eeb4acfc80a6",
-      "title": "日韓ビジネスコネクト福岡2026 ―ピッチ&商談イベント―　Korea-Japan Innovation Connect Fukuoka 2026 : Business Meeting & Pitch day",
+      "id": "event-auto-26bdedb2b629c3",
+      "title": "食がつなぐ、地域のウェルネスと持続可能な食料生産を支えるイノベーション",
       "type": "changed"
     },
     {
@@ -204,6 +224,16 @@
     },
     {
       "id": "slot-64183ef4-0fdb-4b32-a10b-75192468dd33",
+      "title": "Chanoyu Without Borders（matcha and Japanese sweets.）",
+      "type": "changed"
+    },
+    {
+      "id": "event-auto-5ffd1712236c22",
+      "title": "選ばれる地域企業へ。「活躍人材」を惹きつける採用と組織のつくり方 ― 人が集まり、活躍する会社は何が違うのか ― hosted by LoLLL",
+      "type": "changed"
+    },
+    {
+      "id": "event-auto-358715ff9850e7",
       "title": "Chanoyu Without Borders（matcha and Japanese sweets.）",
       "type": "changed"
     },
@@ -223,53 +253,93 @@
       "type": "changed"
     },
     {
-      "id": "event-auto-13137f63c4f92c",
-      "title": "NEDO量子キャラバン in 福岡",
+      "id": "event-auto-dfefdc05906f59",
+      "title": "福岡スタートアップ支援拠点ツアー / Fukuoka Startup Site Visit Tour",
       "type": "changed"
     },
     {
-      "id": "event-auto-8c5380161ecb33",
-      "title": "TOTONOI PITCH in HAKATA",
+      "id": "event-auto-48a14a15a17eaa",
+      "title": "NEXT IPO Fukuoka ～祝レイヤード上場！次の挑戦者に「たすき」をつなぐ～",
       "type": "changed"
     },
     {
-      "id": "event-auto-1fba1482f90453",
-      "title": "東京 x 福岡 オープンイノベーションの現場から",
+      "id": "event-auto-576fe1da80704c",
+      "title": "Tech Sovereignty - What, Why and How",
       "type": "changed"
     },
     {
-      "id": "event-auto-1651bc1ae4bbb4",
-      "title": "Fukuoka Growth Next 施設見学ツアー / Fukuoka Growth Next Facility Tour",
+      "id": "event-auto-ac2e933a075d7d",
+      "title": "サウナの話をできる人が、ここにいる。〜コミュニティとしてのサウナ論 #1〜",
       "type": "changed"
     },
     {
-      "id": "event-auto-e22c58a32676b1",
-      "title": "倒産寸前から世界No.1へ。 ドキュメンタリー『Re Startup』から学ぶ起業の「リアル」",
+      "id": "event-auto-7650011ff086d7",
+      "title": "自治体トークセッション『地方都市スタートアップ支援の今とこれから』",
       "type": "changed"
     },
     {
-      "id": "event-auto-eb2e6c87a9a519",
-      "title": "TOTONOIピッチ 大交流会！",
+      "id": "event-auto-cbde5a338135e3",
+      "title": "AIは花をどう見ているのか",
       "type": "changed"
     },
     {
-      "id": "event-auto-e48b903c1b061f",
-      "title": "A FUKUOKA TAIWAN AFFAIR: GLOBAL MIXER",
+      "id": "event-auto-0f252778bc00cb",
+      "title": "大学生起業チャレンジプログラム　最終発表会",
       "type": "changed"
     },
     {
-      "id": "event-auto-fbc3f0c9c115a4",
-      "title": "Global Morning Pitch by Colive Fukuoka",
+      "id": "event-auto-2f9f1e8843079b",
+      "title": "サツマイモテック ― さつまいもで地域をおこす",
       "type": "changed"
     },
     {
-      "id": "event-auto-ceebeae14c731e",
-      "title": "Build With, Not For: Community Design Across Cultures",
+      "id": "event-auto-e70779d150680f",
+      "title": "FUKUOKA CITY Global Business Matching Night",
       "type": "changed"
     },
     {
-      "id": "event-auto-5ba08d52cd3d36",
-      "title": "Osaka Night by FUTRWORKS",
+      "id": "event-auto-3dee9066afa4b4",
+      "title": "朝サウナに入った後好きなサウナ施設について語り合おう",
+      "type": "changed"
+    },
+    {
+      "id": "event-auto-4245b80ecb6993",
+      "title": "Garraway F オープンデー",
+      "type": "changed"
+    },
+    {
+      "id": "event-auto-94f9c5fa000b6a",
+      "title": "All CIC Gathering",
+      "type": "changed"
+    },
+    {
+      "id": "event-auto-1a99c5523f7866",
+      "title": "ビーガン豚骨風ラーメン 無料試食ブース",
+      "type": "changed"
+    },
+    {
+      "id": "event-auto-212131804e03f8",
+      "title": "HORIZONTAL HOUSE 2ND ANNIVERSARY",
+      "type": "changed"
+    },
+    {
+      "id": "event-auto-c9899f62703a5f",
+      "title": "「あなたが主役」KBC長岡大雅アナウンサーと1対1で雑談ラジオを収録するイベント",
+      "type": "changed"
+    },
+    {
+      "id": "event-auto-ffc841d47f5e5a",
+      "title": "オープンデータから見る福岡の商業と観光の現在地",
+      "type": "changed"
+    },
+    {
+      "id": "event-auto-2d03ccc3721de4",
+      "title": "ONE SESSIONS",
+      "type": "changed"
+    },
+    {
+      "id": "event-auto-2acb2aecd4b71f",
+      "title": "安全保障とスタートアップ～防衛テックエコシステムを考える～",
       "type": "changed"
     },
     {
@@ -278,28 +348,18 @@
       "type": "changed"
     },
     {
-      "id": "slot-37ec9999-a426-49ae-bc6e-b524658157ee",
-      "title": "ローカルの産業に、越境が生む化学反応を！―「複業」「多拠点」「関係人口」が生む相乗効果 ―",
+      "id": "event-auto-616adf0dfb48ab",
+      "title": "AI MORNING MEET-UP FUKUOKA　フィジカルAIとAIガバナンス",
       "type": "changed"
-    },
-    {
-      "id": "event-auto-162b6f829633c0",
-      "title": "ラーメン30店舗で無料特典をゲット！ラーメンパートナー店のご紹介",
-      "type": "new"
-    },
-    {
-      "id": "event-auto-2f47ee352cc2b1",
-      "title": "RAMEN TECH案内所",
-      "type": "new"
     },
     {
       "id": "event-auto-84773fc9060859",
       "title": "出会いが地域を動かすー延べ６万人が集う都市型フェスNoMapsの巻き込み方",
-      "type": "new"
+      "type": "changed"
     }
   ],
   "status": "success",
-  "catalogVersion": "2026-10-09T09:58:02+09:00",
+  "catalogVersion": "2026-10-10T09:29:21+09:00",
   "catalogCount": 343,
   "venueCount": 96,
   "scope": "公式登録・公式時間割の公開構造化データを更新。個別主催者サイトの本文とGarraway F独自企画は自動上書きしません。"
