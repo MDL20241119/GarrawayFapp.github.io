@@ -1,19 +1,19 @@
 {
-  "attemptedAt": "2026-10-11T09:05:07+09:00",
-  "lastSuccessAt": "2026-10-11T09:05:07+09:00",
+  "attemptedAt": "2026-10-12T09:13:23+09:00",
+  "lastSuccessAt": "2026-10-12T09:13:23+09:00",
   "schedule": "毎朝6:00に取得開始（日本時間）／配信には時間差があります",
   "sources": {
     "members": {
       "url": "https://members.ramentech.jp/",
       "ok": true,
       "count": 136,
-      "lastSuccessAt": "2026-10-11T09:05:07+09:00"
+      "lastSuccessAt": "2026-10-12T09:13:23+09:00"
     },
     "schedule": {
       "url": "https://ramentech2026.aishain.com/api/schedule",
       "ok": true,
       "count": 282,
-      "lastSuccessAt": "2026-10-11T09:05:07+09:00"
+      "lastSuccessAt": "2026-10-12T09:13:23+09:00"
     }
   },
   "changes": [
@@ -28,8 +28,8 @@
       "type": "changed"
     },
     {
-      "id": "event-fukuokai-hackathon2026",
-      "title": "FukuokAI 学生Hackathon2026",
+      "id": "event-4th-isee",
+      "title": "4th ISEE Asia: International Symposium on Entrepreneurship Education in Asia",
       "type": "changed"
     },
     {
@@ -83,6 +83,11 @@
       "type": "changed"
     },
     {
+      "id": "event-auto-ea97d90564f660",
+      "title": "【CGFM】つくる人のための、強みと価値を見つめ直すワークショップ【RAMEN TECH 2026】",
+      "type": "changed"
+    },
+    {
       "id": "slot-5242948f-6d0c-48e5-9c37-69abcd19bd36",
       "title": "【CGFM】つくる人のための、強みと価値を見つめ直すワークショップ【RAMEN TECH 2026】",
       "type": "changed"
@@ -95,16 +100,6 @@
     {
       "id": "event-auto-49680bc454c757",
       "title": "OEC Startup Founders Meetup",
-      "type": "changed"
-    },
-    {
-      "id": "event-auto-d34e29e3a5f3c2",
-      "title": "Japanese Footgear Startup \"NEULO\" TRY On Event",
-      "type": "changed"
-    },
-    {
-      "id": "event-auto-bf400d4f47c5f8",
-      "title": "Insight Seekers Hackathon 最終成果発表会｜presented by Nu Source",
       "type": "changed"
     },
     {
@@ -143,38 +138,23 @@
       "type": "changed"
     },
     {
-      "id": "event-auto-83a8d808732e63",
-      "title": "未来を救う器をこの手でつくる🍜まちあるき＋ものづくりワークショップ",
+      "id": "event-auto-05310d01e99173",
+      "title": "アートワークショップ in 石村萬盛堂本店",
       "type": "changed"
     },
     {
-      "id": "event-auto-95c76ab06ddf27",
-      "title": "How I shipped an AI app without hiring engineers",
+      "id": "event-auto-162b6f829633c0",
+      "title": "ラーメン30店舗で無料特典をゲット！ラーメンパートナー店のご紹介",
       "type": "changed"
     },
     {
-      "id": "event-auto-60d4704288afd6",
-      "title": "【参加無料】エアロケットを飛ばそう！",
-      "type": "changed"
-    },
-    {
-      "id": "event-auto-8979acf02c8073",
-      "title": "宇宙ビジネスは、ロケットだけじゃない。 ～福岡の暮らし・食・サービス産業だから狙える 新しい事業機会の可能性を考える～",
-      "type": "changed"
-    },
-    {
-      "id": "event-auto-284a0fbdd1370a",
-      "title": "仕事が終わらない経営者たちの飲み会｜RAMEN TECH 2026 公式リンクイベント",
-      "type": "changed"
-    },
-    {
-      "id": "event-auto-828f296b9a8ae1",
-      "title": "バルウォーク福岡 Vol.21",
+      "id": "event-auto-2f47ee352cc2b1",
+      "title": "RAMEN TECH案内所",
       "type": "changed"
     }
   ],
   "status": "success",
-  "catalogVersion": "2026-10-11T09:05:07+09:00",
+  "catalogVersion": "2026-10-12T09:13:23+09:00",
   "catalogCount": 343,
   "venueCount": 96,
   "scope": "公式登録・公式時間割の公開構造化データを更新。個別主催者サイトの本文とGarraway F独自企画は自動上書きしません。"
