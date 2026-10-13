@@ -1,22 +1,32 @@
 {
-  "attemptedAt": "2026-10-12T09:13:23+09:00",
-  "lastSuccessAt": "2026-10-12T09:13:23+09:00",
+  "attemptedAt": "2026-10-13T11:24:40+09:00",
+  "lastSuccessAt": "2026-10-13T11:24:40+09:00",
   "schedule": "毎朝6:00に取得開始（日本時間）／配信には時間差があります",
   "sources": {
     "members": {
       "url": "https://members.ramentech.jp/",
       "ok": true,
-      "count": 136,
-      "lastSuccessAt": "2026-10-12T09:13:23+09:00"
+      "count": 134,
+      "lastSuccessAt": "2026-10-13T11:24:40+09:00"
     },
     "schedule": {
       "url": "https://ramentech2026.aishain.com/api/schedule",
       "ok": true,
       "count": 282,
-      "lastSuccessAt": "2026-10-12T09:13:23+09:00"
+      "lastSuccessAt": "2026-10-13T11:24:40+09:00"
     }
   },
   "changes": [
+    {
+      "id": "event-fukuoka-builders-coliving",
+      "title": "Fukuoka Builders Coliving | 10 Days at Colive Fukuoka +  4 Days in regional towns",
+      "type": "changed"
+    },
+    {
+      "id": "event-cic-fukuoka-10-days-trial",
+      "title": "CIC Fukuoka 10-Days Trial",
+      "type": "changed"
+    },
     {
       "id": "event-opening-party-1",
       "title": "RAMEN TECH 2026 Opening Party",
@@ -25,11 +35,6 @@
     {
       "id": "event-nomikai",
       "title": "ただの飲み会",
-      "type": "changed"
-    },
-    {
-      "id": "event-4th-isee",
-      "title": "4th ISEE Asia: International Symposium on Entrepreneurship Education in Asia",
       "type": "changed"
     },
     {
@@ -83,11 +88,6 @@
       "type": "changed"
     },
     {
-      "id": "event-auto-ea97d90564f660",
-      "title": "【CGFM】つくる人のための、強みと価値を見つめ直すワークショップ【RAMEN TECH 2026】",
-      "type": "changed"
-    },
-    {
       "id": "slot-5242948f-6d0c-48e5-9c37-69abcd19bd36",
       "title": "【CGFM】つくる人のための、強みと価値を見つめ直すワークショップ【RAMEN TECH 2026】",
       "type": "changed"
@@ -138,23 +138,13 @@
       "type": "changed"
     },
     {
-      "id": "event-auto-05310d01e99173",
-      "title": "アートワークショップ in 石村萬盛堂本店",
-      "type": "changed"
-    },
-    {
-      "id": "event-auto-162b6f829633c0",
-      "title": "ラーメン30店舗で無料特典をゲット！ラーメンパートナー店のご紹介",
-      "type": "changed"
-    },
-    {
-      "id": "event-auto-2f47ee352cc2b1",
-      "title": "RAMEN TECH案内所",
+      "id": "event-auto-a39e65499031fb",
+      "title": "The Creators 2026",
       "type": "changed"
     }
   ],
   "status": "success",
-  "catalogVersion": "2026-10-12T09:13:23+09:00",
+  "catalogVersion": "2026-10-13T11:24:40+09:00",
   "catalogCount": 343,
   "venueCount": 96,
   "scope": "公式登録・公式時間割の公開構造化データを更新。個別主催者サイトの本文とGarraway F独自企画は自動上書きしません。"
