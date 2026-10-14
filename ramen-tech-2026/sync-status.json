@@ -1,32 +1,22 @@
 {
-  "attemptedAt": "2026-10-13T11:24:40+09:00",
-  "lastSuccessAt": "2026-10-13T11:24:40+09:00",
+  "attemptedAt": "2026-10-14T09:08:43+09:00",
+  "lastSuccessAt": "2026-10-14T09:08:43+09:00",
   "schedule": "毎朝6:00に取得開始（日本時間）／配信には時間差があります",
   "sources": {
     "members": {
       "url": "https://members.ramentech.jp/",
       "ok": true,
       "count": 134,
-      "lastSuccessAt": "2026-10-13T11:24:40+09:00"
+      "lastSuccessAt": "2026-10-14T09:08:43+09:00"
     },
     "schedule": {
       "url": "https://ramentech2026.aishain.com/api/schedule",
       "ok": true,
       "count": 282,
-      "lastSuccessAt": "2026-10-13T11:24:40+09:00"
+      "lastSuccessAt": "2026-10-14T09:08:43+09:00"
     }
   },
   "changes": [
-    {
-      "id": "event-fukuoka-builders-coliving",
-      "title": "Fukuoka Builders Coliving | 10 Days at Colive Fukuoka +  4 Days in regional towns",
-      "type": "changed"
-    },
-    {
-      "id": "event-cic-fukuoka-10-days-trial",
-      "title": "CIC Fukuoka 10-Days Trial",
-      "type": "changed"
-    },
     {
       "id": "event-opening-party-1",
       "title": "RAMEN TECH 2026 Opening Party",
@@ -136,15 +126,10 @@
       "id": "event-auto-6d7aca132617f6",
       "title": "Founders Padel",
       "type": "changed"
-    },
-    {
-      "id": "event-auto-a39e65499031fb",
-      "title": "The Creators 2026",
-      "type": "changed"
     }
   ],
   "status": "success",
-  "catalogVersion": "2026-10-13T11:24:40+09:00",
+  "catalogVersion": "2026-10-14T09:08:43+09:00",
   "catalogCount": 343,
   "venueCount": 96,
   "scope": "公式登録・公式時間割の公開構造化データを更新。個別主催者サイトの本文とGarraway F独自企画は自動上書きしません。"
