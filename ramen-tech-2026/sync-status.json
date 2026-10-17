@@ -1,19 +1,19 @@
 {
-  "attemptedAt": "2026-10-17T08:14:35+09:00",
-  "lastSuccessAt": "2026-10-17T08:14:35+09:00",
+  "attemptedAt": "2026-10-18T07:52:59+09:00",
+  "lastSuccessAt": "2026-10-18T07:52:59+09:00",
   "schedule": "毎朝6:00に取得開始（日本時間）／配信には時間差があります",
   "sources": {
     "members": {
       "url": "https://members.ramentech.jp/",
       "ok": true,
       "count": 135,
-      "lastSuccessAt": "2026-10-17T08:14:35+09:00"
+      "lastSuccessAt": "2026-10-18T07:52:59+09:00"
     },
     "schedule": {
       "url": "https://ramentech2026.aishain.com/api/schedule",
       "ok": true,
       "count": 282,
-      "lastSuccessAt": "2026-10-17T08:14:35+09:00"
+      "lastSuccessAt": "2026-10-18T07:52:59+09:00"
     }
   },
   "changes": [
@@ -129,7 +129,7 @@
     }
   ],
   "status": "success",
-  "catalogVersion": "2026-10-17T08:14:35+09:00",
+  "catalogVersion": "2026-10-18T07:52:59+09:00",
   "catalogCount": 343,
   "venueCount": 96,
   "scope": "公式登録・公式時間割の公開構造化データを更新。個別主催者サイトの本文とGarraway F独自企画は自動上書きしません。"
