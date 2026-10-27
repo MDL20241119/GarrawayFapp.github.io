@@ -1,0 +1,36 @@
+{
+  "checked_at": "2026-10-27T23:56:35.215041Z",
+  "state": "failure",
+  "content_updated_at": "2026-10-27T05:33:25.731484Z",
+  "last_fetch_succeeded_at": null,
+  "api_host": "graph.instagram.com",
+  "api_version": "unversioned (existing configuration)",
+  "error": {
+    "stage": "media",
+    "category": "authentication",
+    "http_status": 400,
+    "code": 190,
+    "error_subcode": 0,
+    "is_transient": null,
+    "type": "OAuthException",
+    "fbtrace_id": "A64hW9c_lKx2hfJrCehLrea",
+    "message": "Error validating access token: Session has expired on Tuesday, 27-Oct-26 00:56:55 PDT. The current time is Tuesday, 27-Oct-26 16:56:35 PDT.",
+    "action_required": true
+  },
+  "authentication": {
+    "account_verified": false,
+    "error": {
+      "stage": "me",
+      "category": "authentication",
+      "http_status": 400,
+      "code": 190,
+      "error_subcode": 0,
+      "is_transient": null,
+      "type": "OAuthException",
+      "fbtrace_id": "A8BNp8CpqsvB3QZ4uISWO0a",
+      "message": "Error validating access token: Session has expired on Tuesday, 27-Oct-26 00:56:55 PDT. The current time is Tuesday, 27-Oct-26 16:56:35 PDT.",
+      "action_required": true
+    }
+  },
+  "observed_api_versions": []
+}
