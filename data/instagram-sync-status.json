@@ -1,5 +1,5 @@
 {
-  "checked_at": "2026-11-11T00:36:55.165627Z",
+  "checked_at": "2026-11-11T07:10:07.026124Z",
   "state": "failure",
   "content_updated_at": "2026-10-27T05:33:25.731484Z",
   "last_fetch_succeeded_at": null,
@@ -13,8 +13,8 @@
     "error_subcode": 0,
     "is_transient": null,
     "type": "OAuthException",
-    "fbtrace_id": "Ab_bsJ-PwxX2mFLyQczAcrY",
-    "message": "Error validating access token: Session has expired on Tuesday, 27-Oct-26 00:56:55 PDT. The current time is Tuesday, 10-Nov-26 16:36:55 PST.",
+    "fbtrace_id": "ADWzDI9oGksXlyXgW-0hIzH",
+    "message": "Error validating access token: Session has expired on Tuesday, 27-Oct-26 00:56:55 PDT. The current time is Tuesday, 10-Nov-26 23:10:07 PST.",
     "action_required": true
   },
   "authentication": {
@@ -27,8 +27,8 @@
       "error_subcode": 0,
       "is_transient": null,
       "type": "OAuthException",
-      "fbtrace_id": "AKESAEZMllzHBey1IoNItS9",
-      "message": "Error validating access token: Session has expired on Tuesday, 27-Oct-26 00:56:55 PDT. The current time is Tuesday, 10-Nov-26 16:36:55 PST.",
+      "fbtrace_id": "A32TyxLbIFxSyApr-J9JAtp",
+      "message": "Error validating access token: Session has expired on Tuesday, 27-Oct-26 00:56:55 PDT. The current time is Tuesday, 10-Nov-26 23:10:07 PST.",
       "action_required": true
     }
   },
