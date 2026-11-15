@@ -9,9 +9,10 @@
     "expires_at": null,
     "refreshed_at": null
   },
-  "api_attempted": true,
+  "job_checked_at": "2026-11-15T15:51:49.592615Z",
+  "api_attempted": false,
   "error": {
-    "stage": "me",
+    "stage": "secrets",
     "category": "authentication",
     "http_status": 400,
     "code": 190,
@@ -19,23 +20,8 @@
     "is_transient": null,
     "type": "OAuthException",
     "fbtrace_id": "ADIxHMZ7IHwM54vLPfTZLpP",
-    "message": "Error validating access token: Session has expired on Tuesday, 27-Oct-26 00:56:55 PDT. The current time is Sunday, 15-Nov-26 01:03:37 PST.",
+    "message": "Credential requires a verified manual recovery run.",
     "action_required": true
-  },
-  "authentication": {
-    "account_verified": false,
-    "error": {
-      "stage": "me",
-      "category": "authentication",
-      "http_status": 400,
-      "code": 190,
-      "error_subcode": 0,
-      "is_transient": null,
-      "type": "OAuthException",
-      "fbtrace_id": "ADIxHMZ7IHwM54vLPfTZLpP",
-      "message": "Error validating access token: Session has expired on Tuesday, 27-Oct-26 00:56:55 PDT. The current time is Sunday, 15-Nov-26 01:03:37 PST.",
-      "action_required": true
-    }
   },
   "observed_api_versions": []
 }
