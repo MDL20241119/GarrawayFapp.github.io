@@ -20,11 +20,15 @@ from io import BytesIO
 from pathlib import Path
 
 from PIL import Image, ImageOps
+from instagram_credentials import CredentialError, load_credentials
 
 Image.MAX_IMAGE_PIXELS = 50_000_000
 ACCOUNT = "garrawayf_lounge"
 HOST = "https://graph.instagram.com"
+DEFAULT_API_VERSION = "v27.0"
 FIELDS = "id,caption,media_type,media_url,thumbnail_url,permalink,timestamp"
+IMAGE_FIELDS = "id,media_type,media_url,thumbnail_url"
+CDN_HOSTS = ("cdninstagram.com", "fbcdn.net")
 MIN_POSTS, MAX_POSTS, MAX_ATTEMPTS = 4, 6, 3
 FEED = Path("data/instagram.json")
 STATUS = Path("data/instagram-sync-status.json")
@@ -63,7 +67,9 @@ class FeedError(Exception):
             value = error.get(key)
             self.info[key] = sanitize(value, secrets) if isinstance(value, str) and re.fullmatch(r"[\w.\-]{1,100}", value) else None
         self.info["message"] = sanitize(error.get("message", category.replace("_", " ")), secrets)
-        self.info["action_required"] = category in {"authentication", "permission", "configuration", "account_mismatch"}
+        self.info["action_required"] = category in {
+            "authentication", "permission", "configuration", "account_mismatch", "caption_unavailable",
+        }
         self.retryable = category in {"timeout", "network", "rate_limit", "server", "transient"}
         super().__init__(category)  # Never attach an HTTPError, URL, body, or header.
 
@@ -89,11 +95,24 @@ def api_error(status, payload, stage, secrets):
     return FeedError(category, stage, http_status=status, error=error, secrets=secrets)
 
 
+class InstagramRedirect(urllib.request.HTTPRedirectHandler):
+    """Limit redirects before a request can reach another host or plain HTTP."""
+
+    def redirect_request(self, req, fp, code, msg, headers, newurl):
+        if urllib.parse.urlsplit(req.full_url).hostname == "graph.instagram.com":
+            valid_url(newurl, ("graph.instagram.com",), "redirect", exact_host=True)
+        else:
+            valid_url(newurl, CDN_HOSTS, "redirect")
+        return super().redirect_request(req, fp, code, msg, headers, newurl)
+
+
 class Client:
-    def __init__(self, token, uid, *, opener=urllib.request.urlopen, sleep=time.sleep, log=print):
+    def __init__(self, token, uid, *, version=DEFAULT_API_VERSION, opener=None, sleep=time.sleep, log=print):
         self.token, self.uid = token, uid
+        self.version = version
         self.secrets = (token, uid)
-        self.opener, self.sleep, self.log = opener, sleep, log
+        self.opener = opener if opener is not None else urllib.request.build_opener(InstagramRedirect()).open
+        self.sleep, self.log = sleep, log
         self.versions = set()
 
     def read(self, url, stage, *, timeout, limit, api):
@@ -135,45 +154,89 @@ class Client:
         raise AssertionError("unreachable")
 
     def get(self, path, **query):
-        # Keep the working authentication transport and unversioned endpoint.
+        if not re.fullmatch(r"v[1-9][0-9]*\.0", self.version):
+            raise FeedError("configuration", "api_version")
         # Query strings and response bodies must never be printed.
         query["access_token"] = self.token
-        raw = self.read(f"{HOST}/{path}?{urllib.parse.urlencode(query)}", path.rsplit("/", 1)[-1], timeout=30, limit=2_000_000, api=True)
+        stage = path.rsplit("/", 1)[-1]
+        raw = self.read(f"{HOST}/{self.version}/{path}?{urllib.parse.urlencode(query)}", stage,
+                        timeout=30, limit=2_000_000, api=True)
         try:
             payload = json.loads(raw)
         except (ValueError, UnicodeError):
-            raise FeedError("invalid_json", path.rsplit("/", 1)[-1]) from None
+            raise FeedError("invalid_json", stage) from None
         if not isinstance(payload, dict):
-            raise FeedError("invalid_response", path.rsplit("/", 1)[-1])
+            raise FeedError("invalid_response", stage)
         if "error" in payload:
-            raise api_error(200, payload, path.rsplit("/", 1)[-1], self.secrets)
+            raise api_error(200, payload, stage, self.secrets)
         return payload
 
-    def media(self, edge):
-        payload = self.get(f"{self.uid}/{edge}", fields=FIELDS, limit="25")
+    def media(self):
+        payload = self.get(f"{self.uid}/media", fields=FIELDS, limit="25")
         if not isinstance(payload.get("data"), list):
-            raise FeedError("invalid_response", edge)
+            raise FeedError("invalid_response", "media")
         return payload["data"]
 
+    def carousel_cover(self, post_id):
+        payload = self.get(f"{post_id}/children", fields=IMAGE_FIELDS, limit="1")
+        children = payload.get("data")
+        if not isinstance(children, list) or not children or not isinstance(children[0], dict):
+            raise FeedError("invalid_response", "children")
+        cover = children[0]
+        if cover.get("media_type") not in {"IMAGE", "VIDEO"}:
+            raise FeedError("invalid_response", "children")
+        return cover
+
     def account(self):
-        payload = self.get("me", fields="user_id,username")
-        identities = {str(payload.get(key, "")) for key in ("id", "user_id")}
-        if self.uid not in identities or str(payload.get("username", "")).lower() != ACCOUNT:
+        payload = self.get("me", fields="user_id,username,account_type")
+        if "data" in payload:
+            records = payload["data"]
+            if not isinstance(records, list) or len(records) != 1 or not isinstance(records[0], dict):
+                raise FeedError("invalid_response", "me")
+            payload = records[0]
+        # user_id identifies the professional account. The app-scoped id is
+        # distinct and cannot identify the account for the /<IG_ID>/media edge.
+        account_id = payload.get("user_id")
+        username = payload.get("username")
+        if (type(account_id) not in {int, str} or str(account_id) != self.uid
+                or not isinstance(username, str) or username.lower() != ACCOUNT):
             raise FeedError("account_mismatch", "account")
-        return {"account_verified": True, "api_host": "graph.instagram.com", "endpoint_family": "instagram_login"}
+        result = {"account_verified": True, "api_host": "graph.instagram.com", "endpoint_family": "instagram_login"}
+        if "account_type" in payload:
+            account_type = str(payload["account_type"]).upper()
+            if account_type not in {"BUSINESS", "MEDIA_CREATOR"}:
+                raise FeedError("account_mismatch", "account")
+            result["account_type"] = account_type
+        return result
 
 
-def valid_url(value, hosts, stage):
-    if not isinstance(value, str):
+def valid_url(value, hosts, stage, *, exact_host=False):
+    if not isinstance(value, str) or any(ord(character) < 33 for character in value):
         raise FeedError("invalid_response", stage)
-    parsed = urllib.parse.urlsplit(value)
-    host = (parsed.hostname or "").lower()
-    if parsed.scheme != "https" or parsed.username or parsed.password or parsed.port not in {None, 443} or not any(host == h or host.endswith("." + h) for h in hosts):
-        raise FeedError("invalid_response", stage)
+    try:
+        parsed = urllib.parse.urlsplit(value)
+        host = parsed.hostname or ""
+        allowed = host in hosts or (not exact_host and any(host.endswith("." + domain) for domain in hosts))
+        if parsed.scheme != "https" or parsed.username is not None or parsed.password is not None or parsed.port not in {None, 443} or not allowed:
+            raise ValueError("unexpected origin")
+    except ValueError:
+        raise FeedError("invalid_response", stage) from None
     return value
 
 
-def selected_posts(candidates):
+def parse_timestamp(value):
+    if not isinstance(value, str):
+        raise FeedError("invalid_response", "timestamp")
+    try:
+        stamp = datetime.fromisoformat(value)
+        if stamp.tzinfo is None:
+            raise ValueError("missing timezone")
+        return stamp.astimezone(timezone.utc)
+    except (ValueError, OverflowError):
+        raise FeedError("invalid_response", "timestamp") from None
+
+
+def selected_posts(candidates, minimum):
     unique = {}
     for post in candidates:
         if not isinstance(post, dict):
@@ -183,24 +246,23 @@ def selected_posts(candidates):
             raise FeedError("invalid_response", "media")
         if post.get("media_type") not in {"IMAGE", "VIDEO", "CAROUSEL_ALBUM"} or post.get("is_story") is True or post.get("media_product_type") == "STORY":
             raise FeedError("invalid_response", "media")
-        try:
-            stamp = datetime.fromisoformat(post["timestamp"].replace("Z", "+00:00"))
-            if stamp.tzinfo is None:
-                raise ValueError("missing timezone")
-        except (KeyError, TypeError, ValueError, AttributeError):
-            raise FeedError("invalid_response", "timestamp") from None
+        stamp = parse_timestamp(post.get("timestamp"))
         valid_url(post.get("permalink"), ["instagram.com"], "permalink")
         if "caption" in post and not isinstance(post["caption"], str):
             raise FeedError("invalid_response", "caption")
-        unique.setdefault(identity, (stamp, post))
-    posts = [pair[1] for pair in sorted(unique.values(), key=lambda pair: pair[0], reverse=True)[:MAX_POSTS]]
-    if len(posts) < MIN_POSTS:
+        unique.setdefault(identity, {**post, "timestamp": stamp.isoformat().replace("+00:00", "+0000")})
+    if len(unique) < minimum:
         raise FeedError("empty_or_incomplete_response", "media")
-    return posts
+    if not any("caption" in post for post in unique.values()):
+        raise FeedError("caption_unavailable", "media")
+    return sorted(unique.values(), key=lambda post: (post["timestamp"], post["id"]), reverse=True)[:MAX_POSTS]
 
 
 def optimized_image(client, post):
-    url = valid_url(post.get("thumbnail_url") or post.get("media_url"), ["cdninstagram.com", "fbcdn.net"], "image_url")
+    if post["media_type"] == "CAROUSEL_ALBUM":
+        post = client.carousel_cover(post["id"])
+    field = "thumbnail_url" if post["media_type"] == "VIDEO" else "media_url"
+    url = valid_url(post.get(field), CDN_HOSTS, "image_url")
     raw = client.read(url, "image", timeout=45, limit=5_000_000, api=False)
     try:
         with Image.open(BytesIO(raw)) as source:
@@ -246,19 +308,21 @@ def atomic_write(path, content):
 
 def install_bundle(root, stage, feed):
     validate_bundle(stage, feed)
-    targets = [FEED] + [IMAGES / p.name for p in (stage / IMAGES).iterdir()]
+    images = [IMAGES / path.name for path in (stage / IMAGES).iterdir()]
+    targets = [*images, FEED, STATUS]
     existing_images = list((root / IMAGES).glob("*"))
     backup = {path: (root / path).read_bytes() if (root / path).is_file() else None for path in targets}
     backup.update({path.relative_to(root): path.read_bytes() for path in existing_images if path.is_file()})
     try:
         # Images precede JSON; remove old images only after every new reference validates.
-        for path in targets[1:] + targets[:1]:
+        for path in [*images, FEED]:
             atomic_write(root / path, (stage / path).read_bytes())
         validate_bundle(root, feed)
         kept = {post["image"] for post in feed["posts"]}
         for path in existing_images:
             if path.is_file() and path.relative_to(root).as_posix() not in kept:
                 path.unlink()
+        atomic_write(root / STATUS, (stage / STATUS).read_bytes())
     except Exception:
         for path, content in backup.items():
             if content is None:
@@ -278,79 +342,118 @@ def read_dict(path):
         return {}
 
 
-def update(root, client, *, now=None):
+def update(root, client, *, now=None, credential=None, blocked=None):
     now = now or utcnow()
     previous = read_dict(root / FEED)
     prior_status = read_dict(root / STATUS)
+    api_version = client.version if re.fullmatch(r"v[1-9][0-9]*\.0", client.version) else None
     status = {"checked_at": now, "state": "failure", "content_updated_at": previous.get("updated_at"),
               "last_fetch_succeeded_at": prior_status.get("last_fetch_succeeded_at"),
-              "api_host": "graph.instagram.com", "api_version": "unversioned (existing configuration)"}
+              "api_host": "graph.instagram.com", "api_version": api_version}
+    if "publication" in prior_status:
+        status["publication"] = prior_status["publication"]
+    if credential:
+        status["credential"] = credential
+    if blocked:
+        # An operator can dispatch after fixing authentication. Scheduled runs
+        # keep their own heartbeat and don't contact Meta with the same bad token.
+        status["job_checked_at"] = now
+        status["checked_at"] = prior_status.get("checked_at") or now
+        status["api_attempted"] = False
     try:
+        if blocked:
+            raise blocked
+        status["api_attempted"] = True
         if not client.token or not re.fullmatch(r"\d{1,30}", client.uid):
             raise FeedError("configuration", "secrets")
-        candidates = client.media("media")
-        # Empty/malformed normal media must not be hidden by optional data.
-        selected_posts(candidates)
         status["authentication"] = client.account()
-        collaborative_available = False
-        try:
-            collaborative = client.media("collaborative_media")
-            selected_posts(candidates + collaborative)
-            candidates.extend(collaborative)
-            collaborative_available = True
-            status["collaborative_media"] = {"state": "available"}
-        except FeedError as error:
-            status["collaborative_media"] = {"state": "unavailable", "error": error.info}
-            client.log(json.dumps({"optional_edge": True, **error.info}, ensure_ascii=False))
+        previous_posts = previous.get("posts", [])
+        previous_count = len(previous_posts) if isinstance(previous_posts, list) else 0
+        minimum = max(MIN_POSTS, min(MAX_POSTS, previous_count))
+        candidates = selected_posts(client.media(), minimum)
 
         with tempfile.TemporaryDirectory(prefix=".instagram-stage-", dir=root) as directory:
             stage = Path(directory)
             (stage / IMAGES).mkdir(parents=True)
             posts = []
-            for post in selected_posts(candidates):
+            for post in candidates:
                 content = optimized_image(client, post)
                 image = (IMAGES / f"{post['id']}.jpg").as_posix()
                 (stage / image).write_bytes(content)
                 posts.append({"id": post["id"], "caption": post.get("caption", ""), "media_type": post["media_type"],
                               "is_story": False, "image": image, "image_version": hashlib.sha256(content).hexdigest()[:12],
                               "permalink": post["permalink"], "timestamp": post["timestamp"]})
-            changed = posts != previous.get("posts", [])
-            feed = {"account": ACCOUNT, "sort": "newest_first", "includes_collaborative_posts": collaborative_available,
+            changed = posts != previous_posts
+            feed = {"account": ACCOUNT, "sort": "newest_first", "includes_collaborative_posts": False,
                     "includes_tagged_posts": False, "includes_stories": False,
                     "updated_at": now if changed else previous.get("updated_at", now), "posts": posts}
             serialized = encode(feed)
             secret_forms = {form for secret in client.secrets if secret for form in (secret, urllib.parse.quote(secret, safe=""), urllib.parse.quote_plus(secret))}
             if any(form.encode() in serialized for form in secret_forms):
                 raise FeedError("credential_in_response", "validation")
+            feed_hash = hashlib.sha256(serialized).hexdigest()
+            completed = {**status, "state": "success", "last_fetch_succeeded_at": now,
+                         "content_updated_at": feed["updated_at"], "content_changed": changed,
+                         "posts": len(posts), "feed_sha256": feed_hash,
+                         "observed_api_versions": sorted(client.versions),
+                         "publication": {
+                             "schema_version": 1, "feed_sha256": feed_hash,
+                             "latest_post_at": parse_timestamp(posts[0]["timestamp"]).isoformat().replace("+00:00", "Z"),
+                         }}
             (stage / FEED).parent.mkdir(parents=True)
             (stage / FEED).write_bytes(serialized)
+            (stage / STATUS).write_bytes(encode(completed))
             install_bundle(root, stage, feed)
-        status.update(state="success", last_fetch_succeeded_at=now, content_updated_at=feed["updated_at"], content_changed=changed,
-                      posts=len(posts), feed_sha256=hashlib.sha256(serialized).hexdigest())
+        status = completed
         code = 0
     except FeedError as error:
         status["error"] = error.info
-        # A separate identity probe distinguishes bad tokens from media field / UID errors.
-        if error.info["stage"] != "secrets":
-            try:
-                status["authentication"] = client.account()
-            except FeedError as identity_error:
-                status["authentication"] = {"account_verified": False, "error": identity_error.info}
+        if error.info["stage"] in {"me", "account"}:
+            status["authentication"] = {"account_verified": False, "error": error.info}
         code = 1
     except Exception:
         # Unexpected parser, image, filesystem, and transport errors must not leak URLs or bodies.
         status["error"] = FeedError("internal", "update").info
         code = 1
-    status["observed_api_versions"] = sorted(client.versions)
-    atomic_write(root / STATUS, encode(status))
+    if code:
+        status["observed_api_versions"] = sorted(client.versions)
+        atomic_write(root / STATUS, encode(status))
     client.log(json.dumps(status, ensure_ascii=False))
     return code, status
 
 
+def credential_gate(credential, previous, event_name, now):
+    if credential.get("expires_at") is not None and credential["expires_at"] <= now:
+        return FeedError("authentication", "secrets", error={"message": "Stored expiry passed; reauthorize."})
+    if event_name != "schedule":
+        return None
+    previous_error = previous.get("error", {})
+    if previous_error.get("category") not in {"authentication", "permission"}:
+        return None
+    previous_credential = previous.get("credential", {})
+    if any(credential.get(field) != previous_credential.get(field)
+           for field in ("refreshed_at", "bootstrap_at")):
+        return None
+    return FeedError(previous_error["category"], "secrets", http_status=previous_error.get("http_status"),
+                     error={**previous_error, "message": "Credential requires a verified manual recovery run."})
+
+
 def main():
     root = Path(__file__).resolve().parents[1]
-    client = Client(os.environ.get("INSTAGRAM_ACCESS_TOKEN", ""), os.environ.get("INSTAGRAM_USER_ID", ""))
-    code, status = update(root, client)
+    token, metadata = "", {}
+    prior_status = read_dict(root / STATUS)
+    try:
+        credential = load_credentials(os.environ.get("INSTAGRAM_ACCESS_TOKEN", ""))
+        token, metadata = credential.access_token, credential.safe_metadata()
+        bootstrap = os.environ.get("INSTAGRAM_TOKEN_BOOTSTRAPPED_AT", "")
+        if re.fullmatch(r"[0-9]{1,12}", bootstrap):
+            metadata["bootstrap_at"] = int(bootstrap)
+        blocked = credential_gate(metadata, prior_status, os.environ.get("GITHUB_EVENT_NAME"), time.time())
+    except CredentialError as error:
+        blocked = FeedError("configuration", "secrets", error={"message": error.state})
+    client = Client(token, os.environ.get("INSTAGRAM_USER_ID", ""),
+                    version=os.environ.get("INSTAGRAM_API_VERSION") or DEFAULT_API_VERSION)
+    code, status = update(root, client, credential=metadata, blocked=blocked)
     summary = os.environ.get("GITHUB_STEP_SUMMARY")
     if summary:
         with open(summary, "a", encoding="utf-8") as output:

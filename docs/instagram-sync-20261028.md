@@ -1,5 +1,7 @@
 # Instagram自動更新：修正・検証・復旧手順（2026-10-28）
 
+このページは2026年10月28日の作業記録です。現行の管理者手順と公式HPの照合先は [Garraway FのSNS運用・復旧手順](https://github.com/GarrawayF/garrawayf.github.io/blob/main/docs/social-operations.md) を参照してください。
+
 ## 現在の到達点
 
 | 項目 | 結果 |

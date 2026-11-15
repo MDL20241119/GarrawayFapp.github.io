@@ -8,6 +8,7 @@ import tempfile
 import unittest
 import urllib.error
 import urllib.parse
+import urllib.request
 from io import BytesIO
 from pathlib import Path
 from unittest.mock import patch
@@ -30,7 +31,7 @@ def image_bytes(color="red"):
 class Response(BytesIO):
     def __init__(self, content, headers=None):
         super().__init__(content)
-        self.headers = headers or {"facebook-api-version": "v25.0"}
+        self.headers = headers or {"instagram-api-version": sync.DEFAULT_API_VERSION}
 
 
 def http_error(status, code=100, **extra):
@@ -52,8 +53,10 @@ class API:
         self.media_payload = None
         self.image_failure = None
         self.image_calls = 0
-        self.collaborative = []
-        self.collaborative_failure = None
+        self.children = []
+        self.identity = {"user_id": UID, "id": "98765432109876543"}
+        self.identity_failure = None
+        self.identity_wrapped = False
         self.username = sync.ACCOUNT
         self.calls = []
         self.image = image_bytes()
@@ -62,17 +65,19 @@ class API:
     def __call__(self, request, timeout):
         url = urllib.parse.urlsplit(request.full_url)
         self.calls.append((url.path, timeout))
-        if url.hostname.endswith("cdninstagram.com"):
+        if url.hostname.endswith(sync.CDN_HOSTS):
             self.image_calls += 1
             if self.image_failure and self.image_calls >= 2:
                 raise self.image_failure()
             return Response(self.image)
-        if url.path.endswith("/collaborative_media"):
-            if self.collaborative_failure:
-                raise self.collaborative_failure()
-            return Response(json.dumps({"data": self.collaborative}).encode())
-        if url.path == "/me":
-            return Response(json.dumps({"user_id": UID, "username": self.username}).encode())
+        if url.path.endswith("/children"):
+            return Response(json.dumps({"data": self.children}).encode())
+        if url.path.endswith("/me"):
+            if self.identity_failure:
+                raise self.identity_failure()
+            identity = {**self.identity, "username": self.username}
+            payload = {"data": [identity]} if self.identity_wrapped else identity
+            return Response(json.dumps(payload).encode())
         if url.path.endswith("/media"):
             if self.media_failure and self.failures_left != 0:
                 if self.failures_left is not None:
@@ -117,6 +122,11 @@ class FeedTests(unittest.TestCase):
         self.assertEqual(status["state"], "failure")
         self.assertEqual(status["error"]["category"], category)
         self.assertEqual(status["last_fetch_succeeded_at"], T0)
+        self.assertEqual(status["publication"], {
+            "schema_version": 1,
+            "feed_sha256": hashlib.sha256(self.baseline[str(sync.FEED)]).hexdigest(),
+            "latest_post_at": "2026-10-25T01:00:00Z",
+        })
         self.assertEqual(self.snapshot(), self.baseline)
         self.assertEqual(list(self.root.glob(".instagram-stage-*")), [])
         return status
@@ -130,7 +140,13 @@ class FeedTests(unittest.TestCase):
         self.assertEqual(len(feed["posts"]), 6)
         self.assertEqual(feed["updated_at"], T1)
         self.assertEqual(status["last_fetch_succeeded_at"], T1)
-        self.assertEqual(status["observed_api_versions"], ["v25.0"])
+        self.assertEqual(status["api_version"], sync.DEFAULT_API_VERSION)
+        self.assertEqual(status["observed_api_versions"], [sync.DEFAULT_API_VERSION])
+        self.assertEqual(status["publication"], {
+            "schema_version": 1,
+            "feed_sha256": hashlib.sha256((self.root / sync.FEED).read_bytes()).hexdigest(),
+            "latest_post_at": "2026-10-28T03:00:00Z",
+        })
         self.assertFalse((self.root / sync.IMAGES / "1000.jpg").exists())
         for p in feed["posts"]:
             raw = (self.root / p["image"]).read_bytes()
@@ -209,7 +225,7 @@ class FeedTests(unittest.TestCase):
         self.assertEqual(self.sleeps, [2])
 
     def test_empty_and_incomplete_normal_feed_preserved(self):
-        for payload in [{"data": []}, {"data": self.api.posts[:3]}]:
+        for payload in [{"data": []}, {"data": self.api.posts[:3]}, {"data": self.api.posts[:5]}]:
             with self.subTest(count=len(payload["data"])):
                 self.api.media_payload = json.dumps(payload).encode()
                 self.preserved_failure("empty_or_incomplete_response")
@@ -236,28 +252,102 @@ class FeedTests(unittest.TestCase):
         self.api.posts[-1].pop("media_url")
         self.preserved_failure("invalid_response")
 
-    def test_unsupported_collaborative_edge_does_not_block_normal(self):
-        self.api.collaborative_failure = lambda: http_error(400, 100, message="Unsupported edge collaborative_media")
-        self.api.posts[-1]["caption"] = "New normal content"
-        code, status = self.run_update()
-        self.assertEqual(code, 0)
-        self.assertEqual(status["collaborative_media"]["state"], "unavailable")
+    def test_separate_collaboration_edge_is_not_used(self):
+        self.assertEqual(self.run_update()[0], 0)
+        self.assertFalse(any(path.endswith("/collaborative_media") for path, _ in self.api.calls))
         self.assertFalse(json.loads((self.root / sync.FEED).read_text())["includes_collaborative_posts"])
         self.assertEqual(self.sleeps, [])
 
-    def test_empty_collaborative_edge_is_valid(self):
-        self.assertEqual(self.run_update()[0], 0)
+    def test_missing_caption_field_for_entire_feed_requires_action(self):
+        for post in self.api.posts:
+            post.pop("caption")
+        status = self.preserved_failure("caption_unavailable")
+        self.assertTrue(status["error"]["action_required"])
+        self.assertEqual(self.api.image_calls, 0)
 
-    def test_collaborative_posts_deduplicated_and_sorted(self):
-        self.api.collaborative = [self.api.posts[-1], {**self.api.posts[-1], "id": "3000", "timestamp": "2026-10-28T04:00:00+0000"}]
+    def test_posts_deduplicated_and_sorted_by_canonical_time(self):
+        self.api.posts += [self.api.posts[-1], {**self.api.posts[-1], "id": "3000", "timestamp": "2026-10-28T13:00:00+0900"}]
         self.assertEqual(self.run_update()[0], 0)
         posts = json.loads((self.root / sync.FEED).read_text())["posts"]
         self.assertEqual(posts[0]["id"], "3000")
+        self.assertEqual(posts[0]["timestamp"], "2026-10-28T04:00:00+0000")
         self.assertEqual(len({post["id"] for post in posts}), 6)
 
     def test_wrong_account_preserves_all(self):
         self.api.username = "another_account"
         self.preserved_failure("account_mismatch")
+        self.assertTrue(all(path.endswith("/me") for path, _ in self.api.calls))
+
+    def test_app_scoped_identity_cannot_override_user_id(self):
+        for identity in ({"user_id": "98765432109876543", "id": UID}, {"id": UID}):
+            with self.subTest(identity_shape=list(identity)):
+                self.api.identity = identity
+                self.preserved_failure("account_mismatch")
+
+    def test_numeric_and_documented_wrapped_identity_payloads(self):
+        for wrapped in (True, False):
+            with self.subTest(wrapped=wrapped):
+                self.api.identity_wrapped = wrapped
+                self.api.identity = {"user_id": int(UID), "id": "98765432109876543", "account_type": "Media_Creator"}
+                code, status = self.run_update()
+                self.assertEqual(code, 0)
+                self.assertEqual(status["authentication"]["account_type"], "MEDIA_CREATOR")
+
+    def test_personal_identity_never_fetches_media(self):
+        self.api.identity["account_type"] = "PERSONAL"
+        self.preserved_failure("account_mismatch")
+        self.assertTrue(all(path.endswith("/me") for path, _ in self.api.calls))
+
+    def test_version_override_is_used_for_each_graph_path(self):
+        self.client.version = "v26.0"
+        code, status = self.run_update()
+        self.assertEqual(code, 0)
+        self.assertEqual(status["api_version"], "v26.0")
+        self.assertTrue(all(path.startswith("/v26.0/") for path, _ in self.api.calls if path.endswith(("/me", "/media"))))
+
+    def test_bad_version_never_makes_http_request(self):
+        self.client.version = TOKEN
+        self.assertIsNone(self.preserved_failure("configuration")["api_version"])
+        self.assertEqual(self.api.calls, [])
+
+    def test_ordinary_video_uses_thumbnail(self):
+        self.api.posts[-1].update(media_type="VIDEO", thumbnail_url="https://scontent.fbcdn.net/video-thumb.png",
+                                  media_url="https://scontent.fbcdn.net/video.mp4")
+        self.assertEqual(self.run_update()[0], 0)
+        self.assertIn(("/video-thumb.png", 45), self.api.calls)
+        self.assertNotIn(("/video.mp4", 45), self.api.calls)
+
+    def test_carousel_uses_first_child_and_preserves_parent_metadata(self):
+        self.api.posts[-1].update(media_type="CAROUSEL_ALBUM", media_url="https://scontent.cdninstagram.com/parent.png")
+        self.api.children = [
+            {"id": "2000", "media_type": "VIDEO", "thumbnail_url": "https://scontent.cdninstagram.com/first.png"},
+            {"id": "2001", "media_type": "IMAGE", "media_url": "https://scontent.cdninstagram.com/second.png"},
+        ]
+        self.assertEqual(self.run_update()[0], 0)
+        self.assertIn((f"/{sync.DEFAULT_API_VERSION}/1005/children", 30), self.api.calls)
+        self.assertIn(("/first.png", 45), self.api.calls)
+        self.assertNotIn(("/second.png", 45), self.api.calls)
+        self.assertNotIn(("/parent.png", 45), self.api.calls)
+        first = json.loads((self.root / sync.FEED).read_text())["posts"][0]
+        self.assertEqual((first["id"], first["caption"], first["media_type"]), ("1005", "Post 5", "CAROUSEL_ALBUM"))
+
+    def test_missing_carousel_child_preserves_snapshot(self):
+        self.api.posts[-1]["media_type"] = "CAROUSEL_ALBUM"
+        self.assertEqual(self.preserved_failure("invalid_response")["error"]["stage"], "children")
+
+    def test_untrusted_redirect_is_blocked_before_following(self):
+        handler = sync.InstagramRedirect()
+        for source, destination in [
+            ("https://graph.instagram.com/v27.0/me", "https://cdninstagram.com/no"),
+            ("https://graph.instagram.com/v27.0/me", "https://not.graph.instagram.com/no"),
+            ("https://cdninstagram.com/a.png", "https://cdninstagram.com.attacker.invalid/no"),
+            ("https://cdninstagram.com/a.png", "http://cdninstagram.com/no"),
+        ]:
+            with self.subTest(destination=destination), self.assertRaises(sync.FeedError):
+                handler.redirect_request(urllib.request.Request(source), None, 302, "Found", {}, destination)
+        allowed = handler.redirect_request(urllib.request.Request("https://cdninstagram.com/a.png"), None, 302,
+                                           "Found", {}, "https://image.fbcdn.net/b.png")
+        self.assertEqual(allowed.full_url, "https://image.fbcdn.net/b.png")
 
     def test_invalid_fields_and_story_rejected(self):
         for key, value in [("id", "../bad"), ("timestamp", "yesterday"), ("timestamp", "2026-10-28"),
@@ -295,13 +385,6 @@ class FeedTests(unittest.TestCase):
         self.preserved_failure("rate_limit")
         self.assertEqual(self.sleeps, [60, 60])
 
-    def test_optional_server_failure_is_bounded_and_normal_updates(self):
-        self.api.collaborative_failure = lambda: http_error(503, 2)
-        code, status = self.run_update()
-        self.assertEqual(code, 0)
-        self.assertEqual(status["collaborative_media"]["error"]["category"], "server")
-        self.assertEqual(self.sleeps, [2, 4])
-
     def test_invalid_staged_hash_never_installs(self):
         def fail_validation(root, feed):
             raise sync.FeedError("image_hash_mismatch", "validation")
@@ -310,12 +393,10 @@ class FeedTests(unittest.TestCase):
             self.preserved_failure("image_hash_mismatch")
 
     def test_expired_identity_probe_cannot_log_secrets(self):
-        self.api.media_failure = lambda: http_error(400, 190)
-        original = self.client.account
-        self.client.account = lambda: (_ for _ in ()).throw(sync.api_error(400, {"error": {"code": 190, "message": TOKEN}}, "me", (TOKEN, UID)))
+        self.api.identity_failure = lambda: http_error(400, 190)
         status = self.preserved_failure("authentication")
         self.assertFalse(status["authentication"]["account_verified"])
-        self.client.account = original
+        self.assertEqual(len(self.api.calls), 1)
 
     def test_missing_secrets_fail_without_network(self):
         self.client.token = ""
@@ -344,6 +425,18 @@ class FeedTests(unittest.TestCase):
         self.api.media_failure = bad_response
         self.preserved_failure("api")
 
+    def test_status_promotion_failure_restores_feed_and_images(self):
+        self.api.image = image_bytes("blue")
+        original = sync.atomic_write
+
+        def fail_success_status_once(path, content):
+            if path == self.root / sync.STATUS and json.loads(content)["state"] == "success":
+                raise OSError(TOKEN)
+            return original(path, content)
+
+        with patch.object(sync, "atomic_write", side_effect=fail_success_status_once):
+            self.preserved_failure("internal")
+
     def test_first_failure_does_not_invent_last_success(self):
         (self.root / sync.STATUS).unlink()
         self.api.media_failure = lambda: http_error(400, 190)
@@ -354,6 +447,25 @@ class FeedTests(unittest.TestCase):
         self.assertEqual(code, 1)
         self.assertEqual(self.snapshot(), self.baseline)
         return status
+
+
+class CredentialGateTests(unittest.TestCase):
+    def setUp(self):
+        self.meta_error = {"category": "authentication", "type": "OAuthException", "code": 190}
+        self.prior = {"error": self.meta_error, "credential": {}}
+
+    def test_circuit_stops_scheduled_meta_calls_for_same_failed_token(self):
+        denied = sync.credential_gate({}, self.prior, "schedule", 100)
+        self.assertEqual(denied.info["category"], "authentication")
+        self.assertEqual(denied.info["code"], 190)
+
+    def test_manual_recovery_and_changed_credential_can_unblock(self):
+        self.assertIsNone(sync.credential_gate({}, self.prior, "workflow_dispatch", 100))
+        self.assertIsNone(sync.credential_gate({"refreshed_at": 90}, self.prior, "schedule", 100))
+
+    def test_measured_expiry_requires_reauthorization_even_on_manual_run(self):
+        denied = sync.credential_gate({"expires_at": 100}, self.prior, "workflow_dispatch", 100)
+        self.assertEqual(denied.info["stage"], "secrets")
 
 
 if __name__ == "__main__":
