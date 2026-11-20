@@ -1,14 +1,14 @@
 {
-  "checked_at": "2026-11-20T09:09:00.888385Z",
+  "checked_at": "2026-11-20T17:59:35.119252Z",
   "state": "success",
-  "content_updated_at": "2026-11-20T09:09:00.888385Z",
-  "last_fetch_succeeded_at": "2026-11-20T09:09:00.888385Z",
+  "content_updated_at": "2026-11-20T17:59:35.119252Z",
+  "last_fetch_succeeded_at": "2026-11-20T17:59:35.119252Z",
   "api_host": "graph.instagram.com",
   "api_version": "v27.0",
   "publication": {
     "schema_version": 1,
-    "feed_sha256": "b57fe76defb5186b40fc5a3e86a5f4651258bced0dcab5b4780c634ef90982e4",
-    "latest_post_at": "2026-11-20T01:50:03Z"
+    "feed_sha256": "5ed8fad94f223562c286dce92e23bbda541dbb935f678cdb2728f1cb362548c4",
+    "latest_post_at": "2026-11-20T09:50:11Z"
   },
   "credential": {
     "expires_at": null,
@@ -23,7 +23,7 @@
   },
   "content_changed": true,
   "posts": 6,
-  "feed_sha256": "b57fe76defb5186b40fc5a3e86a5f4651258bced0dcab5b4780c634ef90982e4",
+  "feed_sha256": "5ed8fad94f223562c286dce92e23bbda541dbb935f678cdb2728f1cb362548c4",
   "observed_api_versions": [
     "v27.0"
   ]
