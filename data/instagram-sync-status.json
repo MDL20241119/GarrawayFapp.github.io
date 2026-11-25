@@ -1,14 +1,14 @@
 {
-  "checked_at": "2026-11-24T20:51:52.855752Z",
+  "checked_at": "2026-11-25T04:07:34.738167Z",
   "state": "success",
-  "content_updated_at": "2026-11-24T10:24:05.384884Z",
-  "last_fetch_succeeded_at": "2026-11-24T20:51:52.855752Z",
+  "content_updated_at": "2026-11-25T04:07:34.738167Z",
+  "last_fetch_succeeded_at": "2026-11-25T04:07:34.738167Z",
   "api_host": "graph.instagram.com",
   "api_version": "v27.0",
   "publication": {
     "schema_version": 1,
-    "feed_sha256": "838131fcbfee3908584dfbe8d356a71abe90c677e4dd628527a9c53944f562ce",
-    "latest_post_at": "2026-11-24T09:32:56Z"
+    "feed_sha256": "0aad43743244be0a78101b8878a6d915869d1b784256b51e28e4a934a27e889b",
+    "latest_post_at": "2026-11-25T00:56:27Z"
   },
   "credential": {
     "expires_at": null,
@@ -21,9 +21,9 @@
     "endpoint_family": "instagram_login",
     "account_type": "MEDIA_CREATOR"
   },
-  "content_changed": false,
+  "content_changed": true,
   "posts": 6,
-  "feed_sha256": "838131fcbfee3908584dfbe8d356a71abe90c677e4dd628527a9c53944f562ce",
+  "feed_sha256": "0aad43743244be0a78101b8878a6d915869d1b784256b51e28e4a934a27e889b",
   "observed_api_versions": [
     "v27.0"
   ]
