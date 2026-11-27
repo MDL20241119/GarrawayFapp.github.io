@@ -1,8 +1,8 @@
 {
-  "checked_at": "2026-11-26T15:44:51.320104Z",
+  "checked_at": "2026-11-27T00:32:27.422532Z",
   "state": "success",
   "content_updated_at": "2026-11-26T15:44:51.320104Z",
-  "last_fetch_succeeded_at": "2026-11-26T15:44:51.320104Z",
+  "last_fetch_succeeded_at": "2026-11-27T00:32:27.422532Z",
   "api_host": "graph.instagram.com",
   "api_version": "v27.0",
   "publication": {
@@ -21,7 +21,7 @@
     "endpoint_family": "instagram_login",
     "account_type": "MEDIA_CREATOR"
   },
-  "content_changed": true,
+  "content_changed": false,
   "posts": 6,
   "feed_sha256": "9254b263dbe0b7dcda01bcc91d70d281a624c5e50c86af3ea0d6127debcb803d",
   "observed_api_versions": [
